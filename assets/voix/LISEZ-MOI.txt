@@ -1,0 +1,3 @@
+Dépose ici les fichiers .mp3 générés avec ta voix (ElevenLabs ou autre).
+Chaque fichier porte le nom indiqué dans voix/script-voix-zeo.csv, par exemple v1i9f7wf.mp3.
+Si un fichier manque, Zéo utilise automatiquement la voix du navigateur.

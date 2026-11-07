@@ -1,0 +1,7 @@
+name = "portfolio-auth"
+main = "worker.js"
+compatibility_date = "2026-11-07"
+
+[vars]
+ALLOWED_USER = "ton-pseudo-github"
+SITE_ORIGIN = "https://ton-site.example"

@@ -1,0 +1,34 @@
+id;texte
+v1i9f7wf.mp3;Je suis Zéo, un petit bot IA qui vit dans le portfolio d’Eucher. Je me balade à ma guise, je comprends tes commandes vocales ou écrites, et je peux t’emmener dans une section, ouvrir et résumer ses projets, ou te parler de lui. Pose-moi aussi une question libre !
+vwnmmob.mp3;Voici ce que je sais faire : résumer les projets, ouvrir un projet, par exemple « ouvre ZemPro », t’emmener dans une section, te présenter Eucher et ses compétences, lire le dernier article, couper ou activer le son, ou te raconter une blague.
+v13sy5wz.mp3;Allons voir les projets d’Eucher !
+v1ltew6s.mp3;Voilà, c’est la fin du tour ! Dis « ouvre » suivi du nom d’un projet pour voir son détail.
+vcyzrru.mp3;D’accord, je me tais.
+v8e1ogt.mp3;Salut, je suis Zéo, le bot du portfolio d’Eucher. Clique sur moi et demande-moi de résumer ses projets !
+v113icou.mp3;Salut ! Je suis Zéo. Demande-moi de résumer les projets !
+v1p1qdy1.mp3;Avec plaisir !
+v1b57bdw.mp3;C’est la fête !
+v74dahv.mp3;Son coupé.
+v16fm6jn.mp3;Son activé.
+v1a6id4b.mp3;Salut, voici ma voix. Qu’en penses-tu ?
+v1gn2qe4.mp3;Tu peux écrire à Eucher par e-mail, ou via LinkedIn et GitHub. Je t’emmène à la section contact.
+volv196.mp3;Ses compétences les plus solides : React, Next.js, TypeScript, React Native, PHP. Il en maîtrise 19 au total.
+vahyei3.mp3;Eucher ABATTI, Développeur Full Stack Web et Mobile. Ses technologies phares : React, Next.js, TypeScript. Il a notamment réalisé CodeDrive, ZemPro, CertiDiplôme BJ, Kiffa-Agro IA. Pour le contacter, rendez-vous dans la section contact.
+vc2kg9i.mp3;Pourquoi les développeurs préfèrent le mode sombre ? Parce que la lumière attire les bugs !
+vly9gnk.mp3;Il y a 10 types de personnes : celles qui comprennent le binaire, et les autres.
+vqxwyl6.mp3;Pourquoi le développeur est-il malheureux ? Parce qu’il a trop de problèmes et pas assez de solutions.
+v1q2ew0y.mp3;Direction l’accueil !
+vbo84b6.mp3;Direction les projets !
+vyz8jtx.mp3;Direction les compétences !
+v1y2ooc.mp3;Direction la section à propos !
+v10z5yl8.mp3;Direction le blog !
+v1071pe.mp3;Direction la boutique !
+v1t4mmas.mp3;Direction le contact !
+v1kjjexv.mp3;Premier projet : CodeDrive. Le permis de conduire numérique pour le Bénin. Fonctions clés : Livret numérique certifié avec QR code, Marketplace des auto-écoles agréées, Enrôlement numérique des élèves. Technologies : React, Node.js, Base relationnelle, Offline-first.
+vobyjah.mp3;CodeDrive. Hub numérique et application mobile-first qui dématérialise tout le parcours d’apprentissage du permis de conduire au Bénin. Il s’intègre en amont du système SIGPCB de l’ANATT et met fin aux registres papier. Fonctions clés : Livret numérique certifié avec QR code, Marketplace des auto-écoles agréées, Enrôlement numérique des élèves. Technologies : React, Node.js, Base relationnelle, Offline-first.
+v17xnohz.mp3;Deuxième projet : ZemPro. La plateforme des conducteurs de taxi-moto (Zémidjan). Fonctions clés : Carte professionnelle avec QR code, Contrôle par la police, Taxes communales. Technologies : React, Node.js, Mobile-first, API ANIP (NPI).
+vckq8nk.mp3;ZemPro. Plateforme numérique qui professionnalise les conducteurs de taxi-moto et de taxis urbains au Bénin, en simplifiant leurs démarches et en renforçant la confiance des usagers. Fonctions clés : Carte professionnelle avec QR code, Contrôle par la police, Taxes communales. Technologies : React, Node.js, Mobile-first, API ANIP (NPI).
+v1d0ldqg.mp3;Troisième projet : CertiDiplôme BJ. Authentification et équivalence des diplômes. Fonctions clés : Authentification par QR code, Identification via NPI / ANIP, Conversion des notes ECTS et GPA. Technologies : NPI / ANIP, QR code, ECTS / GPA.
+vunlplr.mp3;CertiDiplôme BJ. Plateforme qui authentifie les diplômes au Bénin et facilite leur équivalence, pour des démarches plus rapides et des documents infalsifiables. Fonctions clés : Authentification par QR code, Identification via NPI / ANIP, Conversion des notes ECTS et GPA. Technologies : NPI / ANIP, QR code, ECTS / GPA.
+v1qsgsod.mp3;Quatrième projet : Kiffa-Agro IA. Le diagnostic des maladies des plantes par l’IA. Fonctions clés : Diagnostic par réseau CNN (MobileNetV3), Restitution audio en fon, nago, adja et baatonu, PWA offline-first avec expériences desktop et mobile distinctes. Technologies : Next.js 14, TypeScript, PWA, Workbox.
+v1l2wbgg.mp3;Kiffa-Agro IA. Application AgriTech qui diagnostique les maladies des plantes à partir d’une photo et restitue le résultat à l’oral dans les langues locales, pour être utile à tous les agriculteurs. Fonctions clés : Diagnostic par réseau CNN (MobileNetV3), Restitution audio en fon, nago, adja et baatonu, PWA offline-first avec expériences desktop et mobile distinctes. Technologies : Next.js 14, TypeScript, PWA, Workbox.
