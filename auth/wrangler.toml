@@ -3,5 +3,6 @@ main = "worker.js"
 compatibility_date = "2026-11-07"
 
 [vars]
-ALLOWED_USER = "ton-pseudo-github"
-SITE_ORIGIN = "https://ton-site.example"
+ALLOWED_USER = "T0b0i7"
+SITE_ORIGIN = "https://t0b0i7.github.io"
+GITHUB_CLIENT_ID = "Ov23liScfQXFMe067Iec"
