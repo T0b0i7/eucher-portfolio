@@ -10,7 +10,8 @@ assets/
   css/app.css           tout le style
   js/data.js            données de départ, logos, sons, utilitaires
   js/sections.js        rendu public : projets, blog, boutique, parcours, à propos
-  js/admin.js           espace d'administration (auth Supabase, vues, formulaires)
+  js/remote.js          client Supabase, lecture du contenu, chargement à la demande de l'admin
+  js/admin.js           espace d'administration (chargé seulement à l'ouverture)
   js/ui.js              intro, langue, contact, palette Ctrl+K
   js/effects.js         animations, orbite, curseur, décor
   img/                  logo.png, portrait.jpg
@@ -23,7 +24,8 @@ docs/
 
 ## Ordre de chargement
 
-`data.js` → `sections.js` → `admin.js` → `ui.js` → `effects.js`, tous en `defer`.
+`data.js` → `sections.js` → `remote.js` → `ui.js` → `effects.js`, tous en `defer`.
+`admin.js` n'est pas chargé au démarrage : `remote.js` l'injecte à la première demande (`Ctrl+Maj+A` ou bouton de connexion).
 Les fichiers partagent la portée globale : ne pas changer l'ordre sans vérifier les dépendances.
 
 ## Flux de données

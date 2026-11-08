@@ -159,7 +159,7 @@ var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function
 function applyClose(){log('Portfolio mis à jour',D.projects.filter(function(p){return p.st==='Publié'}).length+' projets publiés','bolt','var(--ok)');save();window.closeAdmin()}
 var openAdminRaw=function(){load();V='dash';SEL=0;render();A.classList.add('open');document.body.classList.add('adm-open');document.body.style.overflow='hidden';A.scrollTo(0,0);A._s=window.on;if(window.on)setSound(false)};
 window.closeAdmin=function(){A.classList.remove('open');document.body.classList.remove('adm-open');document.body.style.overflow='';if(A._s){setSound(true);A._s=false}applyData()};
-var SB=null,SBU=window.EA_SUPABASE||{},OWNER=String(SBU.owner||'T0b0i7');if(!window.claude)document.documentElement.classList.add('no-ai');
+if(!window.claude)document.documentElement.classList.add('no-ai');
 try{if(window.supabase&&SBU.url&&SBU.key)SB=supabase.createClient(SBU.url,SBU.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(e){SB=null}
 function sbName(s){var u=s&&s.user;return u?String((u.user_metadata&&(u.user_metadata.user_name||u.user_metadata.preferred_username))||u.email||''):''}
 function sbOk(s){return !!s&&sbName(s).toLowerCase()===OWNER.toLowerCase()}
@@ -167,7 +167,7 @@ window.SB=SB;
 var pushT=null;
 function remotePush(){if(!SB||!window.SB_ADMIN)return;clearTimeout(pushT);pushT=setTimeout(function(){SB.from('portfolio').upsert({id:1,data:D,updated_at:new Date().toISOString()}).then(function(r){if(r.error)console.warn('sync',r.error.message)}).catch(function(e){console.warn('sync',e)})},700)}
 window.eaPush=remotePush;
-window.eaLoad=function(){if(!SB)return Promise.resolve(false);return SB.from('portfolio').select('data').eq('id',1).maybeSingle().then(function(r){if(r.error||!r.data||!r.data.data)return false;var d=r.data.data;if(!d.projects)return false;try{localStorage.setItem(K,JSON.stringify(d))}catch(e){}return true}).catch(function(){return false})};
+/* eaLoad et le client Supabase vivent dans remote.js */
 function msgPull(){if(!SB)return;SB.from('messages').select('*').order('created_at',{ascending:false}).then(function(r){if(r.error)return;D.msgs=(r.data||[]).map(function(m){return{id:m.id,from:m.name||'Anonyme',email:m.email||'',txt:m.body||'',subject:m.subject||'',t:m.created_at?new Date(m.created_at).getTime():Date.now(),r:m.read?1:0}});try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}if(A.classList.contains('open'))render()}).catch(function(){})}
 window.eaMsgPull=msgPull;
 var lg=document.createElement('div');lg.id='lg';lg.setAttribute('data-notr','1');document.body.appendChild(lg);
@@ -179,8 +179,6 @@ document.getElementById('lgb').onclick=function(){if(!cfg){var n=document.getEle
 document.getElementById('lgx').onclick=function(){lg.classList.remove('open')};
 }
 function enter(){lg.classList.remove('open');window.SB_ADMIN=true;openAdminRaw();if(SB){msgPull();SB.from('portfolio').select('id').eq('id',1).maybeSingle().then(function(r){if(!r.error&&!r.data)remotePush()}).catch(function(){})}}
-window.requestAdmin=function(){if(!SB)return login('cfg');SB.auth.getSession().then(function(r){var s=r&&r.data&&r.data.session;if(sbOk(s))enter();else if(s){SB.auth.signOut();login('denied')}else login()}).catch(function(){login('net')})};
-addEventListener('keydown',function(e){if((e.key||'').toLowerCase()==='a'&&e.shiftKey&&(e.ctrlKey||e.metaKey||e.altKey)){e.preventDefault();window.requestAdmin()}});
-var lk=document.getElementById('lockln');if(lk)lk.addEventListener('click',function(e){e.preventDefault();window.requestAdmin()});
+window.__requestAdmin=function(){if(!SB)return login('cfg');SB.auth.getSession().then(function(r){var s=r&&r.data&&r.data.session;if(sbOk(s))enter();else if(s){SB.auth.signOut();login('denied')}else login()}).catch(function(){login('net')})};
 if(SB)SB.auth.onAuthStateChange(function(ev,s){window.SB_ADMIN=!!(s&&sbOk(s));if((ev==='SIGNED_IN'||ev==='INITIAL_SESSION')&&sbOk(s))enter()});
 })();
