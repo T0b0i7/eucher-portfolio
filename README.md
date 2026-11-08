@@ -15,7 +15,7 @@ Double-clique sur `index.html`. Une connexion internet n’est utile que pour ch
 ## Utiliser l’espace d’administration
 
 - Clique sur « 🔒 Connexion » en bas de page, ou appuie sur `Ctrl + Maj + A` (ou `Alt + Maj + A` : sur Chrome, `Ctrl + Maj + A` peut être réservé par le navigateur).
-- L’espace est protégé par une connexion GitHub, réservée à ton compte. Il faut la configurer une fois : suis `auth/LISEZ-MOI.md`. Tant qu’elle n’est pas configurée, l’espace admin reste fermé.
+- L’espace est protégé par une connexion GitHub via Supabase, réservée à ton compte. Voir `docs/ARCHITECTURE.md`.
 - Menus : Tableau de bord, Projets, Blog, Boutique, Compétences, Profil, Messages, Paramètres.
 - Le bouton « Mettre à jour le portfolio » enregistre et te ramène sur le site.
 - Paramètres, puis Exporter : télécharge toutes tes données dans un fichier JSON (sauvegarde).
@@ -36,7 +36,7 @@ Double-clique sur `index.html`. Une connexion internet n’est utile que pour ch
 ## Voix personnalisée
 
 - Dans le panneau de Zéo, le bouton ⚙ règle la voix du navigateur : choix de la voix, vitesse et hauteur.
-- Pour utiliser ta propre voix (par exemple avec ElevenLabs), suis `voix/COMMENT-FAIRE.md` : tu déposes des mp3 dans `assets/voix/`.
+- Pour utiliser ta propre voix (par exemple avec ElevenLabs), suis `docs/voix/COMMENT-FAIRE.md` : tu déposes des mp3 dans `docs/voix-assets/`.
 
 ## Boutique et dons
 

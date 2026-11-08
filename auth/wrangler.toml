@@ -1,8 +1,0 @@
-name = "portfolio-auth"
-main = "worker.js"
-compatibility_date = "2026-11-07"
-
-[vars]
-ALLOWED_USER = "T0b0i7"
-SITE_ORIGIN = "https://t0b0i7.github.io"
-GITHUB_CLIENT_ID = "Ov23liScfQXFMe067Iec"
