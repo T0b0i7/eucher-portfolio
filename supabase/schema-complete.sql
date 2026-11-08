@@ -31,6 +31,19 @@ create table if not exists public.profile (
   updated_at      timestamptz default now()
 );
 
+create table if not exists public.settings (
+  id int primary key default 1,
+  site_title text, site_description text, domain text, ticker text,
+  online boolean default true, maintenance boolean default false,
+  sound boolean default true, accent text default '#e60012',
+  available_badge boolean default false, hide_journey boolean default false,
+  show_services boolean default true, show_blog boolean default true,
+  show_shop boolean default true, show_bot boolean default true,
+  show_orbit boolean default true, show_palette boolean default true,
+  donate_link text, momo text, donate_amounts text, whatsapp text,
+  updated_at timestamptz default now()
+);
+
 create table if not exists public.projects (
   id              int primary key,
   name            text not null,
@@ -157,6 +170,29 @@ begin
     about_client=excluded.about_client, proof=excluded.proof, hook_client_en=excluded.hook_client_en,
     about_client_en=excluded.about_client_en, updated_at=now();
 
+  insert into public.settings (id,site_title,ticker,online,maintenance,accent,whatsapp,donate_link)
+  values (1, d->'set'->>'titre', d->'set'->>'ticker',
+    coalesce((d->'set'->>'online')::boolean,true),
+    coalesce((d->'set'->>'maint')::boolean,false),
+    coalesce(d->'set'->>'accent','#e60012'),
+    d->'set'->>'wa', d->'set'->>'dlink')
+  on conflict (id) do update set site_title=excluded.site_title, ticker=excluded.ticker,
+    online=excluded.online, maintenance=excluded.maintenance, accent=excluded.accent,
+    whatsapp=excluded.whatsapp, donate_link=excluded.donate_link, updated_at=now();
+
+  update public.settings set site_description=d->'set'->>'desc', domain=d->'set'->>'domain',
+    sound=coalesce((d->'set'->>'sound')::boolean,true),
+    available_badge=coalesce((d->'set'->>'avail')::boolean,false),
+    hide_journey=coalesce((d->'set'->>'no_journey')::boolean,false),
+    show_services=coalesce((d->'set'->>'sh_svc')::boolean,true),
+    show_blog=coalesce((d->'set'->>'sh_blog')::boolean,true),
+    show_shop=coalesce((d->'set'->>'sh_shop')::boolean,true),
+    show_bot=coalesce((d->'set'->>'sh_bot')::boolean,true),
+    show_orbit=coalesce((d->'set'->>'sh_orbit')::boolean,true),
+    show_palette=coalesce((d->'set'->>'sh_pal')::boolean,true),
+    momo=d->'set'->>'momo', donate_amounts=d->'set'->>'damounts'
+  where id=1;
+
   delete from public.projects;
   insert into public.projects (id,name,description,description_en,category,status,tech,url,donate,donate_link,position)
   select coalesce((x->>'id')::int, row_number() over ()::int), x->>'n', x->>'d', x->'en'->>'d',
@@ -228,6 +264,7 @@ $$;
 
 alter table public.portfolio   enable row level security;
 alter table public.profile     enable row level security;
+alter table public.settings    enable row level security;
 alter table public.projects    enable row level security;
 alter table public.skills      enable row level security;
 alter table public.experiences enable row level security;
@@ -249,7 +286,7 @@ create policy "portfolio ecriture proprietaire" on public.portfolio for all to a
 do $$
 declare t text; cond text;
 begin
-  foreach t in array array['profile','skills','experiences','education','services','steps','projects','posts','products','activity'] loop
+  foreach t in array array['profile','settings','skills','experiences','education','services','steps','projects','posts','products','activity'] loop
     cond := case when t in ('projects','posts','products') then 'status = ''Publié'''
                  when t = 'activity' then 'false'
                  else 'true' end;
@@ -271,10 +308,10 @@ create policy "messages proprietaire" on public.messages for all to authenticate
 grant usage on schema public to anon, authenticated;
 grant select on public.portfolio to anon, authenticated;
 grant insert, update, delete on public.portfolio to authenticated;
-grant select on public.profile, public.projects, public.skills, public.experiences,
+grant select on public.profile, public.settings, public.projects, public.skills, public.experiences,
   public.education, public.posts, public.products, public.services, public.steps
   to anon, authenticated;
-grant select, insert, update, delete on public.profile, public.projects, public.skills,
+grant select, insert, update, delete on public.profile, public.settings, public.projects, public.skills,
   public.experiences, public.education, public.posts, public.products, public.services,
   public.steps, public.activity to authenticated;
 grant insert on public.messages to anon, authenticated;
