@@ -10,7 +10,7 @@ assets/
   css/app.css           tout le style
   js/data.js            données de départ, logos, sons, utilitaires
   js/sections.js        rendu public : projets, blog, boutique, parcours, à propos
-  js/remote.js          client Supabase, lecture du contenu, chargement à la demande de l'admin
+  js/remote.js          accès REST Supabase (lecture publique, contact) et chargement à la demande de l'admin
   js/admin.js           espace d'administration (chargé seulement à l'ouverture)
   js/ui.js              intro, langue, contact, palette Ctrl+K
   js/effects.js         animations, orbite, curseur, décor

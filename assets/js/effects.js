@@ -281,10 +281,10 @@ var b=en?'Hello Eucher,\n\nI would like to start a project.\n\nName: '+g('bN')+'
 q('bMail').href='mailto:'+cEmail()+'?subject='+encodeURIComponent((en?'Project request: ':'Demande de projet : ')+g('bT'))+'&body='+encodeURIComponent(b)}
 ['bN','bE','bT','bB','bD','bM'].forEach(function(id){q(id).addEventListener('input',upd)});upd();
 q('bMail').addEventListener('click',function(e){var n=q('bN').value.trim(),em=q('bE').value.trim(),er=q('bErr');if(!(n&&em)){e.preventDefault();er.textContent=window.LANG==='en'?'Please enter your name and email.':'Indiquez votre nom et un e-mail.';er.hidden=false;return}er.hidden=true;
-if(!window.SB||!window.EA_SUPABASE||!window.EA_SUPABASE.url)return;
+if(!window.eaSend)return;
 e.preventDefault();var en=window.LANG==='en',btn=q('bMail'),old=btn.textContent;btn.textContent=en?'Sending…':'Envoi…';btn.style.pointerEvents='none';
 var body=(q('bB').value.trim()?(en?'Budget: ':'Budget : ')+q('bB').value.trim()+'\n':'')+(q('bD').value.trim()?(en?'Timeline: ':'Délai : ')+q('bD').value.trim()+'\n':'')+(q('bM').value.trim()||'');
-window.SB.from('messages').insert({name:n,email:em,subject:q('bT').value,body:body}).then(function(r){btn.textContent=old;btn.style.pointerEvents='';if(r.error){er.textContent=en?'Sending failed. Please use email.':'Envoi impossible. Utilise l’e-mail.';er.hidden=false;return}['bN','bE','bB','bD','bM'].forEach(function(id){q(id).value=''});upd();btn.textContent=en?'Message sent':'Message envoyé';setTimeout(function(){btn.textContent=old},4000)}).catch(function(){btn.textContent=old;btn.style.pointerEvents='';er.textContent=en?'Sending failed. Please use email.':'Envoi impossible. Utilise l’e-mail.';er.hidden=false})});
+window.eaSend({name:n,email:em,subject:q('bT').value,body:body}).then(function(){btn.textContent=old;btn.style.pointerEvents='';;['bN','bE','bB','bD','bM'].forEach(function(id){q(id).value=''});upd();btn.textContent=en?'Message sent':'Message envoyé';setTimeout(function(){btn.textContent=old},4000)}).catch(function(){btn.textContent=old;btn.style.pointerEvents='';er.textContent=en?'Sending failed. Please use email.':'Envoi impossible. Utilise l’e-mail.';er.hidden=false})});
 /* CV imprimable */
 var cv=document.createElement('div');cv.id='cv';document.body.appendChild(cv);
 function cvOpen(){var d;try{d=JSON.parse(localStorage.getItem('ea_admin_v1'))}catch(e){d=null}

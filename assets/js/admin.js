@@ -159,6 +159,7 @@ var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function
 function applyClose(){log('Portfolio mis à jour',D.projects.filter(function(p){return p.st==='Publié'}).length+' projets publiés','bolt','var(--ok)');save();window.closeAdmin()}
 var openAdminRaw=function(){load();V='dash';SEL=0;render();A.classList.add('open');document.body.classList.add('adm-open');document.body.style.overflow='hidden';A.scrollTo(0,0);A._s=window.on;if(window.on)setSound(false)};
 window.closeAdmin=function(){A.classList.remove('open');document.body.classList.remove('adm-open');document.body.style.overflow='';if(A._s){setSound(true);A._s=false}applyData()};
+var SB=null;try{SB=supabase.createClient(SBU.url,SBU.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});window.SB=SB}catch(e){SB=null}
 if(!window.claude)document.documentElement.classList.add('no-ai');
 try{if(window.supabase&&SBU.url&&SBU.key)SB=supabase.createClient(SBU.url,SBU.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(e){SB=null}
 function sbName(s){var u=s&&s.user;return u?String((u.user_metadata&&(u.user_metadata.user_name||u.user_metadata.preferred_username))||u.email||''):''}
