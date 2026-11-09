@@ -11,4 +11,5 @@ function loadAdmin(cb){if(window.__requestAdmin){cb();return}if(_adm)return;_adm
 window.requestAdmin=function(){loadAdmin(function(){if(window.__requestAdmin)window.__requestAdmin()})};
 addEventListener('keydown',function(e){if((e.key||'').toLowerCase()==='a'&&e.shiftKey&&(e.ctrlKey||e.metaKey||e.altKey)){e.preventDefault();window.requestAdmin()}});
 (function(){var lk=document.getElementById('lockln');if(lk)lk.addEventListener('click',function(e){e.preventDefault();window.requestAdmin()})})();
+(function(){function rerender(){try{applyData();drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();if(window.regTr)regTr()}catch(e){}}window.eaLoad().then(function(ok){if(ok)rerender()}).catch(function(){})})();
 if(/access_token=|error_description=|code=/.test(location.hash+location.search))setTimeout(function(){window.requestAdmin()},0);
