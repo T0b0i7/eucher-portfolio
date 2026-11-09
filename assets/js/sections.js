@@ -133,9 +133,9 @@ var pf=document.getElementById('aboutProof');if(pf&&!pf.children.length)pf.inner
 var RICH={};P.forEach(function(p){RICH[p.n]=p});
 function E(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML}
 function applyData(){var d;try{d=JSON.parse(localStorage.getItem('ea_admin_v1'))}catch(e){return}if(!d||!d.projects)return;
-var pr=d.profile||{},se=d.set||{},cm={Web:'web',Mobile:'mobile',IA:'ia',Design:'design'};
+var pr=Object.assign({},SEED_PROFILE,d.profile||{}),se=Object.assign({online:true,sound:true},d.set||{}),cm={Web:'web',Mobile:'mobile',IA:'ia',Design:'design'};
 P=d.projects.filter(function(x){return x.st==='Publié'}).map(function(x){var r=RICH[x.n]||{},c=cm[x.cat]||'web',t=String(x.t||'').split(',').map(function(s){return s.trim()}).filter(Boolean);return{n:x.n,c:r.c&&r.c.split(' ').indexOf(c)>-1?r.c:c,cat:r.cat||x.cat,d:x.d,role:r.role||'Porteur du projet',st:r.st||'Projet publié',sec:r.sec||x.cat,long:r.long||x.d,f:r.f||['Détails à venir'],t:t.length?t:(r.t||[]),m:r.m==null?-1:r.m,cover:x.cover||'',don:x.don==='Oui',dl:x.dl||''}});
-S3=d.skills;S2=d.skills.map(function(s){return s.n});LV=d.skills.map(function(s){return s.lv||80});
+S3=(d.skills&&d.skills.length)?d.skills:SEED_SKILLS;S2=S3.map(function(s){return s.n});LV=S3.map(function(s){return s.lv||80});
 drawSk();
 reveal(document.querySelectorAll('#sk .sk'));
 var nm=String(pr.nom||'').replace(/[<>&"]/g,'').trim().split(/\s+/),f1=nm[0]||'',f2=nm.slice(1).join(' ');
