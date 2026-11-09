@@ -170,12 +170,9 @@
 <script src="assets/js/effects.js" defer></script>
 <script>
 setTimeout(function(){
- var x=new XMLHttpRequest();
- x.open('GET','https://pwpfoqgiltdgdlaazdjc.supabase.co/rest/v1/portfolio?id=eq.1&select=data',false);
- x.setRequestHeader('apikey','sb_publishable_zJ1a7eLIzCj2RB5WG1DLCQ_0HUG4bK0');
- x.send();
- try{var d=JSON.parse(x.responseText)[0].data;localStorage.setItem('ea_admin_v1',JSON.stringify(d));applyData();document.title='OK '+P.length}
- catch(e){document.title='ERR '+e.message}
+ if(!window.eaLoad){document.title='NO_EALOAD';return}
+ window.eaLoad().then(function(ok){document.title='LOAD '+ok+' P'+P.length+' LS'+(!!localStorage.getItem('ea_admin_v1'))})
+ .catch(function(e){document.title='CATCH '+e.message})
 },1500)
 </script></body>
 </html>
