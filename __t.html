@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eucher ABATTI — Développeur Full Stack</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<meta name="description" content="Eucher ABATTI, développeur Full Stack Web et Mobile spécialisé en Laravel et React. Projets, blog et services.">
+<meta property="og:title" content="Eucher ABATTI | Développeur Full Stack">
+<meta property="og:description" content="Développeur Full Stack Web et Mobile : Laravel, React, applications mobiles et API.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#e60012">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Eucher ABATTI","jobTitle":"Développeur Full Stack Web et Mobile","sameAs":["https://github.com/eucherabatti","https://linkedin.com/in/eucher-abatti"]}</script>
+</head>
+<body>
+<a class="skip" href="#home">Aller au contenu</a>
+<div id="intro"><div class="ib"></div><div class="ic"><img class="ilogo" src="assets/img/logo.png" alt="Logo EA Eucher ABATTI"><div class="name"><h1>Eucher<br><span>ABATTI</span></h1></div><p class="disp">Code propre. Impact réel.</p><button class="btn" data-snd="1">Entrer avec le son ♪</button> <button class="btn" data-snd="0">Entrer sans son</button><button class="btn" data-calm="1">Entrer en mode sobre</button></div></div>
+<div id="wipe"><i></i><i></i><i></i></div>
+<button id="snd" aria-label="Son">♪ SON : OFF</button>
+<nav id="nav"><button id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <img class="logo" src="assets/img/logo.png" alt="Logo EA Eucher ABATTI">
+  <a href="#home" class="on">Accueil</a><a href="#projects">Projets</a><a href="#skills">Compétences</a><a href="#journey">Parcours</a><a href="#about">À propos</a><a href="#blog">Blog</a><a href="#shop">Boutique</a><a href="#contact">Contact</a>
+<button id="palbtn" aria-label="Palette de commandes">⌕ Ctrl K</button></nav>
+
+<section id="home">
+  <div class="bg-red shard1"></div><div class="bg-red shard2"></div>
+  <div class="bgword" aria-hidden="true">CODE</div><div class="speed" aria-hidden="true"></div>
+  <div class="scroll"><i>↓</i>SCROLL</div>
+  <div class="tag t1">Code propre.<br>Impact réel.</div>
+  <div class="tag t2">Web · Mobile<br>&amp; <b>IA ♥</b></div>
+  <div class="hero-photo" role="img" aria-label="Portrait d’Eucher ABATTI"></div>
+  <svg class="hero-art" hidden viewBox="0 0 300 380" aria-hidden="true">
+    <path d="M40 380 C40 250 90 200 150 190 C210 200 260 250 260 380Z" fill="#000" stroke="#e60012" stroke-width="3"/>
+    <circle cx="150" cy="120" r="62" fill="#111" stroke="#e60012" stroke-width="3"/>
+    <path d="M88 105 L150 40 L212 105 L180 92 L150 112 L120 92Z" fill="#000"/>
+    <path d="M105 118 Q150 100 195 118 L185 140 Q150 128 115 140Z" fill="#fff"/>
+    <path d="M60 380 L100 250 L150 300 L200 250 L240 380Z" fill="#e60012" opacity=".6"/>
+  </svg>
+  <div class="wrap">
+    <div class="name"><h1>Eucher<br><span>ABATTI</span></h1></div>
+    <p class="sub">Développeur Full Stack</p>
+    <p>Passionné par le code, l’innovation et les nouvelles technologies.</p>
+    <a class="btn" href="#projects">Explorer mon univers →</a><a class="btn alt" href="#contact">Me contacter</a><a class="btn alt" href="#" id="cvBtn3">Voir mon CV</a>
+    <div class="badges"><span>Full Stack</span><span>Web &amp; Mobile</span><span>Laravel · React</span></div>
+  </div>
+</section>
+
+<div class="mq" id="mq1" aria-hidden="true"><div class="mqt"></div></div>
+<div class="mq mq2" id="mq2" aria-hidden="true"><div class="mqt rev"></div></div>
+<section id="projects">
+  <div class="wrap">
+    <h2 class="title">Mes Projets</h2>
+    <p class="lead">Des missions accomplies, un objectif : créer. Chaque projet est une nouvelle aventure.</p>
+    <div class="filters" id="filters">
+      <button class="on" data-f="all">Tous</button><button data-f="web">Web</button><button data-f="mobile">Mobile</button><button data-f="ia">IA</button><button data-f="design">Design</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="bg-red shard"></div>
+  <div class="wrap">
+    <h2 class="title">Mes Compétences</h2>
+    <p class="lead">Un ensemble d’outils pour donner vie à mes idées.</p>
+    <div class="skills" id="sk"></div>
+    <div class="note">Compétences = Possibilités</div>
+    <div class="orbit" id="orbit" aria-hidden="true"><div class="orb3" id="orb3"></div><small class="oh">Glisse pour tourner</small></div>
+  </div>
+</section>
+
+<section id="journey">
+  <div class="wrap">
+    <h2 class="title">Mon Parcours</h2>
+    <p class="lead">Expérience, formation et langues.</p>
+    <div class="jgrid">
+      <div><h3 class="ph">Expérience professionnelle</h3><ol class="tl" id="tlExp"></ol></div>
+      <div><h3 class="ph">Formation</h3><ol class="tl" id="tlEdu"></ol>
+        <h3 class="ph">Langues</h3><div class="chips2" id="jLang"></div>
+        <h3 class="ph" style="margin-top:22px">Centres d’intérêt</h3><div class="chips2" id="jInt"></div></div>
+    </div>
+    <a class="btn" href="#" id="cvBtn2">Mon CV (PDF)</a>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <h2 class="title">Ce que je propose</h2>
+    <p class="lead">Des solutions sur mesure, du prototype à la mise en ligne.</p>
+    <div class="svg4" id="svGrid"></div>
+    <h3 class="ph">Ma façon de travailler</h3>
+    <ol class="steps" id="svSteps"></ol>
+    <a class="btn" href="#contact">Démarrer un projet →</a>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about-photo" role="img" aria-label="Portrait d’Eucher ABATTI"></div>
+    <h2 class="title">À propos de moi</h2>
+    <h3 class="hook" id="aboutHook"></h3>
+    <div id="aboutTxt" class="atxt"></div>
+    <div class="proof kfs" id="aboutProof"></div>
+    <div class="quote">Chaque produit commence par une question : à quel problème répond-il ?</div>
+    <div class="words"><span>Curieux</span><span>Créatif</span><span>Déterminé</span><span>Passionné</span></div>
+    <a class="btn" href="#contact">En savoir plus →</a><a class="btn alt" href="#" id="cvBtn">Mon CV (PDF)</a>
+  </div>
+</section>
+
+<section id="blog">
+  <div class="wrap">
+    <h2 class="title">Mon Blog</h2>
+    <p class="lead">Notes, tutoriels et retours d’expérience.</p>
+    <div class="filters" id="bfilters"></div>
+    <div class="grid" id="bgrid"></div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="wrap">
+    <h2 class="title">Boutique</h2>
+    <p class="lead">Mes animations, templates et codes sources, prêts à utiliser dans vos projets.</p>
+    <div class="filters" id="sfilters"></div>
+    <div class="grid" id="sgrid"></div>
+    <div id="sdon"></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="bg-red shard"></div>
+  <div class="big">Let’s<br><b>Build</b><br>Together</div>
+  <div class="wrap">
+    <h2 class="title">Me Contacter</h2>
+    <p class="lead">Une idée ? Un projet ? Parlons-en !</p>
+    <div class="callcard" id="cc"><div class="cc-in"><small>CARTE DE VISITE</small><h3>EUCHER<br><span>ABATTI</span></h3><p>Full Stack Web &amp; Mobile</p><p>Laravel · React</p></div></div>
+    <div class="links">
+      <a href="mailto:abattieucher@gmail.com"><i>@</i><span><b>Email</b><small>abattieucher@gmail.com</small></span></a>
+      <a href="https://linkedin.com/in/eucher-abatti" target="_blank" rel="noopener"><i>in</i><span><b>LinkedIn</b><small>linkedin.com/in/eucher-abatti</small></span></a>
+      <a href="https://github.com/eucherabatti" target="_blank" rel="noopener"><i>GH</i><span><b>GitHub</b><small>github.com/eucherabatti</small></span></a>
+    </div>
+    <a class="btn" href="mailto:abattieucher@gmail.com">Envoyer un message →</a>
+    <div class="brief">
+      <h3 class="ph">Démarrer un projet</h3>
+      <p class="lead" style="margin-bottom:10px">Décrivez votre besoin, je vous réponds par e-mail.</p>
+      <div class="ord">
+        <label>Nom complet<input id="bN" autocomplete="name"></label>
+        <label>E-mail<input id="bE" type="email" autocomplete="email"></label>
+        <label>Type de projet<select id="bT"><option>Site web</option><option>Application web</option><option>Application mobile</option><option>API / back-office</option><option>Conseil</option><option>Autre</option></select></label>
+        <label>Budget estimé (optionnel)<input id="bB"></label>
+        <label>Délai souhaité (optionnel)<input id="bD"></label>
+        <label>Votre message<textarea id="bM" rows="3"></textarea></label>
+      </div>
+      <div class="buy"><a class="btn" id="bMail" href="#">Envoyer ma demande →</a></div>
+      <p class="nt err" id="bErr" hidden>Indiquez votre nom et un e-mail.</p>
+    </div>
+  </div>
+</section>
+
+<footer><img class="flogo" src="assets/img/logo.png" alt="Logo EA"><span>Eucher ABATTI</span><span>Développeur Full Stack</span><span>Innovation numérique</span><a href="#" id="lockln" class="lockln">🔒 Connexion</a></footer>
+
+<div id="adm" aria-label="Espace d’administration"><div class="app"><aside id="sb"></aside><main><div class="top"><button class="bt gh sm" data-a="close">← Portfolio</button><div class="sr"><span id="si"></span><input id="q" placeholder="Rechercher une fonctionnalité…" autocomplete="off"><div id="res"></div></div><button class="bt" id="gen" data-a="gen"><span id="gi"></span><span>Mettre à jour le portfolio</span></button><div class="me"><div class="av">EA</div><div><b id="mn">Eucher ABATTI</b><small>Administrateur</small></div></div></div><div class="ct" id="ct"></div></main></div><div id="md"></div><div id="toast"></div></div>
+<script>/* Supabase : authentification GitHub de l’espace admin */window.EA_SUPABASE={url:'https://pwpfoqgiltdgdlaazdjc.supabase.co',key:'sb_publishable_zJ1a7eLIzCj2RB5WG1DLCQ_0HUG4bK0',owner:'T0b0i7'};</script>
+
+<script src="assets/js/data.js" defer></script>
+<script src="assets/js/sections.js" defer></script>
+<script src="assets/js/remote.js" defer></script>
+<script src="assets/js/ui.js" defer></script>
+<script src="assets/js/effects.js" defer></script>
+<script>
+setTimeout(function(){
+ var x=new XMLHttpRequest();
+ x.open('GET','https://pwpfoqgiltdgdlaazdjc.supabase.co/rest/v1/portfolio?id=eq.1&select=data',false);
+ x.setRequestHeader('apikey','sb_publishable_zJ1a7eLIzCj2RB5WG1DLCQ_0HUG4bK0');
+ x.send();
+ try{var d=JSON.parse(x.responseText)[0].data;localStorage.setItem('ea_admin_v1',JSON.stringify(d));applyData();document.title='OK '+P.length}
+ catch(e){document.title='ERR '+e.message}
+},1500)
+</script></body>
+</html>

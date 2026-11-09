@@ -1,6 +1,6 @@
 var SBU=window.EA_SUPABASE||{},OWNER=String(SBU.owner||'T0b0i7');
 var API=String(SBU.url||'').replace(/\/$/,'')+'/rest/v1';
-function eaHead(x){var h={'apikey':SBU.key||'','Authorization':'Bearer '+(SBU.key||'')};if(x)for(var k in x)h[k]=x[k];return h}
+function eaHead(x){var h={'apikey':SBU.key||''};if(x)for(var k in x)h[k]=x[k];return h}
 window.eaLoad=function(){if(!SBU.key)return Promise.resolve(false);return fetch(API+'/portfolio?id=eq.1&select=data',{headers:eaHead()}).then(function(r){return r.ok?r.json():null}).then(function(j){var d=j&&j[0]&&j[0].data;if(!d||!d.projects)return false;try{localStorage.setItem('ea_admin_v1',JSON.stringify(d))}catch(e){}return true}).catch(function(){return false})};
 window.eaSend=function(p){return fetch(API+'/messages',{method:'POST',headers:eaHead({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(p)}).then(function(r){if(!r.ok)throw new Error('http '+r.status);return true})};
 var _adm=0;
