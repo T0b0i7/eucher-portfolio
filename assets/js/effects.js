@@ -331,7 +331,7 @@ if(hn)hn.style.transform='rotate(-4deg) perspective(900px) rotateY('+(x*14).toFi
 if(hp)hp.style.transform='perspective(1000px) rotateY('+(-x*10).toFixed(2)+'deg) rotateX('+(y*7).toFixed(2)+'deg)'});
 /* 3. Orbite 3D des technologies */
 var orbit=document.getElementById('orbit'),o=document.getElementById('orb3'),ang=0,vel=.25,drag=false,lx=0,vis=true,n=1;
-function buildOrbit(){var SL=S2.slice(0,14);n=Math.max(1,SL.length);var R=Math.max(150,Math.round(52/Math.tan(Math.PI/Math.max(n,3)))+24);
+function buildOrbit(){var SL=(S2||[]).slice(0,14);n=Math.max(1,SL.length);var R=Math.max(150,Math.round(52/Math.tan(Math.PI/Math.max(n,3)))+24);
 o.innerHTML=SL.map(function(s,i){var ic=skI(s,1)||('<i>'+E(String(s).slice(0,2))+'</i>');return '<div class="orc" style="transform:rotateY('+(i*360/n).toFixed(2)+'deg) translateZ('+R+'px)">'+ic+E(s)+'</div>'}).join('')}
 if(orbit&&o){buildOrbit();
 orbit.addEventListener('pointerdown',function(e){drag=true;lx=e.clientX;try{orbit.setPointerCapture(e.pointerId)}catch(x){}});
