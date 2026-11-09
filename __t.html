@@ -170,9 +170,10 @@
 <script src="assets/js/effects.js" defer></script>
 <script>
 setTimeout(function(){
- if(!window.eaLoad){document.title='NO_EALOAD';return}
- window.eaLoad().then(function(ok){document.title='LOAD '+ok+' P'+P.length+' LS'+(!!localStorage.getItem('ea_admin_v1'))})
- .catch(function(e){document.title='CATCH '+e.message})
+ window.eaLoad().then(function(ok){
+  try{applyData();document.title='A '+P.length}
+  catch(e){document.title='E '+e.message}
+ })
 },1500)
 </script></body>
 </html>
