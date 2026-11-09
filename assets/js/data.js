@@ -56,7 +56,7 @@ function draw(f){
   P.forEach(function(p,i){
     if(f!=="all"&&(' '+p.c+' ').indexOf(' '+f+' ')<0)return;
     var d=document.createElement("div");d.className="card";
-    d.innerHTML='<div class="shot">'+p.n.slice(0,2).toUpperCase()+'</div><h3>'+p.n+'</h3><p>'+p.d+'</p><div class="chips">'+p.t.map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><a href="#" class="more" data-i="'+i+'">Voir le projet</a><span class="n">#0'+(i+1)+'</span>';
+    d.innerHTML='<div class="shot">'+(p.cover?'<img src="'+p.cover+'" alt="" loading="lazy">':p.n.slice(0,2).toUpperCase())+'</div><h3>'+p.n+'</h3><p>'+p.d+'</p><div class="chips">'+p.t.map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><a href="#" class="more" data-i="'+i+'">Voir le projet</a><span class="n">#0'+(i+1)+'</span>';
     g.appendChild(d);
   });
   if(!g.children.length)g.innerHTML='<p class="lead">Bientôt de nouvelles missions…</p>';

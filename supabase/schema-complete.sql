@@ -55,8 +55,11 @@ create table if not exists public.projects (
   url             text,
   donate          boolean default false,
   donate_link     text,
+  cover           text,
   position        int
 );
+
+alter table public.projects add column if not exists cover text;
 
 create table if not exists public.skills (
   id        int primary key,
@@ -194,9 +197,9 @@ begin
   where id=1;
 
   delete from public.projects;
-  insert into public.projects (id,name,description,description_en,category,status,tech,url,donate,donate_link,position)
+  insert into public.projects (id,name,description,description_en,category,status,tech,url,donate,donate_link,cover,position)
   select coalesce((x->>'id')::int, row_number() over ()::int), x->>'n', x->>'d', x->'en'->>'d',
-         x->>'cat', x->>'st', x->>'t', x->>'u', coalesce(x->>'don','Non')='Oui', x->>'dl',
+         x->>'cat', x->>'st', x->>'t', x->>'u', coalesce(x->>'don','Non')='Oui', x->>'dl', x->>'cover',
          row_number() over ()
   from jsonb_array_elements(coalesce(d->'projects','[]'::jsonb)) x;
 
