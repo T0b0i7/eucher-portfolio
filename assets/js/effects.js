@@ -345,7 +345,7 @@ for(var i=0;i<o.children.length;i++){var a=((ang+i*360/n)%360+360)%360,k=(Math.c
 requestAnimationFrame(loop)})()}
 window.buildOrbit=buildOrbit;
 })();
-(function(){var d=null;try{d=JSON.parse(localStorage.getItem('ea_admin_v1'))}catch(e){}var k=(d&&d.skills)||[];S3=(k.length&&k.every(function(s){return s&&s.cat}))?k:SEED_SKILLS;drawSk();reveal(document.querySelectorAll('#sk .sk'))})();
+/* compétences : rendu par sections.js (applyData) */
 
 /* Chargement du contenu publié depuis Supabase (remplace le cache local) */
 (function(){
