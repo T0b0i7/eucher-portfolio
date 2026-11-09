@@ -1,0 +1,110 @@
+[
+ {
+  "id": 1,
+  "n": "Akouè App",
+  "d": "Application mobile de gestion financière personnelle : portefeuilles multiples, suivi des transactions et statistiques pour piloter son budget au quotidien.",
+  "cat": "Mobile",
+  "st": "Publié",
+  "t": "Expo 54, React Native, TypeScript, Supabase",
+  "u": "https://akoue-app.vercel.app",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 2,
+  "n": "NaviGarde IA",
+  "d": "Cockpit maritime de supervision : embarcations, alertes, inspections, rapports et bulletins, avec assistance IA et validation humaine.",
+  "cat": "IA",
+  "st": "Publié",
+  "t": "React, TypeScript, Node.js, tRPC, MySQL",
+  "u": "https://t0b0i7.github.io/NaviGarde_IA/",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 3,
+  "n": "Clavis",
+  "d": "Application de test de frappe : modes minutés, citations et zen, clavier interactif, sons mécaniques et statistiques de précision.",
+  "cat": "Web",
+  "st": "Publié",
+  "t": "Next.js 16, React 19, TypeScript",
+  "u": "https://clavis-azure.vercel.app",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 4,
+  "n": "Havre",
+  "d": "Site immobilier complet : landing, catalogue de biens, journal éditorial et visite 3D générée depuis un plan.",
+  "cat": "Web",
+  "st": "Publié",
+  "t": "JavaScript, HTML, CSS",
+  "u": "https://havre-olive.vercel.app",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 5,
+  "n": "Cauris Group International",
+  "d": "Site corporate multi-pages : accueil, à propos, services, projets, blog et contact, avec composants réutilisables et styles normés.",
+  "cat": "Web",
+  "st": "Publié",
+  "t": "Next.js 13, React 18, TypeScript",
+  "u": "https://github.com/T0b0i7/cauris-group-international-site-web-corporate",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 6,
+  "n": "Savekari Beauty",
+  "d": "Portfolio numérique et catalogue produits pour une marque de beauté : histoire, valeurs, produits phares et commande directe par WhatsApp.",
+  "cat": "Web",
+  "st": "Publié",
+  "t": "Next.js, React, TypeScript",
+  "u": "https://github.com/T0b0i7/savekari-beauty",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 7,
+  "n": "Victoria Ahouéfa Camillia",
+  "d": "Portfolio 3D immersif : scènes animées, navigation fluide et présentation éditoriale du profil et des réalisations.",
+  "cat": "Design",
+  "st": "Publié",
+  "t": "Next.js, React, Three.js, TypeScript",
+  "u": "https://github.com/T0b0i7/Victoria-Ahou-fa-Camillia-Portfolio-3D",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 8,
+  "n": "Portefolio.OS",
+  "d": "Template de portfolio prêt à personnaliser : structure modulaire, sections réutilisables et base de design system.",
+  "cat": "Web",
+  "st": "Publié",
+  "t": "Next.js, React, TypeScript",
+  "u": "https://portefolio-os-bice.vercel.app",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ },
+ {
+  "id": 9,
+  "n": "Vigilance BJ",
+  "d": "Plateforme collaborative de signalement anonyme des menaces numériques au Bénin : arnaques, faux profils, harcèlement et phishing.",
+  "cat": "Web",
+  "st": "Publié",
+  "t": "Next.js, React, TypeScript, Supabase",
+  "u": "https://vigilance-bj.vercel.app",
+  "don": "Non",
+  "dl": "",
+  "cover": ""
+ }
+]
