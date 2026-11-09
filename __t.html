@@ -170,8 +170,9 @@
 <script src="assets/js/effects.js" defer></script>
 <script>
 setTimeout(function(){
- window.eaLoad().then(function(ok){
-  try{applyData();document.title='A '+P.length}
+ window.eaLoad().then(function(){
+  document.title='BEFORE';
+  try{applyData();document.title='AFTER '+P.length}
   catch(e){document.title='E '+e.message}
  })
 },1500)
