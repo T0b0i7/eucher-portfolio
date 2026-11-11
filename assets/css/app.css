@@ -569,7 +569,7 @@ body.calm .card,body.calm .sv{transform:none!important}
 body.calm .card h3,body.calm .card .price,body.calm .card .pay,body.calm .sv h3,body.calm .sv .sn{transform:none}
 body.calm #home .name,body.calm .hero-photo{transform:none!important}
 @media(max-width:700px){.orbit{height:240px}.orc{left:-38px;top:-50px;width:76px;height:100px;font-size:11px}.orc svg{height:38px}}
-/* Essentiel par défaut : les extras sont masqués tant qu'ils ne sont pas activés dans Admin > Paramètres */
+/* Essentiel par défaut : Zéo est visible; les autres extras restent masqués tant qu'ils ne sont pas activés dans Admin > Paramètres */
 body:not(.sh-blog) #blog,body:not(.sh-blog) nav a[href="#blog"]{display:none!important}
 body:not(.sh-shop) #shop,body:not(.sh-shop) nav a[href="#shop"],body:not(.sh-shop) .don{display:none!important}
 body:not(.sh-svc) #services,body:not(.sh-svc) .brief{display:none!important}

@@ -26,17 +26,19 @@ Double-clique sur `index.html`. Une connexion internet n’est utile que pour ch
 - Le coin bas droite affiche la date, le moment de la journée et la section où tu te trouves.
 - Un code secret se cache sur la page : essaie le fameux code Konami (flèches haut, haut, bas, bas, gauche, droite, gauche, droite, B, A).
 
-## Zéo, le bot IA
+## Aether, l’assistant vocal IA
 
-- Zéo se balade tout seul sur la page. Clique sur lui pour ouvrir son panneau.
+- Aether se balade tout seul sur la page. Clique sur lui pour ouvrir son panneau.
 - Commandes vocales (bouton 🎤) ou écrites : « résume les projets », « ouvre ZemPro », « qui es-tu ? », « qui est Eucher ? », « ses compétences », « va dans le blog », « coupe le son », « raconte une blague ».
 - La voix (reconnaissance et synthèse) dépend du navigateur : elle marche surtout sur Chrome, Edge et Safari, avec l’autorisation du micro. Sans micro, on peut écrire.
 - Les commandes connues fonctionnent sans connexion. Les questions libres ne sont pas envoyées à un service externe depuis ce site.
 
 ## Voix personnalisée
 
-- Dans le panneau de Zéo, le bouton ⚙ règle la voix du navigateur : choix de la voix, vitesse et hauteur.
-- Pour utiliser ta propre voix (par exemple avec ElevenLabs), suis `docs/voix/COMMENT-FAIRE.md` : tu déposes des mp3 dans `docs/voix-assets/`.
+- Dans le panneau d’Aether, le bouton ⚙ règle la voix du navigateur : choix de la voix, vitesse et hauteur.
+- Le script d’enregistrement français et la convention exacte des fichiers sont dans `docs/aether-voiceover-script.md`. Les enregistrements se placent dans `assets/voix/`.
+- Les enregistrements personnalisés ne couvrent que le français ; en anglais, Aether utilise la synthèse vocale du navigateur.
+- Zéo reste le nom du produit distinct de curseur personnalisé.
 
 ## Boutique et dons
 
@@ -48,7 +50,7 @@ Double-clique sur `index.html`. Une connexion internet n’est utile que pour ch
 ## Langues (français et anglais)
 
 - Le sélecteur FR / EN se trouve dans le petit bloc en bas à droite, pas dans le menu. Le choix est mémorisé, et la langue du navigateur est détectée à la première visite.
-- Tout le portfolio public est traduit : textes, projets, articles d’exemple, boutique, paiement, palette Ctrl+K et Zéo, qui comprend alors les commandes en anglais.
+- Tout le portfolio public est traduit : textes, projets, articles d’exemple, boutique, paiement, palette Ctrl+K et Aether, qui comprend alors les commandes en anglais.
 - Pour ton propre contenu (projets, articles, produits), l’admin a des champs « version anglaise » et un bouton « Traduire en anglais » qui prépare un brouillon à relire. La traduction automatique n’est pas branchée sur ce site : saisis la version anglaise à la main.
 - Pour ajouter une traduction à un texte fixe, ajoute une ligne dans l’objet `D18` (français : anglais) en bas de `index.html`.
 
@@ -68,7 +70,7 @@ Double-clique sur `index.html`. Une connexion internet n’est utile que pour ch
 
 ## Mode sobre
 
-- Le bouton « ✦ » dans le bloc en bas à droite (ou « Entrer en mode sobre » sur l’écran d’accueil, ou Ctrl+K puis « Réduire les effets ») coupe les sons, les animations, le curseur personnalisé et Zéo.
+- Le bouton « ✦ » dans le bloc en bas à droite (ou « Entrer en mode sobre » sur l’écran d’accueil, ou Ctrl+K puis « Réduire les effets ») coupe les sons, les animations, le curseur personnalisé et Aether.
 - Le choix est mémorisé. Le mode sobre ne s’active jamais tout seul : c’est le visiteur qui le choisit.
 
 ## Effets 3D
@@ -94,7 +96,7 @@ Double-clique sur `index.html`. Une connexion internet n’est utile que pour ch
 
 ## Essentiel par défaut
 
-- Services, Blog, Boutique et dons, Zéo, orbite 3D et palette Ctrl+K sont masqués. Rien n’est supprimé : active-les dans Admin, Paramètres, « Sections et extras ».
+- Services, Blog, Boutique et dons, orbite 3D et palette Ctrl+K sont masqués. Aether est visible par défaut et peut être masqué dans Admin, Paramètres, « Sections et extras ». Rien n’est supprimé.
 - L’écran d’accueil avec les trois choix (avec le son, sans son, mode sobre) s’affiche toujours.
 
 ## Limites importantes
