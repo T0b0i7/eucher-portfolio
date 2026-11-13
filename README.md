@@ -26,18 +26,12 @@ Double-clique sur `index.html`. Une connexion internet n’est utile que pour ch
 - Le coin bas droite affiche la date, le moment de la journée et la section où tu te trouves.
 - Un code secret se cache sur la page : essaie le fameux code Konami (flèches haut, haut, bas, bas, gauche, droite, gauche, droite, B, A).
 
-## Aether, l’assistant vocal IA
+## Aether, l’assistant écrit
 
 - Aether se balade tout seul sur la page. Clique sur lui pour ouvrir son panneau.
-- Commandes vocales (bouton 🎤) ou écrites : « résume les projets », « ouvre ZemPro », « qui es-tu ? », « qui est Eucher ? », « ses compétences », « va dans le blog », « coupe le son », « raconte une blague ».
-- La voix (reconnaissance et synthèse) dépend du navigateur : elle marche surtout sur Chrome, Edge et Safari, avec l’autorisation du micro. Sans micro, on peut écrire.
+- Saisis une commande ou choisis une suggestion : « résume les projets », « ouvre ZemPro », « qui es-tu ? », « qui est Eucher ? », « ses compétences », « va dans le blog », « coupe le son », « raconte une blague ».
 - Les commandes connues fonctionnent sans connexion. Les questions libres ne sont pas envoyées à un service externe depuis ce site.
-
-## Voix personnalisée
-
-- Dans le panneau d’Aether, le bouton ⚙ règle la voix du navigateur : choix de la voix, vitesse et hauteur.
-- Le script d’enregistrement français et la convention exacte des fichiers sont dans `docs/aether-voiceover-script.md`. Les enregistrements se placent dans `assets/voix/`.
-- Les enregistrements personnalisés ne couvrent que le français ; en anglais, Aether utilise la synthèse vocale du navigateur.
+- Aether n’utilise ni micro ni lecture audio. Les effets sonores du portfolio restent indépendants.
 - Zéo reste le nom du produit distinct de curseur personnalisé.
 
 ## Boutique et dons

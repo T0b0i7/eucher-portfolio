@@ -29,7 +29,7 @@ BP.forEach(function(p,i){L.push({t:p.t,k:'Article',f:function(){openB(i)}})});
 L.push({t:window.on?'Couper le son':'Activer le son',k:'Action',f:function(){var s=document.getElementById('snd');if(s&&s.style.display!=='none')s.click()}});
 L.push({t:'Copier mon e-mail',k:'Action',f:function(){var m=((document.querySelector('.links a')||{}).href||'').replace('mailto:','');try{navigator.clipboard.writeText(m);flash('E-MAIL COPIÉ')}catch(e){flash(m)}}});
 
-L.push({t:'Mode fête',k:'Surprise',f:party});L.push({t:window.LANG==='en'?'Switch to French':'Passer en anglais',k:'Action',f:function(){setLang(window.LANG==='en'?'fr':'en')}});L.push({t:window.CALM?'Réactiver les effets':'Réduire les effets',k:'Action',f:function(){setCalm(!window.CALM)}});L.push({t:'Parler à Aether, l’assistant vocal IA',k:'Action',f:function(){window.zeoOpen&&zeoOpen()}});
+L.push({t:'Mode fête',k:'Surprise',f:party});L.push({t:window.LANG==='en'?'Switch to French':'Passer en anglais',k:'Action',f:function(){setLang(window.LANG==='en'?'fr':'en')}});L.push({t:window.CALM?'Réactiver les effets':'Réduire les effets',k:'Action',f:function(){setCalm(!window.CALM)}});L.push({t:'Ouvrir Aether, assistant écrit',k:'Action',f:function(){window.zeoOpen&&zeoOpen()}});
 return L}
 function draw2(){var q=norm(inp.value).split(/\s+/).filter(Boolean);
 items=build().filter(function(x){var t=norm(x.t+' '+x.k+' '+(window.trs?trs(x.t)+' '+trs(x.k):''));return q.every(function(z){return t.indexOf(z)>-1})}).slice(0,9);if(sel>=items.length)sel=0;

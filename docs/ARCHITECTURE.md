@@ -19,7 +19,7 @@ supabase/
   schema-complete.sql   tables, RLS, trigger de synchronisation
 docs/
   ARCHITECTURE.md
-  voix/                 scripts du bot Zéo
+  voix/                 anciens scripts vocaux conservés pour référence
 ```
 
 ## Ordre de chargement
@@ -42,6 +42,7 @@ Les fichiers partagent la portée globale : ne pas changer l'ordre sans vérifie
 - Un seul module touche `localStorage` : `admin.js`.
 - Un seul module touche Supabase : `admin.js`.
 - Les textes visibles sont en français dans le HTML, traduits par `ui.js`.
+- Aether accepte uniquement les commandes écrites; il n’utilise ni micro ni lecture audio.
 
 ## Déploiement
 

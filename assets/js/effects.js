@@ -2,46 +2,28 @@
 var $=function(s,r){return(r||document).querySelector(s)};
 var SVG="<svg viewBox='0 0 80 90'><ellipse cx='40' cy='86' rx='20' ry='3.5' fill='rgba(0,0,0,.4)'/><line x1='40' y1='9' x2='40' y2='20' stroke='#000' stroke-width='3'/><circle class='an' cx='40' cy='6' r='5' fill='#fff' stroke='#000' stroke-width='2.5'/><circle cx='40' cy='48' r='32' fill='#e60012' stroke='#000' stroke-width='4' style='fill:var(--red)'/><path d='M16 38 Q40 20 64 38' fill='none' stroke='rgba(255,255,255,.4)' stroke-width='4' stroke-linecap='round'/><path d='M8 50 Q1 55 8 62M72 50 Q79 55 72 62' stroke='#000' stroke-width='4' fill='none' stroke-linecap='round'/><rect x='16' y='35' width='48' height='23' rx='11.5' fill='#000'/><circle class='eye' cx='30' cy='46.5' r='7' fill='#fff'/><circle class='eye' cx='50' cy='46.5' r='7' fill='#fff'/><circle class='pp' cx='30' cy='46.5' r='3.2' fill='#000'/><circle class='pp' cx='50' cy='46.5' r='3.2' fill='#000'/><rect class='mo' x='33' y='66' width='14' height='4' rx='2' fill='#000'/></svg>";
 var z=document.createElement('div');z.id='zeo';
-z.innerHTML="<div class='zbox'><div class='zr'></div><div class='zr' style='animation-delay:.6s'></div><div class='zb'></div><button class='zbody' aria-label='Parler à Aether'>"+SVG+"</button></div>";
+z.innerHTML="<div class='zbox'><div class='zb'></div><button class='zbody' aria-label='Ouvrir Aether'>"+SVG+"</button></div>";
 document.body.appendChild(z);
 var box=$('.zbox',z),body=$('.zbody',z),bub=$('.zb',z),pp=z.querySelectorAll('.pp');
 var pn=document.createElement('div');pn.id='zp';
-pn.innerHTML="<div class='zh'><b>AETHER</b><small>assistant vocal IA</small><button id='zg' title='Réglages de la voix' aria-label='Réglages de la voix'>⚙</button><button id='zv' title='Voix' aria-label='Activer ou couper la voix'>🔊</button><button id='zx' aria-label='Fermer'>✕</button></div><div id='zset'><label>Voix <select id='zsv'></select></label><label>Vitesse <input id='zsr' type='range' min='.8' max='1.3' step='.05'></label><label>Hauteur <input id='zsp' type='range' min='.8' max='1.6' step='.05'></label><button id='zst'>Tester la voix</button></div><div id='zl'></div><div class='zc'></div><div class='zi'><input id='zin' placeholder='Écris ou parle…' autocomplete='off' aria-label='Commande'><button id='zm' aria-label='Parler'>🎤</button><button id='zs' aria-label='Envoyer'>➤</button></div>";
+pn.innerHTML="<div class='zh'><b>AETHER</b><small>assistant IA textuel</small><button id='zx' aria-label='Fermer'>✕</button></div><div id='zl'></div><div class='zc'></div><div class='zi'><input id='zin' placeholder='Écris une commande…' autocomplete='off' aria-label='Commande'><button id='zs' aria-label='Envoyer'>➤</button></div>";
 document.body.appendChild(pn);
-var zl=$('#zl'),inp=$('#zin'),mic=$('#zm'),zv=$('#zv');
+var zl=$('#zl'),inp=$('#zin');
 ['Résume les projets','Qui es-tu ?','Qui est Eucher ?','Ses compétences','Va dans le blog','Raconte une blague'].forEach(function(t){var b=document.createElement('button');b.textContent=t;b.onclick=function(){go(t)};$('.zc',pn).appendChild(b)});
-var VOICE=false,sv=null;try{sv=localStorage.getItem('ea_zeo_voice');if(sv!==null)VOICE=sv==='1'}catch(e){}
-var VS={v:'',r:1.05,p:1.2},PACK=true;try{var t0=JSON.parse(localStorage.getItem('ea_zeo_vs'));if(t0)VS=Object.assign(VS,t0)}catch(e){}
-function h32(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return(h>>>0).toString(36)}
-function setVoice(v){VOICE=v;zv.textContent=v?'🔊':'🔇';try{localStorage.setItem('ea_zeo_voice',v?'1':'0')}catch(e){}if(!v)stopSpeak()}
-zv.textContent=VOICE?'🔊':'🔇';zv.onclick=function(){setVoice(!VOICE)};
-var zs=$('#zset'),zsv=$('#zsv'),zsr=$('#zsr'),zsp=$('#zsp');
-function fillV(){var vs=(window.speechSynthesis&&speechSynthesis.getVoices()||[]).filter(function(x){return/^fr/i.test(x.lang)});zsv.innerHTML=vs.map(function(x){return '<option value="'+x.voiceURI+'"'+(x.voiceURI===VS.v?' selected':'')+'>'+x.name+' ('+x.lang+')</option>'}).join('')||'<option value="">Voix par défaut</option>'}
-if(window.speechSynthesis){fillV();speechSynthesis.onvoiceschanged=fillV}
-zsr.value=VS.r;zsp.value=VS.p;
-function saveVS(){VS.v=zsv.value;VS.r=+zsr.value;VS.p=+zsp.value;try{localStorage.setItem('ea_zeo_vs',JSON.stringify(VS))}catch(e){}}
-[zsv,zsr,zsp].forEach(function(e){e.addEventListener('input',saveVS)});
-$('#zg').onclick=function(){zs.classList.toggle('on')};
-$('#zst').onclick=function(){if(!VOICE)setVoice(true);say('Salut, voici ma voix. Qu’en penses-tu ?')};
-var bx=innerWidth-90,by=innerHeight-170,tx=bx,ty=by,vx=0,vy=0,face=1,hold=false,ht=0,nextMove=Date.now()+2500,mx=bx,my=by,st='idle',lastAct=Date.now(),lastHint=Date.now(),hints=0,rec=null,tid=0,greeted=false,bt2=0;
-var HINTS=['Psst… dis-moi « résume les projets » !','Clique sur moi pour me parler !','Essaie : « ouvre ZemPro ».'];
-function setSt(s){st=s;['listen','talk','think','sleep'].forEach(function(c){z.classList.toggle(c,s===c)})}
+var bx=innerWidth-90,by=innerHeight-170,tx=bx,ty=by,vx=0,vy=0,face=1,hold=false,ht=0,nextMove=Date.now()+2500,mx=bx,my=by,st='idle',lastAct=Date.now(),lastHint=Date.now(),hints=0,tid=0,greeted=false,bt2=0;
+var HINTS=['Psst… essaie « résume les projets » !','Clique sur moi pour écrire une commande !','Essaie : « ouvre ZemPro ».'];
+function setSt(s){st=s;['think','sleep'].forEach(function(c){z.classList.toggle(c,s===c)})}
 function bubble(t,ms){bub.textContent=t.length>120?t.slice(0,117)+'…':t;bub.classList.add('on');clearTimeout(bt2);bt2=setTimeout(function(){bub.classList.remove('on')},ms||Math.max(3500,t.length*60))}
 function logm(w,t){var d=document.createElement('div');d.className='m '+w;d.textContent=t;zl.appendChild(d);while(zl.children.length>14)zl.removeChild(zl.firstChild);zl.scrollTop=zl.scrollHeight}
-function duck(v){try{if(window.master)master.gain.value=v?.12:.5}catch(e){}}
-function stopSpeak(){try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}}
-function say(text,cb,quiet){lastAct=Date.now();if(window.LANG==='en')text=trs(text);if(st==='sleep')setSt('idle');logm('bot',text);bubble(text);
-var done=false,tm,clean=text.replace(/[«»]/g,'').replace(/·/g,',').replace(/&/g,' et '),voc=VOICE&&!quiet&&window.speechSynthesis;
-function fin(){if(done)return;done=true;clearTimeout(tm);if(st==='talk')setSt('idle');duck(false);hold=false;if(cb)cb()}
-var ttsd=false;function tts(){if(ttsd)return;ttsd=true;if(!voc){setSt('talk');return}try{speechSynthesis.cancel();var lg=window.LANG==='en'?'en':'fr',u=new SpeechSynthesisUtterance(clean),vs=speechSynthesis.getVoices()||[],v=vs.filter(function(x){return x.voiceURI===VS.v&&x.lang.slice(0,2).toLowerCase()===lg})[0]||vs.filter(function(x){return x.lang.slice(0,2).toLowerCase()===lg})[0];u.lang=lg==='en'?'en-US':'fr-FR';if(v)u.voice=v;u.rate=VS.r;u.pitch=VS.p;u.onstart=function(){setSt('talk');duck(true)};u.onend=u.onerror=fin;speechSynthesis.speak(u)}catch(e){}}
-if(PACK&&VOICE&&!quiet&&window.LANG!=='en'){try{var au=new Audio('assets/voix/v'+h32(clean)+'.mp3');au.onplay=function(){setSt('talk');duck(true)};au.onended=fin;au.onerror=tts;au.play().catch(tts)}catch(e){tts()}}else tts();
-tm=setTimeout(fin,Math.max(2200,clean.length*(voc?95:45)+1200))}
+function say(text,cb){lastAct=Date.now();if(window.LANG==='en')text=trs(text);if(st==='sleep')setSt('idle');logm('bot',text);bubble(text);
+var done=false,tm;
+function fin(){if(done)return;done=true;clearTimeout(tm);setSt('idle');hold=false;if(cb)cb()}
+tm=setTimeout(fin,Math.max(2200,text.length*45+1200))}
 function pick(){var m=60;tx=m+Math.random()*Math.max(10,innerWidth-2*m);ty=110+Math.random()*Math.max(10,innerHeight-260)}
 function goNear(el){var r=el.getBoundingClientRect(),left=r.left>110;tx=left?r.left-55:Math.min(r.right+55,innerWidth-50);ty=Math.max(110,Math.min(innerHeight-120,r.top+r.height/2));hold=true;clearTimeout(ht);ht=setTimeout(function(){hold=false},9000)}
 addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY});
 (function loop(){var t=Date.now();
 if(st==='sleep'){tx=innerWidth-70;ty=innerHeight-110}
-else if(st==='listen'&&pn.classList.contains('open')){var r=pn.getBoundingClientRect();tx=r.right-30;ty=r.top-60}
 else if(!hold&&t>nextMove){pick();nextMove=t+3500+Math.random()*4500}
 vx+=(tx-bx)*.0017;vy+=(ty-by)*.0017;vx*=.93;vy*=.93;bx+=vx;by+=vy;if(Math.abs(vx)>.25)face=vx>0?1:-1;
 box.style.translate=(bx-36)+'px '+(by-40+Math.sin(t/380)*6)+'px';
@@ -67,14 +49,13 @@ var c=document.querySelectorAll('#grid .card')[i];if(c){c.scrollIntoView({behavi
 say(sumP(P[i],i),function(){if(c)c.classList.remove('zeo-hl');setTimeout(function(){step(i+1)},400)})}}
 function showP(i,open){resetF();nav('projects');if(open)setTimeout(function(){openP(i)},800);say(sumP(P[i],i,true))}
 var JOKES=['Pourquoi les développeurs préfèrent le mode sombre ? Parce que la lumière attire les bugs !','Il y a 10 types de personnes : celles qui comprennent le binaire, et les autres.','Pourquoi le développeur est-il malheureux ? Parce qu’il a trop de problèmes et pas assez de solutions.'];
-var ME='Je suis Aether, l’assistant vocal du portfolio de Tobi. Je me balade à ma guise, je comprends tes commandes vocales ou écrites, et je peux t’emmener dans une section, ouvrir et résumer ses projets, ou te parler de lui. Pose-moi aussi une question libre !';
+var ME='Je suis Aether, l’assistant du portfolio de Tobi. Je peux t’emmener dans une section, ouvrir et résumer ses projets, ou te parler de lui. Pose-moi aussi une question par écrit !';
 var HELP='Voici ce que je sais faire : résumer les projets, ouvrir un projet, par exemple “ouvre Clavis”, t’emmener dans une section, te présenter Tobi et ses compétences, lire le dernier article, couper ou activer le son, ou te raconter une blague.';
 var SECS=[['home','l’accueil',/accueil|haut|debut|home/],['projects','les projets',/projet|realisation/],['skills','les compétences',/competence/],['about','la section à propos',/propos|biographie/],['blog','le blog',/blog|article/],['shop','la boutique',/boutique|marketplace|shop/],['contact','le contact',/contact/]];
 function ctx(){var p=pr();return JSON.stringify({nom:p.nom,titre:p.titre,a_propos:p.bio,projets:P.map(function(x){return{nom:x.n,categorie:x.cat,description:x.d,details:x.long,fonctions:x.f,technologies:x.t}}),competences:S2,articles:BP.map(function(b){return b.t})})}
-function askAI(q){return(window.claude&&claude.use?claude.use('sample'):Promise.resolve(null)).then(function(s){if(!s)throw{code:'none'};return s('Tu es Aether, l’assistant vocal du portfolio d’Eucher ABATTI. Réponds en '+(window.LANG==='en'?'anglais':'français')+', en 2 à 3 phrases courtes, ton chaleureux, sans markdown, sans liste, sans emoji. Appuie-toi uniquement sur les données JSON ci-dessous. Si l’information n’y figure pas, dis-le simplement et propose de contacter Eucher. N’invente rien.\nDONNÉES : '+ctx()+'\nQUESTION : '+q,{modelTier:'quick'})}).then(function(r){return String(r.text||'').trim()})}
+function askAI(q){return(window.claude&&claude.use?claude.use('sample'):Promise.resolve(null)).then(function(s){if(!s)throw{code:'none'};return s('Tu es Aether, l’assistant textuel du portfolio d’Eucher ABATTI. Réponds en '+(window.LANG==='en'?'anglais':'français')+', en 2 à 3 phrases courtes, ton chaleureux, sans markdown, sans liste, sans emoji. Appuie-toi uniquement sur les données JSON ci-dessous. Si l’information n’y figure pas, dis-le simplement et propose de contacter Eucher. N’invente rien.\nDONNÉES : '+ctx()+'\nQUESTION : '+q,{modelTier:'quick'})}).then(function(r){return String(r.text||'').trim()})}
 function go(raw){raw=String(raw||'').trim();if(!raw)return;openPanel();logm('me',raw);lastAct=Date.now();var q=nz(raw);if(window.LANG==='en')q=en2fr(q);var my=++tid,has=function(r){return r.test(q)},pi=-1;
 P.forEach(function(p,i){if(pi<0&&q.indexOf(nz(p.n))>-1)pi=i});
-if(has(/(^| )(stop|tais toi|silence|arrete toi|ca suffit)( |$)/)&&!has(/son|musique/)){stopSpeak();setSt('idle');return say('D’accord, je me tais.',null,true)}
 if(has(/(parle|passe|traduis|mets|switch|speak|change|translate|talk).*(anglais|english)/)){setLang('en');return say('Switching to English. How can I help?')}
 if(has(/(parle|passe|traduis|mets|switch|speak|change|translate|talk).*(francais|french)/)){setLang('fr');return say('Je passe en français !')}
 if(has(/aide|que sais tu|que peux tu|commandes|capable/))return say(HELP);
@@ -97,26 +78,16 @@ if(has(/^(bonjour|salut|coucou|hello|hey)/))return say('Salut ! Je suis Aether. 
 if(has(/merci/))return say('Avec plaisir !');
 setSt('think');bubble('Je réfléchis…',9000);
 askAI(raw).then(function(t){if(my===tid&&t)say(t);else setSt('idle')}).catch(function(){setSt('idle');say('Je n’ai pas compris. Essaie : « résume les projets », « ouvre ZemPro », « qui es-tu ? » ou « va dans le blog ».')})}
-function listen(){var SR=window.SpeechRecognition||window.webkitSpeechRecognition;openPanel();
-if(!SR)return say('Ton navigateur ne gère pas la reconnaissance vocale. Écris-moi ta commande, je la comprendrai aussi !',null,true);
-if(rec){try{rec.stop()}catch(e){}return}
-stopSpeak();rec=new SR();rec.lang=window.LANG==='en'?'en-US':'fr-FR';rec.interimResults=true;rec.continuous=false;var fin2='';
-rec.onstart=function(){setSt('listen');bubble('Je t’écoute…',9000);mic.classList.add('on')};
-rec.onresult=function(e){var t='';for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;inp.value=t;fin2=e.results[e.results.length-1].isFinal?t:''};
-rec.onerror=function(e){rec=null;mic.classList.remove('on');setSt('idle');say(e.error==='not-allowed'||e.error==='service-not-allowed'?'Je n’ai pas accès au micro. Autorise-le dans ton navigateur, ou écris-moi ta commande.':e.error==='no-speech'?'Je n’ai rien entendu. Réessaie !':'La voix ne marche pas ici ('+e.error+'). Écris-moi ta commande.',null,true)};
-rec.onend=function(){rec=null;mic.classList.remove('on');if(st==='listen')setSt('idle');if(fin2){inp.value='';go(fin2)}};
-try{rec.start()}catch(e){rec=null}}
-function openPanel(){if(!pn.classList.contains('open')){pn.classList.add('open');if(!zl.children.length)logm('bot','Salut, je suis Aether, l’assistant vocal du portfolio ! Tape une commande ou appuie sur 🎤 et parle-moi.')}}
-function closePanel(){pn.classList.remove('open');if(rec)try{rec.stop()}catch(e){}}
-window.zeoLines=function(){var p=pr(),L=[ME,HELP,'Allons voir les projets de Tobi !','Voilà, c’est la fin du tour ! Dis “ouvre” suivi du nom d’un projet pour voir son détail.','D’accord, je me tais.','Salut, je suis Aether, l’assistant vocal du portfolio d’Eucher. Clique sur moi et demande-moi de résumer ses projets !','Salut ! Je suis Aether. Demande-moi de résumer les projets !','Avec plaisir !','C’est la fête !','Son coupé.','Son activé.','Salut, voici ma voix. Qu’en penses-tu ?','Tu peux écrire à Eucher par e-mail, ou via LinkedIn et GitHub. Je t’emmène à la section contact.','Ses compétences les plus solides : '+top(5).join(', ')+'. Il en maîtrise '+S2.length+' au total.',p.nom+', '+p.titre+'. Ses technologies phares : '+top(3).join(', ')+'. Il a notamment réalisé '+P.map(function(x){return x.n}).join(', ')+'. Pour le contacter, rendez-vous dans la section contact.'].concat(JOKES);SECS.forEach(function(s){L.push('Direction '+s[1]+' !')});P.forEach(function(x,i){L.push(sumP(x,i),sumP(x,i,true))});return L};
+function openPanel(){if(!pn.classList.contains('open')){pn.classList.add('open');if(!zl.children.length)logm('bot','Salut, je suis Aether, l’assistant du portfolio ! Saisis une commande ou choisis une suggestion.')}}
+function closePanel(){pn.classList.remove('open')}
+window.zeoLines=function(){var p=pr(),L=[ME,HELP,'Allons voir les projets de Tobi !','Voilà, c’est la fin du tour ! Saisis “ouvre” suivi du nom d’un projet pour voir son détail.','Salut, je suis Aether, l’assistant du portfolio d’Eucher. Demande-moi de résumer ses projets !','Salut ! Je suis Aether. Demande-moi de résumer les projets !','Avec plaisir !','C’est la fête !','Son coupé.','Son activé.','Tu peux écrire à Eucher par e-mail, ou via LinkedIn et GitHub. Je t’emmène à la section contact.','Ses compétences les plus solides : '+top(5).join(', ')+'. Il en maîtrise '+S2.length+' au total.',p.nom+', '+p.titre+'. Ses technologies phares : '+top(3).join(', ')+'. Il a notamment réalisé '+P.map(function(x){return x.n}).join(', ')+'. Pour le contacter, rendez-vous dans la section contact.'].concat(JOKES);SECS.forEach(function(s){L.push('Direction '+s[1]+' !')});P.forEach(function(x,i){L.push(sumP(x,i),sumP(x,i,true))});return L};
 window.zeoOpen=openPanel;
 body.addEventListener('click',function(){lastAct=Date.now();if(st==='sleep'){setSt('idle');bubble('Hein ? Je suis réveillé !',3000)}pn.classList.contains('open')?closePanel():openPanel()});
-$('#zx').onclick=closePanel;mic.onclick=listen;$('#zs').onclick=function(){var t=inp.value;inp.value='';go(t)};
+$('#zx').onclick=closePanel;$('#zs').onclick=function(){var t=inp.value;inp.value='';go(t)};
 inp.addEventListener('keydown',function(e){if(e.key==='Enter'){var t=inp.value;inp.value='';go(t)}});
-function greet(sp){if(greeted)return;greeted=true;if(sp&&sv===null)VOICE=!!window.on;zv.textContent=VOICE?'🔊':'🔇';
-if(sp&&VOICE)say('Salut, je suis Aether, l’assistant vocal du portfolio d’Eucher. Clique sur moi et demande-moi de résumer ses projets !');else bubble('Salut, je suis Aether ! Clique sur moi pour me parler.',6000)}
+function greet(){if(greeted)return;greeted=true;bubble('Salut ! Je suis Aether, l’assistant du portfolio. Clique sur moi pour saisir une commande.',6000)}
 var ib=document.querySelectorAll('#intro .btn');
-if(ib.length)ib.forEach(function(b){b.addEventListener('click',function(){setTimeout(function(){greet(true)},1100)})});else setTimeout(function(){greet(false)},900);
+if(ib.length)ib.forEach(function(b){b.addEventListener('click',function(){setTimeout(greet,1100)})});else setTimeout(greet,900);
 })();
 
 /* ============ Traduction FR / EN ============ */
@@ -130,7 +101,7 @@ var D18={
 '♪ SON : OFF':'♪ SOUND: OFF','♪ SON : ON':'♪ SOUND: ON',
 'NUIT':'NIGHT','MATIN':'MORNING','APRÈS-MIDI':'AFTERNOON','SOIR':'EVENING','LUN':'MON','MAR':'TUE','MER':'WED','JEU':'THU','VEN':'FRI','SAM':'SAT','DIM':'SUN',
 'Mes Projets':'My Projects','Des missions accomplies, un objectif : créer. Chaque projet est une nouvelle aventure.':'Missions accomplished, one goal: to create. Every project is a new adventure.',
-'Tous':'All','IA':'AI','aperçu':'preview','Voir le projet':'View project','Bientôt de nouvelles missions…':'New missions coming soon…',
+'Tous':'All','IA':'AI','aperçu':'preview','Voir le projet':'View project','Voir l’aperçu':'View preview','Bientôt de nouvelles missions…':'New missions coming soon…',
 'Rôle':'Role','Statut':'Status','Secteur':'Sector','Le projet':'The project','Fonctionnalités clés':'Key features',
 'Base relationnelle':'Relational database','Web · Mobile':'Web · Mobile','IA · Web · Mobile':'AI · Web · Mobile',
 'LIVRET NUMÉRIQUE':'DIGITAL BOOKLET','SIMULATEUR DE CODE':'THEORY SIMULATOR','DIPLÔME':'DIPLOMA','CERTIFIÉ':'CERTIFIED',
@@ -153,21 +124,18 @@ var D18={
 'Soutenir ce projet':'Support this project','Ce projet vous plaît ? Un petit don m’aide à le faire évoluer.':'Like this project? A small donation helps me improve it.','Faire un don →':'Donate →',
 'Me Contacter':'Contact Me','Une idée ? Un projet ? Parlons-en !':'An idea? A project? Let’s talk!','CARTE DE VISITE':'BUSINESS CARD','Envoyer un message →':'Send a message →',
 'Que cherches-tu ? (Échap pour fermer)':'What are you looking for? (Esc to close)','Navigation':'Navigation','Article':'Article','Action':'Action','Surprise':'Surprise',
-'Couper le son':'Turn sound off','Activer le son':'Turn sound on','Copier mon e-mail':'Copy my email','Ouvrir l’espace admin':'Open admin area','Mode fête':'Party mode','Parler à Aether, l’assistant vocal IA':'Talk to Aether, the AI voice assistant','Aucun résultat':'No results','Passer en anglais':'Switch to English',
+'Couper le son':'Turn sound off','Activer le son':'Turn sound on','Copier mon e-mail':'Copy my email','Ouvrir l’espace admin':'Open admin area','Mode fête':'Party mode','Ouvrir Aether, assistant écrit':'Open Aether, text assistant','Aucun résultat':'No results','Passer en anglais':'Switch to English',
 'Ouvrir':'Open','Go !':'Go!','Clique !':'Click!','Son ♪':'Sound ♪','Niveau !':'Level!','Incline-moi':'Tilt me','Parle-moi':'Talk to me','Clic !':'Click!',
 'E-MAIL COPIÉ':'EMAIL COPIED','★ MODE FÊTE ★':'★ PARTY MODE ★',
 'Bientôt de retour':'Back soon','Portfolio hors ligne':'Portfolio offline','Le site est momentanément indisponible.':'The site is temporarily unavailable.','Espace admin':'Admin area',
-'assistant vocal IA':'AI voice assistant','Voix':'Voice','Vitesse':'Speed','Hauteur':'Pitch','Tester la voix':'Test voice','Voix par défaut':'Default voice','Écris ou parle…':'Type or speak…',
+'assistant IA textuel':'Text assistant','Écris une commande…':'Type a command…',
 'Résume les projets':'Summarize the projects','Qui es-tu ?':'Who are you?','Qui est Eucher ?':'Who is Eucher?','Ses compétences':'His skills','Va dans le blog':'Go to the blog','Raconte une blague':'Tell me a joke',
-'Parler à Aether':'Talk to Aether','Activer ou couper la voix':'Turn voice on or off','Fermer':'Close','Commande':'Command','Parler':'Speak','Envoyer':'Send','Réglages de la voix':'Voice settings','Palette de commandes':'Command palette','Rechercher':'Search',
-'Salut, je suis Aether, l’assistant vocal du portfolio ! Tape une commande ou appuie sur 🎤 et parle-moi.':'Hi, I’m Aether, the portfolio’s voice assistant! Type a command or press 🎤 and talk to me.',
-'Salut, je suis Aether ! Clique sur moi pour me parler.':'Hi, I’m Aether! Click me to talk.',
-'Psst… dis-moi « résume les projets » !':'Psst… tell me “summarize the projects”!','Clique sur moi pour me parler !':'Click me to talk to me!','Essaie : « ouvre ZemPro ».':'Try: “open ZemPro”.',
-'Hein ? Je suis réveillé !':'Huh? I’m awake!','Je t’écoute…':'I’m listening…','Je réfléchis…':'Thinking…',
+'Ouvrir Aether':'Open Aether','Fermer':'Close','Commande':'Command','Envoyer':'Send','Palette de commandes':'Command palette','Rechercher':'Search',
+'Salut, je suis Aether, l’assistant du portfolio ! Saisis une commande ou choisis une suggestion.':'Hi, I’m Aether, the portfolio assistant! Type a command or choose a suggestion.',
+'Salut ! Je suis Aether, l’assistant du portfolio. Clique sur moi pour saisir une commande.':'Hi! I’m Aether, the portfolio assistant. Click me to type a command.',
+'Psst… essaie « résume les projets » !':'Psst… try “summarize the projects”!','Clique sur moi pour écrire une commande !':'Click me to type a command!','Essaie : « ouvre ZemPro ».':'Try: “open ZemPro”.',
+'Hein ? Je suis réveillé !':'Huh? I’m awake!','Je réfléchis…':'Thinking…',
 'Je n’ai pas compris. Essaie : « résume les projets », « ouvre ZemPro », « qui es-tu ? » ou « va dans le blog ».':'I didn’t get that. Try: “summarize the projects”, “open ZemPro”, “who are you?” or “go to the blog”.',
-'Ton navigateur ne gère pas la reconnaissance vocale. Écris-moi ta commande, je la comprendrai aussi !':'Your browser doesn’t support voice recognition. Type your command, I’ll understand that too!',
-'Je n’ai pas accès au micro. Autorise-le dans ton navigateur, ou écris-moi ta commande.':'I can’t access the microphone. Allow it in your browser, or type your command.',
-'Je n’ai rien entendu. Réessaie !':'I didn’t hear anything. Try again!',
 'Merci ! Les dons se font depuis la fiche d’un projet ou depuis la boutique.':'Thank you! Donations can be made from a project page or from the shop.','La boutique ouvre bientôt !':'The shop opens soon!',
 'Je passe en français !':'Switching to French!',
 'Premier projet : ':'First project: ','Deuxième projet : ':'Second project: ','Troisième projet : ':'Third project: ','Quatrième projet : ':'Fourth project: ','Cinquième projet : ':'Fifth project: ','Sixième projet : ':'Sixth project: ',
@@ -190,15 +158,15 @@ var ps=[['Red and black animation pack','Diagonal-band transitions, slamming tit
 ['Admin dashboard kit','A dark, responsive dashboard with projects, blog and settings.','An admin dashboard in a single HTML file, with management of projects, articles, skills and messages, a Markdown editor with preview and a mobile-friendly layout.',['Projects, Blog, Skills and Messages menus','Markdown editor with preview','Mobile layout','Single HTML file'],'Use on unlimited projects of your own. Reselling the template is not allowed.'],
 ['Zéo cursor, source code','The round, lively cursor that blinks and falls asleep.','The code for a custom cursor: a circle that stretches as it moves, blinks, follows the mouse with its eyes, shows bubbles on hover and falls asleep when you stop moving.',['Full code','Colour settings','Usage example'],'Personal and commercial use on your own projects. Reselling the code is not allowed.'],
 ['Red and black portfolio template','A complete portfolio: animated intro, projects, blog, shop and admin area.','The site you are visiting, as a template: intro screen, Home, Projects, Skills, About, Blog and Shop sections, Ctrl+K command palette, mobile layout and a built-in admin area. It ships without my photos or logo: you add your own texts, colours and images.',['Complete site in one HTML file','Built-in admin area','Blog with Markdown editor','Shop and donations','Mobile layout','Installation guide'],'Use on your own portfolio or a client’s. Reselling the template is not allowed.'],
-['Aether, the AI voice assistant','A little robot that moves around, understands voice commands and summarizes your projects.','An animated assistant for your site: it floats on screen, listens to the microphone, reads its answers aloud, takes visitors to sections, and opens and summarizes your projects. You can add your own commands and give it a custom voice.',['Full bot code','Animated SVG character','Voice and typed commands','Voice settings','Guide to adding your own commands'],'Use on your own projects. Reselling the code is not allowed.'],
+['Aether, a text-based AI assistant','A little robot that moves around, understands written commands and summarizes your projects.','An animated assistant for your site: it floats on screen, responds to written commands, takes visitors to sections, and opens and summarizes projects. You can add your own commands.',['Full bot code','Animated SVG character','Written commands','Guide to adding your own commands'],'Use on your own projects. Reselling the code is not allowed.'],
 ['Blog module with Markdown editor','A complete blog: cards, article reader and a manager with live preview.','A blog module to drop into a site: article list with category filters, reading window, reading time, and a manager with drafts, publishing and a Markdown editor with live preview.',['Site blog section','Article manager','Markdown editor with toolbar','Live preview'],'Use on your own projects. Reselling the code is not allowed.'],
 ['Ctrl+K command palette','A quick keyboard search to navigate a site.','A command palette opened with Ctrl+K: instant search, arrow-key navigation, sections, projects, articles and quick actions.',['Full code','Integration example','Command customization'],'Use on your own projects. Reselling the code is not allowed.'],
 ['Shop and donations module','A product showcase with payment links and a donation block.','A module to sell digital products on a static site: product cards with animated previews, detail pages, external payment links, per-project donations with suggested amounts and an admin manager.',['Shop section','Product pages','Donation block','Product manager','Payment guide using external links'],'Use on your own projects. Reselling the code is not allowed.']];
 P2.forEach(function(p,i){pair([p.n,p.d,p.long,p.lic],[ps[i][0],ps[i][1],ps[i][2],ps[i][4]]);pair(String(p.inc||'').split(',').map(function(x){return x.trim()}),ps[i][3])});
 Object.keys(D18).forEach(function(k){});
 var Z=window.zeoLines?window.zeoLines():[];
-pair(Z.slice(0,13),['I’m Aether, the voice assistant in Eucher’s portfolio. I wander around as I please, understand your spoken or typed commands, and can take you to a section, open and summarize his projects, or tell you about him. You can also ask me a free-form question!','Here is what I can do: summarize the projects, open a project, for example “open ZemPro”, take you to a section, introduce Eucher and his skills, read the latest article, turn the sound on or off, or tell you a joke.','Let’s go and see Eucher’s projects!','That’s the end of the tour! Say “open” followed by a project name to see its details.','Okay, I’ll be quiet.','Hi, I’m Aether, the voice assistant in Eucher’s portfolio. Click me and ask me to summarize his projects!','Hi! I’m Aether. Ask me to summarize the projects!','My pleasure!','Party time!','Sound off.','Sound on.','Hi, this is my voice. What do you think?','You can write to Eucher by email, or via LinkedIn and GitHub. I’ll take you to the contact section.']);
-pair(Z.slice(15,18),['Why do developers prefer dark mode? Because light attracts bugs!','There are 10 types of people: those who understand binary, and those who don’t.','Why is the developer unhappy? Because he has too many problems and not enough solutions.']);
+pair(Z.slice(0,11),['I’m Aether, the assistant in Tobi’s portfolio. I can take you to a section, open and summarize projects, or tell you about him. You can also ask me a question in writing!','Here is what I can do: summarize projects, open one (for example “open ZemPro”), take you to a section, introduce Tobi and his skills, read the latest article, turn the sound on or off, or tell you a joke.','Let’s go and see Tobi’s projects!','That’s the end of the tour! Type “open” followed by a project name to see its details.','Hi, I’m Aether, the assistant in Eucher’s portfolio. Ask me to summarize his projects!','Hi! I’m Aether. Ask me to summarize the projects!','My pleasure!','Party time!','Sound off.','Sound on.','You can write to Eucher by email, or via LinkedIn and GitHub. I’ll take you to the contact section.']);
+pair(Z.slice(13,16),['Why do developers prefer dark mode? Because light attracts bugs!','There are 10 types of people: those who understand binary, and those who don’t.','Why is the developer unhappy? Because he has too many problems and not enough solutions.']);
 })();
 (function(){var EN={
 'Parcours':'Background','Mon Parcours':'My Background','Expérience, formation et langues.':'Experience, education and languages.','Expérience professionnelle':'Professional experience','Formation':'Education','Langues':'Languages','Centres d’intérêt':'Interests','Télécharger le PDF':'Download PDF',
@@ -230,7 +198,7 @@ var RX=[[/(\d+) min de lecture/g,'$1 min read'],[/Il en maîtrise (\d+) au total
 [/^Direction (.+) !$/,function(_,g){return 'Heading to '+xl(g)+'!'}],[/^Aller à (.+)$/,function(_,g){return 'Go to '+xl(g)}],
 [/^Montant choisi : (.+)\. Tu pourras le saisir sur la page de paiement\.$/,'Selected amount: $1. You can enter it on the payment page.'],
 [/^Dans la boutique, tu peux trouver : (.+)\.$/,function(_,g){return 'In the shop you can find: '+xl(g)+'.'}],
-[/^La voix ne marche pas ici \((.+)\)\. Écris-moi ta commande\.$/,'Voice doesn’t work here ($1). Please type your command.']];
+];
 var KEYS=null,ORIG=new WeakMap(),MT=null,MTC={},PEND={},MTT=0;
 function xl(s){var m=/^(\s*)([\s\S]*?)(\s*)$/.exec(s),c=m[2];if(c.length<2)return s;var o=D18[c];if(o!==undefined)return m[1]+o+m[3];
 if(!KEYS)KEYS=Object.keys(D18).filter(function(k){return k.length>=12}).sort(function(a,b){return b.length-a.length});
@@ -304,7 +272,7 @@ window.cvOpen=cvOpen;
 (function(){
 function setCalm(v,persist){window.CALM=!!v;document.body.classList.toggle('calm',window.CALM);
 if(persist!==false)try{localStorage.setItem('ea_calm',window.CALM?'1':'0')}catch(e){}
-if(window.CALM){if(window.on)setSound(false);try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}}
+if(window.CALM&&window.on)setSound(false);
 var b=document.getElementById('calmb');if(b){b.classList.toggle('on',window.CALM);b.setAttribute('aria-pressed',String(window.CALM));var t=window.CALM?'Réactiver les effets':'Réduire les effets';b.setAttribute('title',t);b.setAttribute('aria-label',t)}}
 window.setCalm=setCalm;
 var cb=document.getElementById('calmb');if(cb)cb.addEventListener('click',function(){setCalm(!window.CALM)});
