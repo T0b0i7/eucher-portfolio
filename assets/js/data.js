@@ -1,5 +1,5 @@
 /* Données issues du CV */
-var SEED_PROFILE={nom:'Eucher ABATTI',titre:'Développeur Full Stack',bio:'Développeur full-stack spécialisé en gestion des identités et des accès (IAM/RBAC), avec une expérience combinant secteur industriel béninois, startups et écosystème tech international. Candidat au Master Génie Logiciel de l’IFRI pour formaliser des compétences construites sur le terrain.',slogan:'Code propre. Impact réel.',email:'abattieucher@gmail.com',tel:'+229 01 57 00 24 27',ville:'Porto-Novo, Bénin',langues:'Français : courant, Minan : langue maternelle, Anglais : niveau B2',interets:'Innovation numérique, Intelligence artificielle, Cybersécurité et IAM, Web3 et fintech, Communauté tech (GDG Cotonou), veille technologique, lecture, jeux de stratégie, cuisine',hook_r:'Je construis des plateformes où chacun voit exactement ce qu’il doit voir, et rien d’autre.',about_r:'Je suis Eucher ABATTI, ingénieur logiciel et architecte de solutions numériques basé au Bénin. Je m’intéresse particulièrement à la rencontre entre la technologie et les besoins humains.\n\nPour moi, l’ingénierie logicielle ne consiste pas à faire fonctionner les choses parce qu’elles le peuvent. Il s’agit de comprendre pourquoi une solution doit exister, de questionner la manière dont elle doit fonctionner et de construire un produit qui garde du sens au-delà de sa première version.\n\nJe travaille sur toutes les couches d’un produit numérique : interfaces, logique applicative, systèmes backend, bases de données et architecture. J’accorde une attention particulière à ce qui passe souvent inaperçu : la communication entre les systèmes, la circulation des données, l’impact des décisions sur la performance et la valeur réelle produite.\n\nJe suis attiré par les problèmes complexes, l’ingénierie réfléchie et les idées qui méritent de devenir plus que des concepts. Je ne mesure pas le progrès uniquement à ce que j’ai construit, mais à ma compréhension de ce que je construis.\n\nLa technologie ne doit pas exister pour impressionner. Elle doit exister pour faire la différence.\n\nEucher ABATTI, ingénieur logiciel et architecte de solutions numériques. Bénin. Je construis avec intention.',hook_c:'Je transforme des idées complexes en produits numériques utiles.',about_c:'Je suis Eucher ABATTI, ingénieur logiciel et architecte de solutions numériques basé au Bénin.\n\nJe transforme des idées complexes en solutions numériques utiles. Mes domaines de prédilection : l’architecture logicielle, l’ingénierie et la création de technologies qui résolvent de vrais problèmes.\n\nToujours en questionnement, toujours en train de construire, jamais fini d’apprendre.\n\nJe ne construis pas seulement des logiciels. Je construis des possibilités.',proof:'10+|clients actifs, 87 %|de temps de recherche en moins, 7|modules métiers conçus',linkedin:'linkedin.com/in/eucher-abatti',github:'github.com/eucherabatti'};
+var SEED_PROFILE={nom:'Eucher ABATTI',titre:'AI-Augmented & Agentic Software Engineer',bio:'Ingénieur logiciel spécialisé dans l’IA augmentée, les systèmes agents, l’architecture logicielle et la transformation numérique. Je conçois des solutions fiables, intelligentes et orientées impact métier.',slogan:'Code propre. Impact réel.',email:'abattieucher@gmail.com',tel:'+229 01 57 00 24 27',ville:'Porto-Novo, Bénin',langues:'Français : courant, Minan : langue maternelle, Anglais : niveau B2',interets:'Innovation numérique, Intelligence artificielle, Cybersécurité et IAM, Web3 et fintech, Communauté tech (GDG Cotonou), veille technologique, lecture, jeux de stratégie, cuisine',hook_r:'Je construis des plateformes où chacun voit exactement ce qu’il doit voir, et rien d’autre.',about_r:'Je suis Eucher ABATTI, ingénieur logiciel et architecte de solutions numériques basé au Bénin. Je m’intéresse particulièrement à la rencontre entre la technologie et les besoins humains.\n\nPour moi, l’ingénierie logicielle ne consiste pas à faire fonctionner les choses parce qu’elles le peuvent. Il s’agit de comprendre pourquoi une solution doit exister, de questionner la manière dont elle doit fonctionner et de construire un produit qui garde du sens au-delà de sa première version.\n\nJe travaille sur toutes les couches d’un produit numérique : interfaces, logique applicative, systèmes backend, bases de données et architecture. J’accorde une attention particulière à ce qui passe souvent inaperçu : la communication entre les systèmes, la circulation des données, l’impact des décisions sur la performance et la valeur réelle produite.\n\nJe suis attiré par les problèmes complexes, l’ingénierie réfléchie et les idées qui méritent de devenir plus que des concepts. Je ne mesure pas le progrès uniquement à ce que j’ai construit, mais à ma compréhension de ce que je construis.\n\nLa technologie ne doit pas exister pour impressionner. Elle doit exister pour faire la différence.\n\nEucher ABATTI, ingénieur logiciel et architecte de solutions numériques. Bénin. Je construis avec intention.',hook_c:'Je transforme des idées complexes en produits numériques utiles.',about_c:'Je suis Eucher ABATTI, ingénieur logiciel et architecte de solutions numériques basé au Bénin.\n\nJe transforme des idées complexes en solutions numériques utiles. Mes domaines de prédilection : l’architecture logicielle, l’ingénierie et la création de technologies qui résolvent de vrais problèmes.\n\nToujours en questionnement, toujours en train de construire, jamais fini d’apprendre.\n\nJe ne construis pas seulement des logiciels. Je construis des possibilités.',proof:'10+|clients actifs, 87 %|de temps de recherche en moins, 7|modules métiers conçus',linkedin:'linkedin.com/in/eucher-abatti',github:'github.com/eucherabatti'};
 var SEED_SKILLS=[['React','Frontend & Mobile'],['Next.js','Frontend & Mobile'],['TypeScript','Frontend & Mobile'],['React Native','Frontend & Mobile'],['PHP','Backend & API'],['Laravel','Backend & API'],['Python','Backend & API'],['Django','Backend & API'],['Node.js','Backend & API'],['MySQL','Bases de données'],['PostgreSQL','Bases de données'],['RBAC','Sécurité & IAM'],['IAM','Sécurité & IAM'],['JWT','Sécurité & IAM'],['2FA','Sécurité & IAM'],['Audit logs','Sécurité & IAM'],['Docker','DevOps & Outils'],['Git','DevOps & Outils'],['CI/CD','DevOps & Outils']].map(function(s,i){return{id:i+1,n:s[0],cat:s[1],lv:80}});
 var SEED_EXP=[
 {id:1,t:'Web Operations Associate / Développeur Full-Stack',o:'Intelligent Revenue OÜ',l:'Tallinn, Estonie (télétravail)',p:'août 2026 – présent',d:'Développement front-end et back-end de plateformes fintech internationales (Web3), au sein d’une équipe distribuée sur plusieurs fuseaux horaires.\nDéveloppement de CMS, d’outils de publication et d’API internes ; optimisation des performances et de la disponibilité cloud.'},
@@ -42,15 +42,17 @@ cicd:s('0 0 48 48','<g fill="none" stroke="#38BDF8" stroke-width="4" stroke-line
 var ICMAP={'html':'html','html5':'html','css':'css','css3':'css','javascript':'js','js':'js','typescript':'ts','ts':'ts','react':'react','react native':'react','next.js':'next','nextjs':'next','node.js':'node','nodejs':'node','node':'node','laravel':'laravel','python':'python','git':'git','github':'github','git / github':'gg','tailwind css':'tw','tailwind':'tw','figma':'figma','php':'php','vue':'vue','vue.js':'vue'};
 Object.assign(ICMAP,{'django':'django','mysql':'mysql','postgresql':'pg','docker':'docker','rbac':'sec','iam':'sec','jwt':'sec','2fa':'sec','audit logs':'sec','ci/cd':'cicd'});
 function skI(s,raw){var k=ICMAP[String(s).toLowerCase().trim()],o=k==='gg'?ICONS.git+ICONS.github:(k?ICONS[k]:'');if(!o)return raw?'':'<i>'+String(s).slice(0,2).replace(/[<>&"]/g,'')+'</i>';return raw?o:'<i class="ic">'+o+'</i>'}
+window.E = window.E || function(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML};
 
 var P=[
  {n:'CodeDrive',c:'web mobile',cat:'Web · Mobile',d:'Le permis de conduire numérique pour le Bénin',role:'Conception et dossier de candidature',st:'Candidature au Prix National de la Simplification Administrative 2026',sec:'Travaux publics et Transports (ANATT)',long:'Hub numérique et application mobile-first qui dématérialise tout le parcours d’apprentissage du permis de conduire au Bénin. Il s’intègre en amont du système SIGPCB de l’ANATT et met fin aux registres papier.',f:['Livret numérique certifié avec QR code','Marketplace des auto-écoles agréées','Enrôlement numérique des élèves','Simulateur de code avec algorithme prédictif de réussite','Évaluation citoyenne anonyme des auto-écoles et classement public','Tableau de bord ANATT avec indice de préparation'],t:['React','Node.js','Base relationnelle','Offline-first','Bluetooth / NFC','API ANIP']},
  {n:'ZemPro',c:'web mobile',cat:'Web · Mobile',d:'La plateforme des conducteurs de taxi-moto (Zémidjan)',role:'Conception et dossier de candidature',st:'Candidature au Prix National de la Simplification Administrative 2026',sec:'Mobilité urbaine et Smart City',long:'Plateforme numérique qui professionnalise les conducteurs de taxi-moto et de taxis urbains au Bénin, en simplifiant leurs démarches et en renforçant la confiance des usagers.',f:['Carte professionnelle avec QR code','Contrôle par la police','Taxes communales','Tontine numérique','Alertes Smart City','Évaluation citoyenne','Bouton SOS'],t:['React','Node.js','Mobile-first','API ANIP (NPI)','MTN MoMo','Moov Money','TrésorPay']},
  {n:'CertiDiplôme BJ',c:'web',cat:'Web',d:'Authentification et équivalence des diplômes',role:'Porteur du projet',st:'Candidature au Prix National de la Simplification Administrative 2026',sec:'Éducation et administration',long:'Plateforme qui authentifie les diplômes au Bénin et facilite leur équivalence, pour des démarches plus rapides et des documents infalsifiables.',f:['Authentification par QR code','Identification via NPI / ANIP','Conversion des notes ECTS et GPA','Vérification instantanée par les employeurs et les écoles'],t:['NPI / ANIP','QR code','ECTS / GPA']},
  {n:'Kiffa-Agro IA',c:'ia web mobile',cat:'IA · Web · Mobile',d:'Le diagnostic des maladies des plantes par l’IA',role:'Développeur frontend et responsable du frontend',st:'Candidature au SAHAL TECH INNOVATION CHALLENGE 2026',sec:'AgriTech',long:'Application AgriTech qui diagnostique les maladies des plantes à partir d’une photo et restitue le résultat à l’oral dans les langues locales, pour être utile à tous les agriculteurs.',f:['Diagnostic par réseau CNN (MobileNetV3)','Restitution audio en fon, nago, adja et baatonu','PWA offline-first avec expériences desktop et mobile distinctes','Site vitrine one-page déployé sur Vercel'],t:['Next.js 14','TypeScript','PWA','Workbox','MobileNetV3','Vercel']}
-];P=[];P.forEach(function(p,i){p.m=i});
+];P.forEach(function(p,i){p.m=i});
 var g=document.getElementById("grid");
 function draw(f){
+  if(!g || !Array.isArray(P))return;
   g.innerHTML="";
   P.forEach(function(p,i){
     if(f!=="all"&&(' '+p.c+' ').indexOf(' '+f+' ')<0)return;
@@ -60,12 +62,13 @@ function draw(f){
   });
   if(!g.children.length)g.innerHTML='<p class="lead">Bientôt de nouvelles missions…</p>';
 }
-draw("all");
-document.getElementById("filters").addEventListener("click",function(e){
+if(g){draw("all");}
+var filters=document.getElementById("filters");
+if(filters){filters.addEventListener("click",function(e){
   if(e.target.tagName!=="BUTTON")return;
   document.querySelectorAll("#filters button").forEach(function(b){b.classList.remove("on")});
   e.target.classList.add("on");draw(e.target.dataset.f);
-});
+});}
 var links=document.querySelectorAll("nav a"),secs=[].slice.call(document.querySelectorAll("section"));
 addEventListener("scroll",function(){
   var y=scrollY+120,cur=secs[0].id;
@@ -83,6 +86,15 @@ function setSound(v){on=v;var b=document.getElementById('snd');b.textContent=v?'
 document.getElementById('snd').onclick=function(){setSound(!on);if(on)sfx.click()};
 function ransom(w){return w.split('').map(function(c,i){return '<b class="L l'+(i%3)+'" style="--r:'+((i*7%9)-4)+'deg;--d:'+(i*70)+'ms">'+c+'</b>'}).join('')}
 document.querySelectorAll('.name h1').forEach(function(h){h.innerHTML=ransom('Eucher')+'<br><span>'+ransom('ABATTI')+'</span>'});
+var fromProject=new URLSearchParams(location.search).get('fromProject')==='1';
+if(fromProject){
+  var projectIntro=document.getElementById('intro');
+  if(projectIntro)projectIntro.remove();
+  document.addEventListener('DOMContentLoaded',function(){
+    var projectsSection=document.getElementById('projects');
+    if(projectsSection)projectsSection.scrollIntoView({behavior:'instant'});
+  },{once:true});
+}
 document.querySelectorAll('#intro button').forEach(function(b){b.onclick=function(){if(b.dataset.snd==='1'){setSound(true);sfx.slam()}var i=document.getElementById('intro');i.classList.add('out');setTimeout(function(){i.remove()},750)}});
 var wp=document.getElementById('wipe');
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var h=a.getAttribute('href')||'';if(h.length<2||h.charAt(0)!=='#')return;var t=document.querySelector(h);if(!t)return;e.preventDefault();sfx.whoosh();wp.classList.remove('go');void wp.offsetWidth;wp.classList.add('go');setTimeout(function(){t.scrollIntoView({behavior:'instant'})},420);setTimeout(function(){wp.classList.remove('go')},1100)})});
@@ -91,8 +103,8 @@ document.addEventListener('click',function(e){if(e.target.closest('a,button'))sf
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var t=e.target;io.unobserve(t);if(t.classList.contains('pre')){t.classList.add('slam');sfx.slam();document.body.classList.add('shake');setTimeout(function(){document.body.classList.remove('shake')},300)}else{t.classList.add('in');setTimeout(function(){t.classList.remove('rv','in')},1100)}})},{threshold:.25});
 function reveal(l){[].forEach.call(l,function(t,i){if(t.classList.contains('title')||t.classList.contains('note')||t.classList.contains('quote'))t.classList.add('pre');else{t.classList.add('rv');t.style.setProperty('--i',(i%6)*80+'ms')}io.observe(t)})}
 reveal(document.querySelectorAll('.title,.note,.quote,.sk,.links a,.card'));
-var _d=draw;draw=function(f){_d(f);reveal(g.querySelectorAll('.card'))};
-var px=document.querySelectorAll('#home .shard1,#home .shard2,.hero-art,.tag');
+var _d=draw;draw=function(f){if(!g)return;_d(f);reveal(g.querySelectorAll('.card'))};
+var px=document.querySelectorAll('#home .shard1,#home .shard2,.hero-art,#home .tag');
 addEventListener('mousemove',function(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;px.forEach(function(el,i){el.style.translate=(x*-(14+i*8))+'px '+(y*-(10+i*5))+'px'})});
 var M=document.createElement('div');M.id='modal';M.innerHTML='<div class="mbox" role="dialog" aria-modal="true"><button class="mx" aria-label="Fermer">✕</button><div class="mbody"></div></div>';document.body.appendChild(M);
 function li(a){return a.map(function(x){return '<li>'+x+'</li>'}).join('')}
@@ -100,7 +112,7 @@ function openP(i){var p=P[i];M.querySelector('.mbody').innerHTML='<div class="mh
 function closeP(){M.classList.remove('open');document.body.style.overflow=''}
 M.addEventListener('click',function(e){if(e.target===M||e.target.classList.contains('mx'))closeP()});
 addEventListener('keydown',function(e){if(e.key==='Escape')closeP()});
-g.addEventListener('click',function(e){if(e.target.closest('a.preview'))return;var c=e.target.closest('.card');if(!c)return;e.preventDefault();openP(+c.querySelector('.more').dataset.i)});
+if(g){g.addEventListener('click',function(e){if(e.target.closest('a.preview'))return;var c=e.target.closest('.card');if(!c)return;e.preventDefault();openP(+c.querySelector('.more').dataset.i)});}
 var nv=document.getElementById('nav'),bgr=document.getElementById('burger');
 bgr.onclick=function(){var o=nv.classList.toggle('open');bgr.setAttribute('aria-expanded',o)};
 document.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',function(){nv.classList.remove('open');bgr.setAttribute('aria-expanded',false)})});
@@ -118,6 +130,7 @@ return base+o+'</svg>'}
 function safePreviewUrl(s){var v=String(s||'').trim(),u;if(!v)return '';try{u=new URL(v)}catch(e){return ''}return u.protocol==='http:'||u.protocol==='https:'?u.href:''}
 window.safePreviewUrl=safePreviewUrl;
 draw=function(f){
+if(!g||!Array.isArray(P))return;
 g.innerHTML='';
 P.forEach(function(p,i){
 if(f!=='all'&&(' '+p.c+' ').indexOf(' '+f+' ')<0)return;
@@ -136,10 +149,105 @@ g.appendChild(d);
 if(!g.children.length)g.innerHTML=`<p class='lead'>Bientôt de nouvelles missions…</p>`;
 reveal(g.querySelectorAll('.card'))};
 var _o=openP;openP=function(i){_o(i);M.querySelector('.mhead').insertAdjacentHTML('beforeend','<div class="mshot">'+mock(P[i].m)+'</div>')};
-draw('all');
+var projectCarouselCards=document.querySelectorAll('#projectCarousel .project-card');
+var projectCarouselState={index:1, interval:null, hover:false};
+
+function updateProjectCarousel(){
+  var cards=document.querySelectorAll('#projectCarousel .project-card');
+  var dots=document.querySelectorAll('#projectDots .dot');
+  var total=cards.length;
+
+  if(!total) return;
+
+  cards.forEach(function(card, index){
+    card.classList.remove('active', 'prev', 'next');
+    var diff=(index-projectCarouselState.index+total)%total;
+    if(diff>total/2){diff-=total;}
+
+    if(diff===0){
+      card.classList.add('active');
+    } else if(diff===-1){
+      card.classList.add('prev');
+    } else if(diff===1){
+      card.classList.add('next');
+    }
+  });
+
+  dots.forEach(function(dot, index){
+    dot.classList.toggle('active', index === projectCarouselState.index);
+  });
+}
+
+function nextProjectCarousel(){
+  projectCarouselState.index=(projectCarouselState.index+1)%document.querySelectorAll('#projectCarousel .project-card').length;
+  updateProjectCarousel();
+}
+
+function prevProjectCarousel(){
+  var total=document.querySelectorAll('#projectCarousel .project-card').length;
+  projectCarouselState.index=(projectCarouselState.index-1+total)%total;
+  updateProjectCarousel();
+}
+
+function startProjectCarousel(){
+  if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
+  projectCarouselState.interval=setInterval(nextProjectCarousel, 4000);
+}
+
+var projectCarouselHost=document.getElementById('carouselSection');
+if(projectCarouselHost){
+  projectCarouselHost.addEventListener('mouseenter', function(){ projectCarouselState.hover=true; if(projectCarouselState.interval) clearInterval(projectCarouselState.interval); });
+  projectCarouselHost.addEventListener('mouseleave', function(){ projectCarouselState.hover=false; startProjectCarousel(); });
+}
+
+var projectPrevBtn=document.getElementById('prevBtn');
+var projectNextBtn=document.getElementById('nextBtn');
+if(projectPrevBtn){projectPrevBtn.addEventListener('click', function(){
+  if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
+  prevProjectCarousel();
+  startProjectCarousel();
+});}
+if(projectNextBtn){projectNextBtn.addEventListener('click', function(){
+  if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
+  nextProjectCarousel();
+  startProjectCarousel();
+});}
+
+var projectDots=document.getElementById('projectDots');
+if(projectDots){
+  projectDots.innerHTML='';
+  document.querySelectorAll('#projectCarousel .project-card').forEach(function(card, index){
+    var dot=document.createElement('div');
+    dot.className='dot'+(index===projectCarouselState.index ? ' active' : '');
+    dot.dataset.index=index;
+    dot.setAttribute('role','button');
+    dot.setAttribute('aria-label','Afficher le projet '+(index+1));
+    dot.addEventListener('click', function(){
+      if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
+      projectCarouselState.index=index;
+      updateProjectCarousel();
+      startProjectCarousel();
+    });
+    projectDots.appendChild(dot);
+  });
+}
+
+document.querySelectorAll('#projectCarousel .project-card').forEach(function(card, index){
+  card.addEventListener('click', function(event){
+    if(event.target.closest('a')) return;
+    if(index===projectCarouselState.index) return;
+    if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
+    projectCarouselState.index=index;
+    updateProjectCarousel();
+    startProjectCarousel();
+  });
+});
+
+updateProjectCarousel();
+startProjectCarousel();
 var S2=SEED_SKILLS.map(function(s){return s.n}),LV=SEED_SKILLS.map(function(){return 80});
-var sub=document.querySelector('.sub');sub.innerHTML='Développeur <span id="rot"></span>';
-var W=['Full Stack','Laravel','React','Next.js','IAM / RBAC'],wi=0,ci=0,dl=false,rt=document.getElementById('rot');
+var sub=document.querySelector('.sub');sub.innerHTML='AI-Augmented <span id="rot"></span>';
+var W=['Agentic Software Engineer','LLM Systems','Automation','Product Engineering'],wi=0,ci=0,dl=false,rt=document.getElementById('rot');
 (function ty(){if(window.CALM){rt.textContent=W[0];setTimeout(ty,800);return}var w=W[wi];ci+=dl?-1:1;rt.textContent=w.slice(0,ci);var t=dl?45:90;if(!dl&&ci===w.length){dl=true;t=1100}else if(dl&&ci===0){dl=false;wi=(wi+1)%W.length;t=250}setTimeout(ty,t)})();
 var pr=document.createElement('div');pr.id='prog';document.body.appendChild(pr);
 addEventListener('scroll',function(){var m=document.documentElement.scrollHeight-innerHeight;pr.style.width=(m>0?scrollY/m*100:0)+'%'});

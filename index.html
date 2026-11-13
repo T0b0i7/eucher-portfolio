@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Eucher ABATTI — Développeur Full Stack</title>
+<title translate="no">Eucher ABATTI — AI-Augmented &amp; Agentic Software Engineer</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;600&display=swap">
 <link rel="stylesheet" href="assets/css/app.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<meta name="description" content="Eucher ABATTI, développeur Full Stack Web et Mobile spécialisé en Laravel et React. Projets, blog et services.">
-<meta property="og:title" content="Eucher ABATTI | Développeur Full Stack">
-<meta property="og:description" content="Développeur Full Stack Web et Mobile : Laravel, React, applications mobiles et API.">
+<meta name="description" content="Eucher ABATTI, AI-Augmented & Agentic Software Engineer. Projets, blog et services.">
+<meta property="og:title" content="Eucher ABATTI | AI-Augmented &amp; Agentic Software Engineer">
+<meta property="og:description" content="AI-Augmented & Agentic Software Engineer : IA, architecture logicielle, applications web et mobile.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#e60012">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Eucher ABATTI","jobTitle":"Développeur Full Stack Web et Mobile","sameAs":["https://github.com/eucherabatti","https://linkedin.com/in/eucher-abatti"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Eucher ABATTI","jobTitle":"AI-Augmented & Agentic Software Engineer","sameAs":["https://github.com/eucherabatti","https://linkedin.com/in/eucher-abatti"]}</script>
 </head>
 <body>
 <a class="skip" href="#home">Aller au contenu</a>
@@ -28,8 +28,6 @@
   <div class="bg-red shard1"></div><div class="bg-red shard2"></div>
   <div class="bgword" aria-hidden="true">CODE</div><div class="speed" aria-hidden="true"></div>
   <div class="scroll"><i>↓</i>SCROLL</div>
-  <div class="tag t1">Code propre.<br>Impact réel.</div>
-  <div class="tag t2">Web · Mobile<br>&amp; <b>IA ♥</b></div>
   <div class="hero-photo" role="img" aria-label="Portrait d’Eucher ABATTI"></div>
   <svg class="hero-art" hidden viewBox="0 0 300 380" aria-hidden="true">
     <path d="M40 380 C40 250 90 200 150 190 C210 200 260 250 260 380Z" fill="#000" stroke="#e60012" stroke-width="3"/>
@@ -40,7 +38,7 @@
   </svg>
   <div class="wrap">
     <div class="name"><h1>Eucher<br><span>ABATTI</span></h1></div>
-    <p class="sub">Développeur Full Stack</p>
+    <p class="sub" data-notr="1" translate="no">AI-Augmented &amp; Agentic Software Engineer</p>
     <p>Passionné par le code, l’innovation et les nouvelles technologies.</p>
     <a class="btn" href="#projects">Explorer mon univers →</a><a class="btn alt" href="#contact">Me contacter</a><a class="btn alt" href="#" id="cvBtn3">Voir mon CV</a>
     <div class="badges"><span>Full Stack</span><span>Web &amp; Mobile</span><span>Laravel · React</span></div>
@@ -50,13 +48,103 @@
 <div class="mq" id="mq1" aria-hidden="true"><div class="mqt"></div></div>
 <div class="mq mq2" id="mq2" aria-hidden="true"><div class="mqt rev"></div></div>
 <section id="projects">
-  <div class="wrap">
-    <h2 class="title">Mes Projets</h2>
-    <p class="lead">Des missions accomplies, un objectif : créer. Chaque projet est une nouvelle aventure.</p>
-    <div class="filters" id="filters">
-      <button class="on" data-f="all">Tous</button><button data-f="web">Web</button><button data-f="mobile">Mobile</button><button data-f="ia">IA</button><button data-f="design">Design</button>
+  <div class="project-shell">
+    <div class="project-header-wrap">
+      <h2 class="title">Mes Projets</h2>
+      <p class="lead">Des idées. Des solutions. Un impact réel.</p>
+      <p class="project-subtitle">Découvrez quelques-uns de mes projets phares, conçus avec passion et livrés en production.</p>
     </div>
-    <div class="grid" id="grid"></div>
+
+    <div class="carousel-section" id="carouselSection">
+      <button class="nav-btn prev" id="prevBtn" type="button" aria-label="Projet précédent">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+
+      <div class="carousel-container" id="projectCarousel" aria-live="polite">
+        <article class="project-card" data-index="0">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');">
+            <div class="badge-top-right">v1.0.0</div>
+          </div>
+          <div class="card-content">
+            <div class="tags"><span class="tag">Next.js</span><span class="tag">Node.js</span><span class="tag">OpenAI</span></div>
+            <h3 class="project-title"><span class="fake-logo logo-relay"></span> Relay</h3>
+            <p class="project-desc">Des agents <span class="highlight">fiables</span>, testés et rejouables.</p>
+            <a href="project.html?project=relay" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="project-card active" data-index="1">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop');">
+            <div class="badge-top-right">v1.0.0</div>
+          </div>
+          <div class="card-content">
+            <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span></div>
+            <h3 class="project-title"><span class="fake-logo logo-atlas"></span> Atlas</h3>
+            <p class="project-desc">Une couche de données qui réduit la latence de <span class="highlight">64%</span>.</p>
+            <a href="project.html?project=atlas" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="project-card" data-index="2">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop');">
+            <div class="badge-top-right">v1.0.0</div>
+          </div>
+          <div class="card-content">
+            <div class="tags"><span class="tag">React Native</span><span class="tag">Supabase</span><span class="tag">PWA</span></div>
+            <h3 class="project-title"><span class="fake-logo logo-ledger"></span> Ledger</h3>
+            <p class="project-desc">Démarre en <span class="highlight">300ms</span>, même hors ligne.</p>
+            <a href="project.html?project=ledger" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="project-card" data-index="3">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop');">
+            <div class="badge-top-right">v2.1.0</div>
+          </div>
+          <div class="card-content">
+            <div class="tags"><span class="tag">Vue.js</span><span class="tag">GraphQL</span><span class="tag">AWS</span></div>
+            <h3 class="project-title"><span class="fake-logo logo-nexus"></span> Nexus</h3>
+            <p class="project-desc">Tableau de bord temps réel pour flottes <span class="highlight">IoT</span>.</p>
+            <a href="project.html?project=nexus" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="project-card" data-index="4">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2670&auto=format&fit=crop');">
+            <div class="badge-top-right">v1.2.0</div>
+          </div>
+          <div class="card-content">
+            <div class="tags"><span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">HealthKit</span></div>
+            <h3 class="project-title"><span class="fake-logo logo-pulse"></span> Pulse</h3>
+            <p class="project-desc">App de suivi médical avec analyse prédictive par <span class="highlight">IA</span>.</p>
+            <a href="project.html?project=pulse" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="project-card" data-index="5">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=2672&auto=format&fit=crop');">
+            <div class="badge-top-right">v1.0.0</div>
+          </div>
+          <div class="card-content">
+            <div class="tags"><span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Docker</span></div>
+            <h3 class="project-title"><span class="fake-logo logo-orbit"></span> Orbit</h3>
+            <p class="project-desc">Moteur de recommandation pour l'<span class="highlight">e-commerce</span>.</p>
+            <a href="project.html?project=orbit" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+      </div>
+
+      <button class="nav-btn next" id="nextBtn" type="button" aria-label="Projet suivant">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div class="indicators" id="projectDots" aria-label="Navigation des projets"></div>
+
+    <div class="project-brandline">
+      <span data-notr="1" translate="no">TOBIDEV • AI-Augmented &amp; Agentic Software Engineer</span>
+      <span>Beyond Code. Engineering Digital Possibilities.</span>
+    </div>
   </div>
 </section>
 
@@ -100,7 +188,7 @@
   <div class="wrap">
     <div class="about-photo" role="img" aria-label="Portrait d’Eucher ABATTI"></div>
     <h2 class="title">À propos de moi</h2>
-    <h3 class="hook" id="aboutHook"></h3>
+    <h3 class="hook lead" id="aboutHook"></h3>
     <div id="aboutTxt" class="atxt"></div>
     <div class="proof kfs" id="aboutProof"></div>
     <div class="quote">Chaque produit commence par une question : à quel problème répond-il ?</div>
@@ -158,7 +246,7 @@
   </div>
 </section>
 
-<footer><img class="flogo" src="assets/img/logo.png" alt="Logo EA"><span>Eucher ABATTI</span><span>Développeur Full Stack</span><span>Innovation numérique</span><a href="#" id="lockln" class="lockln">🔒 Connexion</a></footer>
+<footer><img class="flogo" src="assets/img/logo.png" alt="Logo EA"><span>Eucher ABATTI</span><span data-notr="1" translate="no">AI-Augmented &amp; Agentic Software Engineer</span><span>Innovation numérique</span><a href="#" id="lockln" class="lockln">🔒 Connexion</a></footer>
 
 <div id="adm" aria-label="Espace d’administration"><div class="app"><aside id="sb"></aside><main><div class="top"><button class="bt gh sm" data-a="close">← Portfolio</button><div class="sr"><span id="si"></span><input id="q" placeholder="Rechercher une fonctionnalité…" autocomplete="off"><div id="res"></div></div><button class="bt" id="gen" data-a="gen"><span id="gi"></span><span>Mettre à jour le portfolio</span></button><div class="me"><div class="av">EA</div><div><b id="mn">Eucher ABATTI</b><small>Administrateur</small></div></div></div><div class="ct" id="ct"></div></main></div><div id="md"></div><div id="toast"></div></div>
 <script>/* Supabase : authentification GitHub de l’espace admin */window.EA_SUPABASE={url:'https://pwpfoqgiltdgdlaazdjc.supabase.co',key:'sb_publishable_zJ1a7eLIzCj2RB5WG1DLCQ_0HUG4bK0',owner:'T0b0i7'};</script>

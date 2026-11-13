@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+  <title translate="no">Détails du projet — Eucher ABATTI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/project-details.css">
+  <script src="assets/js/project-details.js" defer></script>
+</head>
+<body>
+  <header class="detail-header">
+    <a class="back-link" href="index.html?fromProject=1#projects">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Retour aux projets
+    </a>
+  </header>
+
+  <main class="detail-container" id="projectDetail">
+    <section class="project-hero" aria-labelledby="projectTitle">
+      <div class="project-copy">
+        <p class="eyebrow">ÉTUDE DE PROJET</p>
+        <div class="hero-title-row">
+          <span class="project-mark" aria-hidden="true"></span>
+          <h1 class="project-title" id="projectTitle" translate="no"></h1>
+        </div>
+        <p class="project-summary" id="projectSummary"></p>
+        <div class="project-tags" id="projectTags" aria-label="Technologies du projet"></div>
+      </div>
+      <div class="hero-visual">
+        <img class="hero-image" id="projectCover" alt="">
+        <div class="floating-stat" id="featuredImpact" hidden>
+          <span class="stat-value" id="featuredValue"></span>
+          <span class="stat-label" id="featuredLabel"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-grid">
+      <div class="detail-left">
+        <section class="detail-section" aria-labelledby="aboutTitle">
+          <h2 class="section-title" id="aboutTitle">À propos du projet</h2>
+          <div class="project-description" id="projectDescription"></div>
+        </section>
+        <section class="detail-section" id="featuresSection" aria-labelledby="featuresTitle">
+          <h2 class="section-title" id="featuresTitle">Fonctionnalités clés</h2>
+          <ul class="features-list" id="projectFeatures"></ul>
+        </section>
+      </div>
+
+      <aside class="detail-right" aria-label="Informations du projet">
+        <section class="info-card" aria-labelledby="techTitle">
+          <h2 class="info-title" id="techTitle">Technologies utilisées</h2>
+          <ul class="tech-list" id="projectTechnologies"></ul>
+        </section>
+        <section class="info-card" id="impactSection" aria-labelledby="impactTitle">
+          <h2 class="info-title" id="impactTitle">Résultats et impact</h2>
+          <div class="impact-list" id="projectImpact"></div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="preview-section" aria-labelledby="previewTitle">
+      <h2 class="section-title" id="previewTitle">Aperçu du projet</h2>
+      <img class="preview-image" id="projectPreview" alt="" loading="lazy">
+    </section>
+
+    <div class="detail-actions">
+      <a class="action-link" href="index.html?fromProject=1#projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Retour aux projets
+      </a>
+    </div>
+  </main>
+
+  <main class="not-found" id="projectNotFound" hidden>
+    <p class="eyebrow">PROJET INTROUVABLE</p>
+    <h1>Ce projet n’est pas disponible.</h1>
+    <a class="action-link" href="index.html?fromProject=1#projects">Retour aux projets</a>
+  </main>
+
+</body>
+</html>

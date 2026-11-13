@@ -163,6 +163,6 @@ var ns=se.sound===false?'none':'';document.getElementById('snd').style.display=n
 var mt=document.getElementById('maint');if(!mt){mt=document.createElement('div');mt.id='maint';document.body.appendChild(mt)}
 mt.innerHTML='<div>'+(se.online===false?'Portfolio hors ligne':'Bientôt de retour')+'<small>Le site est momentanément indisponible.</small></div>';
 mt.className=(se.maint||se.online===false)?'on':'';
-if(window.regTr)regTr();draw('all');drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();cuWatch()}
+if(window.regTr)regTr();draw('all');if(typeof renderProjectCarousel==='function')renderProjectCarousel();drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();cuWatch()}
 document.body.classList.add('sh-bot');
-applyData();drawSk();reveal(document.querySelectorAll('#sk .sk'));drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();
+applyData();if(typeof renderProjectCarousel==='function')renderProjectCarousel();drawSk();reveal(document.querySelectorAll('#sk .sk'));drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();
