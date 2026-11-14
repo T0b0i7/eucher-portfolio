@@ -7,6 +7,8 @@ import { JSDOM, VirtualConsole } from 'jsdom';
 export const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 export const INDEX_SCRIPTS = [
+  'assets/js/config.js',
+  'assets/js/api.js',
   'assets/js/catalog.js',
   'assets/js/data.js',
   'assets/js/sections.js',
@@ -15,7 +17,12 @@ export const INDEX_SCRIPTS = [
   'assets/js/effects.js'
 ];
 
-export const PROJECT_SCRIPTS = ['assets/js/catalog.js', 'assets/js/project-details.js'];
+export const PROJECT_SCRIPTS = [
+  'assets/js/config.js',
+  'assets/js/api.js',
+  'assets/js/catalog.js',
+  'assets/js/project-details.js'
+];
 
 function jsonResponse(body, status = 200) {
   return Promise.resolve({

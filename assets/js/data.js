@@ -390,6 +390,37 @@ function renderProjectCarousel(){
 }
 window.renderProjectCarousel=renderProjectCarousel;
 renderProjectCarousel();
+
+/* P0 : lecture publique depuis l'API Supabase, avec repli catalogue. */
+(function syncProjectsFromApi(){
+  var api=window.EA_API;
+  if(!api||typeof api.listProjects!=='function'||!api.isEnabled()){
+    document.body.dataset.dataSource='catalog';
+    return;
+  }
+  api.listProjects({perPage:24}).then(function(res){
+    var items=(res&&res.items)?res.items.filter(function(x){return x&&x.st==='published'}):[];
+    if(!items.length){
+      document.body.dataset.dataSource='catalog';
+      try{console.warn('[EA] API vide ou indisponible, catalogue utilisé')}catch(e){}
+      return;
+    }
+    P=items.map(function(x,i){
+      var tech=Array.isArray(x.t)?x.t.slice():String(x.t||'').split(',').map(function(s){return s.trim()}).filter(Boolean);
+      return {
+        n:x.n,c:'web',cat:x.cat||'',d:x.d||'',role:x.role||'',st:'Publié',sec:x.sec||'',
+        long:x.long||x.d||'',f:Array.isArray(x.f)?x.f:[],t:tech,m:i,u:x.u||'',preview:'',cover:'',
+        don:false,dl:'',slug:x.slug||(window.eaSlug?window.eaSlug(x.n):''),
+        repo:x.repo||'',repo_visible:!!x.repo_visible,demo_visible:x.demo_visible!==false
+      };
+    });
+    document.body.dataset.dataSource='api';
+    renderProjectCarousel();
+  },function(){
+    document.body.dataset.dataSource='catalog';
+    try{console.warn('[EA] API indisponible, catalogue utilisé')}catch(e){}
+  });
+})();
 var S2=SEED_SKILLS.map(function(s){return s.n}),LV=SEED_SKILLS.map(function(){return 80});
 var sub=document.querySelector('.sub');sub.innerHTML='AI-Augmented <span id="rot"></span>';
 var W=['Agentic Software Engineer','LLM Systems','Automation','Product Engineering'],wi=0,ci=0,dl=false,rt=document.getElementById('rot');

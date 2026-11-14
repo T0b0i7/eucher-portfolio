@@ -561,7 +561,51 @@
     requested = '';
   }
 
-  var selected = resolveProject(requested);
-  if (selected) renderProject(selected);
-  else showNotFound();
+  function renderLocal() {
+    var selected = resolveProject(requested);
+    if (selected) renderProject(selected);
+    else showNotFound();
+  }
+
+  function renderRemote(remote) {
+    if (!remote || text(remote.st).toLowerCase() !== 'published') {
+      showNotFound();
+      return;
+    }
+    var admin = adminProjects();
+    var override = null;
+    for (var i = 0; i < admin.length; i += 1) {
+      if (text(admin[i].n).trim().toLowerCase() === text(remote.n).trim().toLowerCase()) {
+        override = admin[i];
+        break;
+      }
+    }
+    var base = {
+      n: remote.n,
+      d: remote.d,
+      long: remote.long,
+      cat: remote.cat,
+      st: 'Publié',
+      t: Array.isArray(remote.t) ? remote.t.join(', ') : remote.t,
+      u: remote.u,
+      repo: remote.repo,
+      cover: '',
+      f: remote.f,
+      impact: remote.impact,
+      role: remote.role,
+      sec: remote.sec
+    };
+    renderProject(buildProject(base, override));
+  }
+
+  var api = window.EA_API;
+  if (api && typeof api.getProject === 'function' && api.isEnabled()) {
+    api.getProject(requested).then(function (remote) {
+      if (remote && !remote.notFound) renderRemote(remote);
+      else if (remote && remote.notFound) showNotFound();
+      else renderLocal();
+    }, renderLocal);
+  } else {
+    renderLocal();
+  }
 })();
