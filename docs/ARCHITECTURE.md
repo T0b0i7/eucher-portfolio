@@ -27,6 +27,7 @@ assets/
   js/admin.js                  SPA d’administration (chargée seulement à l’ouverture)
   js/admin-taxonomy.js         écran Taxonomie de l’admin
   js/admin-media.js            écran Médias (upload Storage → portfolio_media)
+  js/admin-github.js           écran GitHub (synchronisation dépôts/commits)
   js/admin-doc.js              assainissement du document publié (projets publiés, sans données privées)
   img/                         logo et portrait
 supabase/
