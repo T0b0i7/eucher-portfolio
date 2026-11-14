@@ -9,7 +9,7 @@ if(SBU.key)window.eaSend=function(p){return fetch(API+'/messages',{method:'POST'
 var _adm=0;
 function loadAdmin(cb){if(window.__requestAdmin){cb();return}if(_adm)return;_adm=1;
  function done(){_adm=2;cb()}
- function loadAdminScript(){var d=document.createElement('script');d.src='assets/js/admin-doc.js';d.onload=function(){var s=document.createElement('script');s.src='assets/js/admin.js';s.onload=done;s.onerror=function(){_adm=0};document.body.appendChild(s)};d.onerror=function(){_adm=0};document.body.appendChild(d)}
+ function loadAdminScript(){var d=document.createElement('script');d.src='assets/js/admin-doc.js';d.onload=function(){var s=document.createElement('script');s.src='assets/js/admin.js';s.onload=function(){var t=document.createElement('script');t.src='assets/js/admin-taxonomy.js';t.onload=done;t.onerror=done;document.body.appendChild(t)};s.onerror=function(){_adm=0};document.body.appendChild(s)};d.onerror=function(){_adm=0};document.body.appendChild(d)}
  if(window.supabase){loadAdminScript();return}
  var c=document.createElement('script');c.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';c.onload=loadAdminScript;c.onerror=function(){_adm=0};document.head.appendChild(c)}
 window.requestAdmin=function(){loadAdmin(function(){if(window.__requestAdmin)window.__requestAdmin()})};

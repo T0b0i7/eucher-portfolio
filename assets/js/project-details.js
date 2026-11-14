@@ -338,7 +338,14 @@
     var tags = byId('projectTags');
     if (!tags) return;
     clear(tags);
-    var visible = project.technologies.slice(0, MAX_HERO_TAGS);
+    var visible = project.technologies.slice();
+    (project.tags || []).forEach(function (tag) {
+      var name = tag && (tag.name || tag);
+      if (!name) return;
+      var exists = visible.some(function (item) { return (item.name || item) === name; });
+      if (!exists) visible.push({ name: name, slug: (tag && tag.slug) || '' });
+    });
+    visible = visible.slice(0, MAX_HERO_TAGS);
     visible.forEach(function (technology) { tags.appendChild(tagElement(technology)); });
     tags.hidden = !visible.length;
 
