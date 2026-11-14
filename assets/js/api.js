@@ -89,6 +89,31 @@
       });
     }
 
+    function requestPost(path, payload) {
+      if (!isEnabled()) return Promise.resolve(null);
+      var controller = null;
+      var timer = null;
+      var options = {
+        method: 'POST',
+        headers: headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(payload || {})
+      };
+      if (typeof AbortController !== 'undefined') {
+        controller = new AbortController();
+        options.signal = controller.signal;
+        timer = setTimeout(function () { controller.abort(); }, timeoutMs);
+      }
+      return fetchImpl(base + path, options).then(function (response) {
+        if (!response || !response.ok) return null;
+        return response.json().then(function (body) { return { body: body }; });
+      }).catch(function () {
+        return null;
+      }).then(function (result) {
+        if (timer) { clearTimeout(timer); timer = null; }
+        return result;
+      });
+    }
+
     function parseTotal(headers, fallback) {
       try {
         var raw = headers && headers.get ? headers.get('content-range') : null;
@@ -164,44 +189,112 @@
       };
     }
 
+    function resolveIds(table, slugs) {
+      if (!slugs.length) return Promise.resolve([]);
+      return request('/' + table, { select: 'id', slug: 'in.(' + slugs.join(',') + ')' }).then(function (result) {
+        if (!result || !Array.isArray(result.body)) return null;
+        return result.body.map(function (row) { return row.id; });
+      });
+    }
+
     function listProjects(options) {
+      if (!isEnabled()) return Promise.resolve(null);
       var opts = options || {};
       var page = Math.max(1, parseInt(opts.page, 10) || 1);
       var perPage = Math.min(48, Math.max(1, parseInt(opts.perPage, 10) || 12));
       var categories = (opts.categories || []).map(safeSlug).filter(Boolean);
       var technologies = (opts.technologies || []).map(safeSlug).filter(Boolean);
       var tags = (opts.tags || []).map(safeSlug).filter(Boolean);
-      var select = BASE_SELECT;
-      if (categories.length) select = select.replace('portfolio_project_categories(', 'portfolio_project_categories!inner(');
-      if (technologies.length) select = select.replace('portfolio_project_technologies(', 'portfolio_project_technologies!inner(');
-      if (tags.length) select = select.replace('portfolio_project_tags(', 'portfolio_project_tags!inner(');
 
-      var params = {
-        select: select,
-        status: 'eq.published',
-        order: ORDERS[opts.sort] || DEFAULT_ORDER,
-        limit: perPage,
-        offset: (page - 1) * perPage
-      };
-      if (opts.featured === true) params.featured = 'eq.true';
-      var term = safeQuery(opts.q);
-      if (term) {
-        params.or = '(title.ilike.*' + term + '*,short_desc.ilike.*' + term + '*)';
-      }
-      if (categories.length) params['portfolio_project_categories.portfolio_categories.slug'] = 'in.(' + categories.join(',') + ')';
-      if (technologies.length) params['portfolio_project_technologies.portfolio_technologies.slug'] = 'in.(' + technologies.join(',') + ')';
-      if (tags.length) params['portfolio_project_tags.portfolio_tags.slug'] = 'in.(' + tags.join(',') + ')';
+      return Promise.all([
+        resolveIds('portfolio_categories', categories),
+        resolveIds('portfolio_technologies', technologies),
+        resolveIds('portfolio_tags', tags)
+      ]).then(function (resolved) {
+        var categoryIds = resolved[0];
+        var technologyIds = resolved[1];
+        var tagIds = resolved[2];
+        if ((categories.length && categoryIds === null) ||
+            (technologies.length && technologyIds === null) ||
+            (tags.length && tagIds === null)) {
+          return null;
+        }
+        var select = BASE_SELECT;
+        if (categoryIds && categoryIds.length) select = select.replace('portfolio_project_categories(', 'portfolio_project_categories!inner(');
+        if (technologyIds && technologyIds.length) select = select.replace('portfolio_project_technologies(', 'portfolio_project_technologies!inner(');
+        if (tagIds && tagIds.length) select = select.replace('portfolio_project_tags(', 'portfolio_project_tags!inner(');
 
-      return request('/portfolio_projects', params, { Prefer: 'count=exact' }).then(function (result) {
-        if (!result || !Array.isArray(result.body)) return null;
-        var items = result.body.map(mapProject).filter(Boolean);
-        var total = parseTotal(result.headers, (page - 1) * perPage + items.length);
-        return {
-          items: items,
-          total: total,
-          hasMore: (page - 1) * perPage + items.length < total,
-          source: 'api'
+        if ((categories.length && !categoryIds.length) ||
+            (technologies.length && !technologyIds.length) ||
+            (tags.length && !tagIds.length)) {
+          return { items: [], total: 0, hasMore: false, source: 'api' };
+        }
+
+        var params = {
+          select: select,
+          status: 'eq.published',
+          order: ORDERS[opts.sort] || DEFAULT_ORDER,
+          limit: perPage,
+          offset: (page - 1) * perPage
         };
+        if (opts.featured === true) params.featured = 'eq.true';
+        var term = safeQuery(opts.q);
+        if (term) {
+          params.or = '(title.ilike.*' + term + '*,short_desc.ilike.*' + term + '*)';
+        }
+        if (categoryIds && categoryIds.length) params['portfolio_project_categories.category_id'] = 'in.(' + categoryIds.join(',') + ')';
+        if (technologyIds && technologyIds.length) params['portfolio_project_technologies.technology_id'] = 'in.(' + technologyIds.join(',') + ')';
+        if (tagIds && tagIds.length) params['portfolio_project_tags.tag_id'] = 'in.(' + tagIds.join(',') + ')';
+
+        return request('/portfolio_projects', params, { Prefer: 'count=exact' }).then(function (result) {
+          if (!result || !Array.isArray(result.body)) return null;
+          var items = result.body.map(mapProject).filter(Boolean);
+          var total = parseTotal(result.headers, (page - 1) * perPage + items.length);
+          return {
+            items: items,
+            total: total,
+            hasMore: (page - 1) * perPage + items.length < total,
+            source: 'api'
+          };
+        });
+      });
+    }
+
+    function searchProjects(options) {
+      var opts = options || {};
+      var page = Math.max(1, parseInt(opts.page, 10) || 1);
+      var perPage = Math.min(48, Math.max(1, parseInt(opts.perPage, 10) || 12));
+      var categories = (opts.categories || []).map(safeSlug).filter(Boolean);
+      var technologies = (opts.technologies || []).map(safeSlug).filter(Boolean);
+      var tags = (opts.tags || []).map(safeSlug).filter(Boolean);
+      var payload = {
+        p_q: safeQuery(opts.q) || null,
+        p_categories: categories.length ? categories : null,
+        p_technologies: technologies.length ? technologies : null,
+        p_tags: tags.length ? tags : null,
+        p_sort: opts.sort || 'recent',
+        p_limit: perPage,
+        p_offset: (page - 1) * perPage
+      };
+      return requestPost('/rpc/search_portfolio_projects', payload).then(function (result) {
+        if (result && result.body && Array.isArray(result.body.items)) {
+          var items = result.body.items.map(mapProject).filter(Boolean).filter(function (project) {
+            return project.st === 'published';
+          });
+          var total = Number(result.body.total || items.length);
+          return {
+            items: items,
+            total: total,
+            hasMore: (page - 1) * perPage + items.length < total,
+            source: 'api',
+            degraded: false
+          };
+        }
+        return listProjects(opts).then(function (fallback) {
+          if (!fallback) return null;
+          fallback.degraded = true;
+          return fallback;
+        });
       });
     }
 
@@ -236,6 +329,7 @@
     return {
       isEnabled: isEnabled,
       listProjects: listProjects,
+      searchProjects: searchProjects,
       getProject: getProject,
       listTaxonomies: listTaxonomies
     };

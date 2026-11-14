@@ -1,0 +1,108 @@
+:root{
+  --bg:#050505;--fg:#fff;--muted:#9ca3af;--red:#e60012;--red-bright:#ff1a1a;
+  --card:#0f0f0f;--line:#222;
+  --font-body:'Inter',system-ui,sans-serif;--font-display:'Anton',Impact,sans-serif;--font-ui:'Oswald',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--font-body);min-height:100vh;
+  background-image:
+    linear-gradient(rgba(230,0,18,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(230,0,18,.03) 1px,transparent 1px);
+  background-size:48px 48px;
+  display:flex;flex-direction:column;overflow-x:hidden;
+}
+a{color:inherit}
+img{max-width:100%}
+
+.gl-header{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:12px clamp(16px,4vw,48px);background:rgba(5,5,5,.92);
+  border-bottom:3px solid var(--red);backdrop-filter:blur(8px);
+}
+.gl-brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-display);letter-spacing:.06em;font-size:15px}
+.gl-brand img{height:38px;width:auto;background:#fff;padding:4px 8px;border:2px solid #000}
+.gl-back{font-family:var(--font-ui);font-size:13px;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;color:var(--muted);padding:11px 4px}
+.gl-back:hover{color:#fff}
+
+.gl-main{width:min(1400px,100%);margin:0 auto;padding:clamp(32px,6vw,72px) clamp(16px,4vw,48px) 64px;flex:1}
+.gl-head{max-width:760px;margin-bottom:32px}
+.gl-eyebrow{margin:0 0 12px;font-family:var(--font-ui);font-size:12px;letter-spacing:.22em;color:var(--red-bright);text-transform:uppercase}
+.gl-title{
+  display:inline-block;margin:0 0 16px;padding:10px 20px 8px;background:#f3f3f3;color:#0b0b0b;
+  font-family:var(--font-display);font-weight:400;font-size:clamp(2.2rem,6vw,4.6rem);line-height:.95;
+  transform:rotate(-2deg);border:3px solid #090909;box-shadow:8px 8px 0 var(--red);
+}
+.gl-lead{margin:0;color:#d1d5db;font-size:clamp(.95rem,1.6vw,1.1rem);line-height:1.6;max-width:60ch}
+
+.gl-filters{display:grid;grid-template-columns:2fr repeat(3,1fr) 1.2fr auto;gap:12px;align-items:end;margin:0 0 24px;padding:18px;background:var(--card);border:1px solid var(--line)}
+.gl-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.gl-field span{font-family:var(--font-ui);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.gl-field input,.gl-field select{
+  width:100%;min-height:44px;background:#070707;color:#fff;border:2px solid #333;padding:10px 12px;
+  font:500 14px var(--font-body);border-radius:0;outline:none;
+}
+.gl-field input:focus,.gl-field select:focus{border-color:var(--red-bright)}
+.gl-search{grid-column:span 1}
+.gl-reset{
+  min-height:44px;padding:10px 16px;background:transparent;color:#fff;border:2px solid #555;cursor:pointer;
+  font:600 13px var(--font-ui);text-transform:uppercase;letter-spacing:.08em;transition:.2s;
+}
+.gl-reset:hover{border-color:var(--red-bright);background:rgba(255,26,26,.08)}
+
+.gl-meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px;color:var(--muted);font:500 13px var(--font-ui);letter-spacing:.04em}
+.gl-degraded{color:#fbbf24;border:1px solid rgba(251,191,36,.4);padding:4px 8px;font-size:11px}
+
+.gl-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.gl-card{
+  position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);
+  text-decoration:none;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+}
+.gl-card:hover,.gl-card:focus-visible{transform:translateY(-4px);border-color:var(--red-bright);box-shadow:0 14px 30px rgba(255,26,26,.14)}
+.gl-card:focus-visible{outline:3px solid var(--red-bright);outline-offset:3px}
+.gl-card-image{height:180px;background-color:#0a0a0a;background-size:cover;background-position:center;position:relative}
+.gl-card-image::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.65))}
+.gl-card-cat{position:absolute;top:12px;left:12px;z-index:2;background:var(--red);color:#fff;padding:4px 10px;font:600 11px var(--font-ui);text-transform:uppercase;letter-spacing:.08em;transform:skewX(-8deg)}
+.gl-card-body{display:flex;flex-direction:column;gap:8px;padding:16px 16px 18px;flex:1}
+.gl-card-title{margin:0;font:400 20px var(--font-display);letter-spacing:.02em;line-height:1.1}
+.gl-card-desc{margin:0;color:#c7c7c7;font-size:13px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.gl-card-tech{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.gl-card-tech span{font:500 11px var(--font-ui);color:#d1d5db;border:1px solid #3a3a3a;padding:3px 7px;white-space:nowrap}
+.gl-card-cta{margin-top:6px;color:var(--red-bright);font:600 12px var(--font-ui);text-transform:uppercase;letter-spacing:.1em}
+
+.gl-message{margin:28px 0;padding:22px;border:2px dashed #444;color:var(--muted);font:500 15px var(--font-ui);text-align:center}
+.gl-error{color:#fca5a5;border-color:#7f1d1d}
+.gl-more-wrap{display:flex;justify-content:center;margin-top:32px}
+.gl-more{
+  min-height:48px;padding:12px 28px;background:var(--red);color:#fff;border:0;cursor:pointer;
+  font:600 14px var(--font-ui);text-transform:uppercase;letter-spacing:.1em;box-shadow:5px 5px 0 #000;transition:.2s;
+}
+.gl-more:hover{background:#c50010;transform:translateY(-2px)}
+.gl-more[hidden]{display:none}
+
+.gl-footer{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;padding:24px clamp(16px,4vw,48px);border-top:1px solid #222;color:#777;font:500 12px var(--font-ui);letter-spacing:.06em}
+.gl-footer a{color:#bbb;text-decoration:none}
+.gl-footer a:hover{color:#fff}
+
+@media(max-width:1100px){
+  .gl-filters{grid-template-columns:repeat(3,1fr)}
+  .gl-search{grid-column:1/-1}
+  .gl-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:800px){
+  .gl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gl-card-image{height:150px}
+}
+@media(max-width:560px){
+  .gl-filters{grid-template-columns:1fr;padding:14px}
+  .gl-reset{width:100%}
+  .gl-grid{grid-template-columns:1fr;gap:14px}
+  .gl-card-image{height:170px}
+  .gl-header{flex-wrap:wrap}
+  .gl-back{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .gl-card,.gl-more,.gl-reset{transition:none}
+  .gl-card:hover{transform:none}
+}

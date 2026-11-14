@@ -5,11 +5,14 @@ Portfolio rouge et noir avec animations, sons, blog, espace d’administration e
 ## Contenu du dossier
 
 - `index.html` : la page principale du site (structure HTML uniquement).
-- `project.html` : la fiche « étude de cas » d’un projet, ouverte depuis le carrousel.
+- `project.html` : la fiche « étude de cas » d’un projet, ouverte depuis le carrousel ou la galerie.
+- `projects.html` : la galerie complète des projets publiés (filtres, recherche, tri, chargement progressif).
 - `assets/css/app.css` : tout le style du site principal.
 - `assets/css/project-details.css` : le style des fiches projet.
+- `assets/css/gallery.css` : le style de la galerie.
 - `assets/js/config.js` : configuration publique Supabase partagée (clé publishable, aucun secret).
-- `assets/js/api.js` : lecture publique des projets depuis Supabase (pagination, filtres, détail), avec repli catalogue.
+- `assets/js/api.js` : lecture publique des projets depuis Supabase (recherche, filtres, pagination, détail), avec repli catalogue.
+- `assets/js/gallery.js` : rendu et interactions de la galerie `projects.html`.
 - `assets/js/catalog.js` : le catalogue public des vrais projets (données de repli pour les visiteurs et pour `project.html`).
 - `assets/js/data.js` : données de départ (profil, CV, compétences), utilitaires et carrousel des projets.
 - `assets/js/sections.js` : rendu public (blog, boutique, parcours, à propos, services).
@@ -20,8 +23,8 @@ Portfolio rouge et noir avec animations, sons, blog, espace d’administration e
 - `assets/js/admin.js` : espace d’administration, chargé seulement à l’ouverture.
 - `assets/js/admin-doc.js` : assainit le document publié (projets publiés uniquement, sans messages ni téléphone) ; les brouillons partent dans une table privée.
 - `assets/img/` : logo et portrait.
-- `supabase/` : scripts SQL de la base, migrations P0 et seed des projets.
-- `docs/` : architecture, runbook de migration (`MIGRATION-P0.md`), notes et specs superpowers.
+- `supabase/` : scripts SQL de la base, migrations P0/P1 et seed des projets.
+- `docs/` : architecture, runbooks de migration (`MIGRATION-P0.md`, `MIGRATION-P1.md`), notes et specs superpowers.
 - `tests/` et `scripts/` : outillage de développement (jamais déployé).
 
 ## Ouvrir le site
@@ -95,12 +98,14 @@ Double-clique sur `index.html`. Une connexion internet est utile pour charger le
 ## Projets et fiches projet
 
 - Le carrousel de l’accueil affiche les vrais projets publiés. Le site lit d’abord les tables Supabase via l’API, puis retombe sur `assets/js/catalog.js` si la base n’est pas encore migrée ou indisponible ; il se balaie au doigt sur mobile.
-- La migration P0 (tables normalisées + seed) et la procédure de rollback sont décrites dans `docs/MIGRATION-P0.md`.
+- Le lien « Voir tous les projets » ouvre la galerie `projects.html` : grille responsive, filtres par catégorie/technologie/tag, recherche, tri et bouton « Charger plus ». Les filtres sont repris dans l’URL (partage de lien).
+- La recherche complète (titre, description, technologies et tags) s’active après application de `supabase/migrations/2026-11-14-04-p1-search.sql` ; sans elle, la galerie fonctionne en mode simple (titre/description + filtres) et l’indique discrètement.
+- La migration P0 (tables normalisées + seed) et son rollback sont décrits dans `docs/MIGRATION-P0.md` ; la migration P1 dans `docs/MIGRATION-P1.md`.
 - Chaque carte mène à `project.html?project=<slug>` : une étude de cas avec logo, résumé, tags technos, visuel, description, fonctionnalités clés, carte des technologies, repères du projet, galerie d’aperçus générés, et les boutons « Voir la démo en ligne », « Voir le code sur GitHub » (quand ces liens existent) et « Retour aux projets ».
 - Le contenu publié depuis l’admin est chargé depuis Supabase puis gardé dans le navigateur : le carrousel et les fiches déjà connues reprennent ces modifications quand elles sont présentes.
 - Les visuels sont générés localement (motif rouge et noir avec les initiales du projet) quand il n’y a pas de capture ; le badge indique « Projet publié ». Aucun visuel de démonstration externe n’est utilisé.
 - Les six anciens projets fictifs (Relay, Atlas, Ledger, Nexus, Pulse, Orbit) ont disparu.
-- Limite connue : un projet créé dans l’admin et absent de `catalog.js` ne s’affiche sur `project.html` que sur un appareil où le cache local le connaît déjà (un lien direct depuis un navigateur neuf affiche « Projet introuvable »). Pour un projet durablement public, ajoute-le au catalogue.
+- Un projet publié dans la base mais absent de `catalog.js` reste accessible par `project.html?project=<slug>` (l’API le résout) ; le catalogue ne sert que de secours hors connexion.
 
 ## Sur mobile
 

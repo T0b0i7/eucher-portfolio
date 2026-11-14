@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Tous les projets publiés d’Eucher ABATTI : filtrez par catégorie, technologie ou tag, et explorez les études de cas.">
+  <title translate="no">Tous les projets — Eucher ABATTI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/gallery.css">
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/api.js" defer></script>
+  <script src="assets/js/catalog.js" defer></script>
+  <script src="assets/js/gallery.js" defer></script>
+</head>
+<body>
+  <header class="gl-header">
+    <a class="gl-brand" href="index.html" aria-label="Retour à l’accueil">
+      <img src="assets/img/logo.png" alt="Logo EA Eucher ABATTI">
+      <span>EUCHER ABATTI</span>
+    </a>
+    <a class="gl-back" href="index.html#projects">← Retour au portfolio</a>
+  </header>
+
+  <main class="gl-main">
+    <div class="gl-head">
+      <p class="gl-eyebrow">PORTFOLIO · BIBLIOTHÈQUE</p>
+      <h1 class="gl-title">Tous mes projets</h1>
+      <p class="gl-lead">Filtrez, cherchez et explorez l’ensemble des réalisations publiées.</p>
+    </div>
+
+    <form class="gl-filters" id="galleryFilters" role="search" aria-label="Filtrer les projets">
+      <label class="gl-field gl-search">
+        <span>Rechercher</span>
+        <input id="gallerySearch" type="search" placeholder="Nom, technologie, mot-clé…" autocomplete="off">
+      </label>
+      <label class="gl-field">
+        <span>Catégorie</span>
+        <select id="galleryCategory"><option value="">Toutes</option></select>
+      </label>
+      <label class="gl-field">
+        <span>Technologie</span>
+        <select id="galleryTech"><option value="">Toutes</option></select>
+      </label>
+      <label class="gl-field">
+        <span>Tag</span>
+        <select id="galleryTag"><option value="">Tous</option></select>
+      </label>
+      <label class="gl-field">
+        <span>Trier par</span>
+        <select id="gallerySort">
+          <option value="recent">Plus récents</option>
+          <option value="updated">Dernière mise à jour</option>
+          <option value="alpha">A → Z</option>
+          <option value="oldest">Plus anciens</option>
+          <option value="featured">Mis en avant</option>
+        </select>
+      </label>
+      <button class="gl-reset" id="galleryReset" type="button">Réinitialiser</button>
+    </form>
+
+    <div class="gl-meta">
+      <span id="galleryCount" aria-live="polite">Chargement…</span>
+      <span id="galleryDegraded" class="gl-degraded" hidden>Recherche simple — index de recherche non activé</span>
+    </div>
+
+    <div class="gl-grid" id="galleryGrid"></div>
+    <p class="gl-message gl-empty" id="galleryEmpty" hidden>Aucun projet ne correspond à ces filtres.</p>
+    <p class="gl-message gl-error" id="galleryError" hidden>Impossible de charger les projets pour le moment. Réessaie dans un instant.</p>
+
+    <div class="gl-more-wrap">
+      <button class="gl-more" id="galleryMore" type="button" hidden>Charger plus de projets</button>
+    </div>
+  </main>
+
+  <footer class="gl-footer">
+    <a href="index.html">← Accueil</a>
+    <span>Eucher ABATTI · AI-Augmented &amp; Agentic Software Engineer</span>
+  </footer>
+</body>
+</html>

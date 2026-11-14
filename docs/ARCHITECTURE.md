@@ -7,11 +7,14 @@ Portfolio statique en HTML/CSS/JS natifs, servi sans étape de build. Le code re
 ```
 index.html                     page principale (structure HTML uniquement)
 project.html                   fiche « étude de cas » d’un projet
+projects.html                  galerie complète (filtres, recherche, tri, chargement progressif)
 assets/
   css/app.css                  style du site principal
   css/project-details.css      style des fiches projet
+  css/gallery.css              style de la galerie
   js/config.js                configuration publique Supabase partagée (clé publishable)
-  js/api.js                   lecture publique des projets (PostgREST, pagination, filtres, détail)
+  js/api.js                   lecture publique des projets (PostgREST, recherche, filtres, détail)
+  js/gallery.js                rendu et interactions de projects.html
   js/catalog.js                catalogue public des projets (EA_PROJECTS, eaSlug, eaProjectArt) — repli
   js/data.js                   données de départ (profil, CV, compétences), utilitaires, carrousel
   js/sections.js               rendu public : blog, boutique, parcours, à propos, services, pont admin
@@ -25,7 +28,7 @@ assets/
 supabase/
   schema-complete.sql          installation neuve : tables, RLS, trigger, table admins
   migration-securite.sql       migration idempotente pour une base existante
-  migrations/                  P0 : schéma projet normalisé (tables portfolio_*), RLS/Storage, projection
+  migrations/                  P0 : schéma projet normalisé (tables portfolio_*), RLS/Storage, projection ; P1 : recherche
   seed/                        seed des projets généré depuis le catalogue
   import-projects.sql          ancien import, obsolète après la migration de sécurité
 tests/                         harnais jsdom + contrôles statiques (dev uniquement)
@@ -33,6 +36,7 @@ scripts/                       génération du seed, vérification SQL (dev uniq
 docs/
   ARCHITECTURE.md
   MIGRATION-P0.md              runbook d’application et de rollback de P0
+  MIGRATION-P1.md              runbook d’application de la recherche P1
   aether-voiceover-script.md
   voix/, voix-assets/          anciens scripts vocaux conservés pour référence
   superpowers/specs|plans/     specs et plans de travail
@@ -42,6 +46,7 @@ docs/
 
 - `index.html` charge `config.js` (immédiat) puis `api.js` → `catalog.js` → `data.js` → `sections.js` → `remote.js` → `ui.js` → `effects.js`, tous en `defer`.
 - `project.html` charge `config.js`, puis `api.js` → `catalog.js` → `project-details.js` en `defer`.
+- `projects.html` charge `config.js`, puis `api.js` → `catalog.js` → `gallery.js` en `defer`.
 - `admin.js` n’est jamais chargé au démarrage : `remote.js` l’injecte (avec `@supabase/supabase-js` depuis le CDN) à la première demande, via `Ctrl+Maj+A`, `Alt+Maj+A` ou le bouton « Connexion ».
 
 ## Rôle des modules
@@ -49,7 +54,8 @@ docs/
 | Module | Rôle |
 | --- | --- |
 | `config.js` | Configuration publique Supabase (`url`, clé publishable, owner) partagée par les deux pages. Aucun secret. |
-| `api.js` | Couche de lecture publique : `listProjects` (pagination, catégories, technologies, recherche, tri), `getProject(slug)`, `listTaxonomies`. Interroge PostgREST (tables `portfolio_*`) et ne renvoie que les projets `published` ; erreurs silencieuses (null) pour laisser le repli. |
+| `api.js` | Couche de lecture publique : `listProjects` (pagination, filtres catégories/technologies/tags), `searchProjects` (RPC multi-entités avec repli), `getProject(slug)`, `listTaxonomies`. Interroge PostgREST (tables `portfolio_*`) et ne renvoie que les projets `published` ; erreurs silencieuses (null) pour laisser le repli. |
+| `gallery.js` | Galerie `projects.html` : filtres combinables, recherche, tri, URL partagée, bouton « Charger plus », état vide/dégradé et repli catalogue hors ligne. |
 | `catalog.js` | Repli statique des 8 projets publiés : textes, technologies, URL, rôle, secteur, `repo` GitHub quand il existe, icônes technos (`eaTechIcon`), visuels générés (`eaProjectArt`, `eaProjectShot`). Sert aussi de premier rendu et de secours quand l’API est indisponible. |
 | `data.js` | Construit `P` depuis `catalog.js`, puis remplace le carrousel par les projets de l’API quand elle répond (`document.body.dataset.dataSource` = `api` ou `catalog`). Expose les seeds profil/CV/compétences, l’échappement `E`, les sons, la modale projet et le carrousel (dont le balayage tactile). |
 | `sections.js` | Peint blog, boutique, parcours, à propos et services depuis `localStorage`, applique les réglages du document (`applyData`) et rappelle les rendus. |
@@ -68,7 +74,8 @@ docs/
 5. Le trigger `trg_sync_portfolio_projects` (P0) projette les projets du document vers le **modèle de lecture normalisé** : `portfolio_projects`, `portfolio_categories`, `portfolio_technologies` et leurs jonctions, avec slug préservé, statut mappé, dates et déduplication. Toute écriture du document met donc les tables P0 à jour automatiquement.
 6. Le formulaire de contact appelle `eaSend()` → insertion dans `messages`. Sans clé Supabase, `eaSend` n’existe pas et le bouton garde son repli `mailto:`.
 7. `project.html` interroge d’abord l’API (`getProject(slug)`) ; en cas d’échec ou de base non migrée, il retombe sur `EA_PROJECTS` + cache local. Un projet `draft`/`archived` reçu par erreur est traité comme introuvable.
-8. La migration P0 est décrite dans `docs/MIGRATION-P0.md` (ordre, vérifications, rollback). Les écritures directes en tables et la fin du document JSON sont prévues en P2.
+8. `projects.html` interroge `EA_API.searchProjects()` (fonction RPC `search_portfolio_projects` si la migration P1 est appliquée) ; en repli, `listProjects` applique les filtres catégorie/technologie/tag et la recherche titre/description ; en dernier recours, le catalogue est filtré côté client. Les filtres sont reflétés dans l’URL.
+9. La migration P0 est décrite dans `docs/MIGRATION-P0.md` et la migration P1 dans `docs/MIGRATION-P1.md` (ordre, vérifications, rollback). Les écritures directes en tables et la fin du document JSON sont prévues en P2.
 
 ## Règles
 
@@ -94,6 +101,7 @@ docs/
 - Carrousel : balayage tactile (Pointer Events avec repli Touch Events) sur `#carouselSection`, seuil de 40 px, geste vertical laissé au défilement, clic sur lien/bouton ignoré, autoplay mis en pause au survol, au focus clavier et en mode sobre. Pastilles tactiles à zone de 44 px, visuel conservé.
 - Cibles tactiles principales ≥ 44 px (menu, HUD, boutons, liens de contact) ; `prefers-reduced-motion` neutralise les animations ; les effets 3D/hover sont désactivés sur pointeur grossier.
 - Les fiches projet suivent leur propre responsive (1024 / 768 / 400) : hero empilé, technologies sur une colonne, galerie en carrousel horizontal à défilement aimanté.
+- La galerie `projects.html` est responsive : 4 colonnes desktop, 3 tablette, 2 puis 1 sur mobile ; filtres en colonne et cibles ≥ 44 px sur petit écran.
 
 ## Déploiement
 

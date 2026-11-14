@@ -25,6 +25,16 @@ function response(body, contentRange) {
   });
 }
 
+function failResponse(status) {
+  return Promise.resolve({
+    ok: false,
+    status,
+    headers: { get: () => null },
+    json: () => Promise.resolve(null),
+    text: () => Promise.resolve('')
+  });
+}
+
 function projectRow(overrides = {}) {
   return Object.assign({
     id: 'uuid-1',
@@ -70,12 +80,21 @@ test('listProjects : requête paginée des seuls projets publiés', async () => 
 });
 
 test('listProjects : filtres catégories et technologies combinables', async () => {
-  let captured;
-  const api = apiWith((url) => { captured = url; return response([], '0-0/0'); });
+  let projectsUrl;
+  const api = apiWith((url) => {
+    const target = String(url);
+    if (target.indexOf('/portfolio_categories') >= 0) {
+      return response([{ id: 'cat-web' }, { id: 'cat-ia' }]);
+    }
+    if (target.indexOf('/portfolio_technologies') >= 0) return response([{ id: 'tech-react' }]);
+    if (target.indexOf('/portfolio_projects') >= 0) { projectsUrl = target; return response([], '0-0/0'); }
+    return response([]);
+  });
   await api.listProjects({ categories: ['web', 'ia'], technologies: ['react'], page: 2, perPage: 6 });
-  const decoded = decodeURIComponent(captured);
-  assert.match(decoded, /portfolio_project_categories\.portfolio_categories\.slug=in\.\(web,ia\)/);
-  assert.match(decoded, /portfolio_project_technologies\.portfolio_technologies\.slug=in\.\(react\)/);
+  const decoded = decodeURIComponent(projectsUrl || '');
+  assert.match(decoded, /portfolio_project_categories\.category_id=in\.\(cat-web,cat-ia\)/);
+  assert.match(decoded, /portfolio_project_technologies\.technology_id=in\.\(tech-react\)/);
+  assert.match(decoded, /portfolio_project_categories!inner/);
   assert.match(decoded, /limit=6/);
   assert.match(decoded, /offset=6/);
 });
@@ -123,6 +142,46 @@ test('listProjects : Content-Range */N (page hors bornes) donne le total', async
   const result = await api.listProjects({ page: 9 });
   assert.equal(result.total, 42);
   assert.equal(result.hasMore, false);
+});
+
+test('searchProjects : appelle la RPC avec les filtres et mappe le résultat', async () => {
+  let captured;
+  const api = apiWith((url, options) => {
+    captured = { url, options };
+    return response({ total: 2, items: [projectRow(), projectRow({ id: 'uuid-2', slug: 'clavis', title: 'Clavis' })] });
+  });
+  const result = await api.searchProjects({ q: 'clavis', categories: ['web'], technologies: ['react'], sort: 'alpha', page: 2, perPage: 12 });
+  assert.match(captured.url, /\/rpc\/search_portfolio_projects$/);
+  const body = JSON.parse(captured.options.body);
+  assert.equal(body.p_q, 'clavis');
+  assert.deepEqual(body.p_categories, ['web']);
+  assert.deepEqual(body.p_technologies, ['react']);
+  assert.equal(body.p_sort, 'alpha');
+  assert.equal(body.p_offset, 12);
+  assert.equal(result.total, 2);
+  assert.equal(result.items.length, 2);
+  assert.equal(result.degraded, false);
+});
+
+test('searchProjects : RPC indisponible -> repli listProjects dégradé', async () => {
+  const api = apiWith((url) => {
+    if (url.indexOf('/rpc/') >= 0) return failResponse(404);
+    return response([projectRow()], '0-0/1');
+  });
+  const result = await api.searchProjects({ q: 'clavis' });
+  assert.equal(result.degraded, true);
+  assert.equal(result.items.length, 1);
+  assert.equal(result.total, 1);
+});
+
+test('searchProjects : aucun brouillon dans les résultats', async () => {
+  const api = apiWith(() => response({
+    total: 2,
+    items: [projectRow(), projectRow({ id: 'uuid-2', slug: 'brouillon', status: 'draft' })]
+  }));
+  const result = await api.searchProjects({});
+  assert.equal(result.items.length, 1);
+  assert.equal(result.items[0].st, 'published');
 });
 
 test('isEnabled : faux sans clé Supabase', () => {
