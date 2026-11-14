@@ -4,3 +4,8 @@ docs
 README.md
 supabase
 tools
+tests
+scripts
+package.json
+package-lock.json
+node_modules

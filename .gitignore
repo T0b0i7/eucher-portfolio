@@ -11,3 +11,6 @@ Thumbs.db
 
 # Journaux
 *.log
+
+# Espace de travail des agents (scratch, jetable)
+.superpowers/

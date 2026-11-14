@@ -175,16 +175,35 @@ try{if(window.supabase&&SBU.url&&SBU.key)SB=supabase.createClient(SBU.url,SBU.ke
 window.SB=SB;
 if(!window.claude)document.documentElement.classList.add('no-ai');
 var pushT=null;
-/* Le document complet (messages, téléphone) reste en localStorage, mais seul un
-   document assaini (sans msgs, act et profile.tel) est publié dans Supabase. */
+/* Le document public ne reçoit que les projets publiés et est assaini
+   (sans msgs, act ni profile.tel). Le document complet, brouillons compris,
+   part dans la table privée portfolio_drafts (RLS propriétaire). */
+function syncFail(where,error){
+  try{console.warn('sync '+where,error&&error.message||error)}catch(e){}
+  try{if(A.classList.contains('open'))toast('Synchronisation impossible — réessaie')}catch(e){}
+}
 function remotePush(){if(!SB||!window.SB_ADMIN)return;clearTimeout(pushT);pushT=setTimeout(function(){
-  var pub=Object.assign({},D);
-  delete pub.msgs;
-  delete pub.act;
-  if(pub.profile){pub.profile=Object.assign({},pub.profile);delete pub.profile.tel}
-  SB.from('portfolio').upsert({id:1,data:pub,updated_at:new Date().toISOString()}).then(function(r){if(r.error)console.warn('sync',r.error.message)}).catch(function(e){console.warn('sync',e)})
+  var now=new Date().toISOString();
+  var pub=(window.EA_DOC&&window.EA_DOC.toPublicDocument)?window.EA_DOC.toPublicDocument(D):D;
+  SB.from('portfolio').upsert({id:1,data:pub,updated_at:now}).then(function(r){
+    if(r.error){syncFail('portfolio',r.error);return}
+    SB.from('portfolio_drafts').upsert({id:1,data:D,updated_at:now}).then(function(r2){
+      if(r2.error)try{console.warn('sync drafts',r2.error.message)}catch(e){}
+    }).catch(function(e){try{console.warn('sync drafts',e&&e.message||e)}catch(x){}})
+  }).catch(function(e){syncFail('portfolio',e)})
 },700)}
 window.eaPush=remotePush;
+/* Récupère les brouillons privés (autre appareil) si le cache local est plus ancien. */
+function draftPull(){if(!SB)return;SB.from('portfolio_drafts').select('data').eq('id',1).maybeSingle().then(function(r){
+  if(r.error||!r.data||!r.data.data)return;
+  var remote=r.data.data;
+  if(!Array.isArray(remote.projects))return;
+  if((remote.upd||0)<=(D.upd||0))return;
+  D.projects=remote.projects;
+  try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}
+  render()
+}).catch(function(){})}
+
 /* eaLoad et le client Supabase vivent dans remote.js */
 function msgPull(){if(!SB)return;SB.from('messages').select('*').order('created_at',{ascending:false}).then(function(r){if(r.error)return;D.msgs=(r.data||[]).map(function(m){return{id:m.id,from:m.name||'Anonyme',email:m.email||'',txt:m.body||'',subject:m.subject||'',t:m.created_at?new Date(m.created_at).getTime():Date.now(),r:m.read?1:0}});try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}if(A.classList.contains('open'))render()}).catch(function(){})}
 window.eaMsgPull=msgPull;
@@ -210,6 +229,7 @@ function enter(){
   window.SB_ADMIN=true;
   openAdminRaw();
   msgPull();
+  draftPull();
   SB.from('portfolio').select('id').eq('id',1).maybeSingle().then(function(r){if(!r.error&&!r.data)remotePush()}).catch(function(){});
 }
 window.SB_ADMIN=window.SB_ADMIN||false;
