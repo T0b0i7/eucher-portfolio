@@ -26,6 +26,7 @@ Portfolio rouge et noir avec animations, sons, blog, espace d’administration e
 - `assets/js/admin-taxonomy.js` : écran Taxonomie de l’admin (familles, sous-catégories, tags, technologies).
 - `assets/js/admin-media.js` : écran Médias de l’admin (upload Storage, galeries/couvertures).
 - `assets/js/admin-github.js` : écran GitHub (synchronisation des dépôts et commits).
+- `assets/js/appearance.js` + `admin-appearance.js` : thème configurable (accent, fond, motion).
 - `assets/js/admin-doc.js` : assainit le document publié (projets publiés uniquement, sans messages ni téléphone) ; les brouillons partent dans une table privée.
 - `assets/img/` : logo et portrait.
 - `supabase/` : scripts SQL de la base, migrations P0/P1 et seed des projets.

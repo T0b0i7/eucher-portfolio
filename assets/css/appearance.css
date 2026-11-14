@@ -1,0 +1,7 @@
+/* P4 — thème configurable (accent, fond, motion) */
+:root[data-bg="plain"] body{background-image:none!important}
+:root[data-bg="grid"] body{background-image:linear-gradient(rgba(230,0,18,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(230,0,18,.03) 1px,transparent 1px)!important;background-size:48px 48px!important}
+:root[data-bg="aurora"] body{background-image:radial-gradient(circle at 15% 10%,rgba(230,0,18,.18),transparent 45%),radial-gradient(circle at 85% 25%,rgba(89,0,255,.14),transparent 42%),radial-gradient(circle at 50% 95%,rgba(0,140,255,.10),transparent 50%)!important}
+:root[data-motion="soft"] *{animation-duration:.6s!important;transition-duration:.2s!important}
+:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(prefers-reduced-motion:reduce){:root *{animation-duration:.01ms!important;transition-duration:.01ms!important}}
