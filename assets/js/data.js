@@ -1,6 +1,6 @@
 /* Données issues du CV */
 var SEED_PROFILE={nom:'Eucher ABATTI',titre:'AI-Augmented & Agentic Software Engineer',bio:'Ingénieur logiciel spécialisé dans l’IA augmentée, les systèmes agents, l’architecture logicielle et la transformation numérique. Je conçois des solutions fiables, intelligentes et orientées impact métier.',slogan:'Code propre. Impact réel.',email:'abattieucher@gmail.com',tel:'+229 01 57 00 24 27',ville:'Porto-Novo, Bénin',langues:'Français : courant, Minan : langue maternelle, Anglais : niveau B2',interets:'Innovation numérique, Intelligence artificielle, Cybersécurité et IAM, Web3 et fintech, Communauté tech (GDG Cotonou), veille technologique, lecture, jeux de stratégie, cuisine',hook_r:'Je construis des plateformes où chacun voit exactement ce qu’il doit voir, et rien d’autre.',about_r:'Je suis Eucher ABATTI, ingénieur logiciel et architecte de solutions numériques basé au Bénin. Je m’intéresse particulièrement à la rencontre entre la technologie et les besoins humains.\n\nPour moi, l’ingénierie logicielle ne consiste pas à faire fonctionner les choses parce qu’elles le peuvent. Il s’agit de comprendre pourquoi une solution doit exister, de questionner la manière dont elle doit fonctionner et de construire un produit qui garde du sens au-delà de sa première version.\n\nJe travaille sur toutes les couches d’un produit numérique : interfaces, logique applicative, systèmes backend, bases de données et architecture. J’accorde une attention particulière à ce qui passe souvent inaperçu : la communication entre les systèmes, la circulation des données, l’impact des décisions sur la performance et la valeur réelle produite.\n\nJe suis attiré par les problèmes complexes, l’ingénierie réfléchie et les idées qui méritent de devenir plus que des concepts. Je ne mesure pas le progrès uniquement à ce que j’ai construit, mais à ma compréhension de ce que je construis.\n\nLa technologie ne doit pas exister pour impressionner. Elle doit exister pour faire la différence.\n\nEucher ABATTI, ingénieur logiciel et architecte de solutions numériques. Bénin. Je construis avec intention.',hook_c:'Je transforme des idées complexes en produits numériques utiles.',about_c:'Je suis Eucher ABATTI, ingénieur logiciel et architecte de solutions numériques basé au Bénin.\n\nJe transforme des idées complexes en solutions numériques utiles. Mes domaines de prédilection : l’architecture logicielle, l’ingénierie et la création de technologies qui résolvent de vrais problèmes.\n\nToujours en questionnement, toujours en train de construire, jamais fini d’apprendre.\n\nJe ne construis pas seulement des logiciels. Je construis des possibilités.',proof:'10+|clients actifs, 87 %|de temps de recherche en moins, 7|modules métiers conçus',linkedin:'linkedin.com/in/eucher-abatti',github:'github.com/eucherabatti'};
-var SEED_SKILLS=[['React','Frontend & Mobile'],['Next.js','Frontend & Mobile'],['TypeScript','Frontend & Mobile'],['React Native','Frontend & Mobile'],['PHP','Backend & API'],['Laravel','Backend & API'],['Python','Backend & API'],['Django','Backend & API'],['Node.js','Backend & API'],['MySQL','Bases de données'],['PostgreSQL','Bases de données'],['RBAC','Sécurité & IAM'],['IAM','Sécurité & IAM'],['JWT','Sécurité & IAM'],['2FA','Sécurité & IAM'],['Audit logs','Sécurité & IAM'],['Docker','DevOps & Outils'],['Git','DevOps & Outils'],['CI/CD','DevOps & Outils']].map(function(s,i){return{id:i+1,n:s[0],cat:s[1],lv:80}});
+var SEED_SKILLS=[['React','Frontend & Mobile'],['Next.js','Frontend & Mobile'],['TypeScript','Frontend & Mobile'],['React Native','Frontend & Mobile'],['PHP','Backend & API'],['Laravel','Backend & API'],['Python','Backend & API'],['Django','Backend & API'],['Node.js','Backend & API'],['MySQL','Bases de données'],['PostgreSQL','Bases de données'],['RBAC','Sécurité & IAM'],['IAM','Sécurité & IAM'],['JWT','Sécurité & IAM'],['2FA','Sécurité & IAM'],['Audit logs','Sécurité & IAM'],['Docker','DevOps & Outils'],['Git','DevOps & Outils'],['CI/CD','DevOps & Outils'],['AI Integration','AI Engineering'],['Agentic Development','AI Engineering']].map(function(s,i){return{id:i+1,n:s[0],cat:s[1],lv:80}});
 var SEED_EXP=[
 {id:1,t:'Web Operations Associate / Développeur Full-Stack',o:'Intelligent Revenue OÜ',l:'Tallinn, Estonie (télétravail)',p:'août 2026 – présent',d:'Développement front-end et back-end de plateformes fintech internationales (Web3), au sein d’une équipe distribuée sur plusieurs fuseaux horaires.\nDéveloppement de CMS, d’outils de publication et d’API internes ; optimisation des performances et de la disponibilité cloud.'},
 {id:2,t:'Stagiaire Développeur Full-Stack',o:'INNOVTECH',l:'Cotonou (télétravail)',p:'novembre 2025 – février 2026',d:'Développement frontend React/Next.js sur la plateforme immobilière IMONA, intégration de maquettes Figma.\nCoordination de projet en méthodologie Agile et intégration des retours d’équipe.'},
@@ -11,8 +11,23 @@ var SEED_EDU=[
 {id:1,t:'Candidature — Master 1 Génie Logiciel',o:'IFRI, Université d’Abomey-Calavi',l:'',p:'Dossier soumis en juillet 2026',d:'Admission en cours.'},
 {id:2,t:'Licence professionnelle en Systèmes Informatiques et Logiciels',o:'HECM',l:'Porto-Novo',p:'2022 – 2025',d:'Soutenue avec mention très bien.\nMajor de promotion sur plusieurs semestres.'}];
 var S3=SEED_SKILLS;
+var SKILL_DETAILS={
+ 'AI Integration':{fr:'Intègre des modèles d’IA aux applications pour automatiser des tâches et enrichir leurs fonctionnalités.',en:'Integrates AI models into applications to automate tasks and add intelligent features.'},
+ 'Agentic Development':{fr:'Conçoit des agents capables de planifier et d’exécuter des tâches avec des outils et des garde-fous.',en:'Builds agents that plan and execute tasks using tools within defined safeguards.'},
+ RBAC:{fr:'Attribue les permissions selon les rôles pour limiter chaque utilisateur aux accès nécessaires.',en:'Assigns permissions by role so each user has only the access they need.'},
+ IAM:{fr:'Gère les identités et leurs accès aux applications et aux ressources.',en:'Manages identities and their access to applications and resources.'},
+ JWT:{fr:'Utilise des jetons signés pour transmettre des informations d’authentification entre services.',en:'Uses signed tokens to carry authentication information between services.'},
+ '2FA':{fr:'Ajoute une seconde vérification à la connexion pour renforcer la sécurité d’un compte.',en:'Adds a second verification step at sign-in to strengthen account security.'},
+ 'Audit logs':{fr:'Consigne les actions importantes pour faciliter le suivi et les vérifications de sécurité.',en:'Records important actions to support monitoring and security reviews.'}
+};
 function drawSk(){var el=document.getElementById('sk');if(!el)return;var cats=[],by={};S3.forEach(function(s){if(!by[s.cat]){by[s.cat]=[];cats.push(s.cat)}by[s.cat].push(s)});
-el.innerHTML=cats.map(function(c){return '<div class="skg"><h4>'+E(c)+'</h4><div class="skl">'+by[c].map(function(s){return '<div class="sk">'+skI(s.n)+E(s.n)+'</div>'}).join('')+'</div></div>'}).join('')}
+el.innerHTML=cats.map(function(c){return '<div class="skg"><h4>'+E(c)+'</h4><div class="skl">'+by[c].map(function(s){var details=SKILL_DETAILS[s.n],content='<span aria-hidden="true">'+skI(s.n)+'</span>'+E(s.n);return details?'<button class="sk skill-details-trigger" type="button" data-skill="'+E(s.n)+'" data-category="'+E(c)+'" aria-haspopup="dialog">'+content+'</button>':'<div class="sk">'+skI(s.n)+E(s.n)+'</div>'}).join('')+'</div></div>'}).join('')}
+var skillGrid=document.getElementById('sk'),skillDialog=document.getElementById('skillDialog');
+if(skillGrid&&skillDialog)skillGrid.addEventListener('click',function(e){var trigger=e.target.closest('.skill-details-trigger');if(!trigger)return;var details=SKILL_DETAILS[trigger.dataset.skill];if(!details)return;
+document.getElementById('skillDialogCategory').textContent=trigger.dataset.category;
+document.getElementById('skillDialogTitle').textContent=trigger.dataset.skill;
+document.getElementById('skillDialogDescription').textContent=window.LANG==='en'?details.en:details.fr;
+skillDialog.showModal()});
 
 /* Logos des technologies (SVG intégrés) */
 var ICONS=(function(){var s=function(vb,b){return '<svg viewBox="'+vb+'" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+b+'</svg>'},tx=function(x,y,sz,c,t,a){return '<text x="'+x+'" y="'+y+'" text-anchor="'+(a||'middle')+'" font-size="'+sz+'" font-weight="800" fill="'+c+'" font-family="Arial,Helvetica,sans-serif">'+t+'</text>'};
@@ -44,31 +59,43 @@ Object.assign(ICMAP,{'django':'django','mysql':'mysql','postgresql':'pg','docker
 function skI(s,raw){var k=ICMAP[String(s).toLowerCase().trim()],o=k==='gg'?ICONS.git+ICONS.github:(k?ICONS[k]:'');if(!o)return raw?'':'<i>'+String(s).slice(0,2).replace(/[<>&"]/g,'')+'</i>';return raw?o:'<i class="ic">'+o+'</i>'}
 window.E = window.E || function(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML};
 
-var P=[
- {n:'CodeDrive',c:'web mobile',cat:'Web · Mobile',d:'Le permis de conduire numérique pour le Bénin',role:'Conception et dossier de candidature',st:'Candidature au Prix National de la Simplification Administrative 2026',sec:'Travaux publics et Transports (ANATT)',long:'Hub numérique et application mobile-first qui dématérialise tout le parcours d’apprentissage du permis de conduire au Bénin. Il s’intègre en amont du système SIGPCB de l’ANATT et met fin aux registres papier.',f:['Livret numérique certifié avec QR code','Marketplace des auto-écoles agréées','Enrôlement numérique des élèves','Simulateur de code avec algorithme prédictif de réussite','Évaluation citoyenne anonyme des auto-écoles et classement public','Tableau de bord ANATT avec indice de préparation'],t:['React','Node.js','Base relationnelle','Offline-first','Bluetooth / NFC','API ANIP']},
- {n:'ZemPro',c:'web mobile',cat:'Web · Mobile',d:'La plateforme des conducteurs de taxi-moto (Zémidjan)',role:'Conception et dossier de candidature',st:'Candidature au Prix National de la Simplification Administrative 2026',sec:'Mobilité urbaine et Smart City',long:'Plateforme numérique qui professionnalise les conducteurs de taxi-moto et de taxis urbains au Bénin, en simplifiant leurs démarches et en renforçant la confiance des usagers.',f:['Carte professionnelle avec QR code','Contrôle par la police','Taxes communales','Tontine numérique','Alertes Smart City','Évaluation citoyenne','Bouton SOS'],t:['React','Node.js','Mobile-first','API ANIP (NPI)','MTN MoMo','Moov Money','TrésorPay']},
- {n:'CertiDiplôme BJ',c:'web',cat:'Web',d:'Authentification et équivalence des diplômes',role:'Porteur du projet',st:'Candidature au Prix National de la Simplification Administrative 2026',sec:'Éducation et administration',long:'Plateforme qui authentifie les diplômes au Bénin et facilite leur équivalence, pour des démarches plus rapides et des documents infalsifiables.',f:['Authentification par QR code','Identification via NPI / ANIP','Conversion des notes ECTS et GPA','Vérification instantanée par les employeurs et les écoles'],t:['NPI / ANIP','QR code','ECTS / GPA']},
- {n:'Kiffa-Agro IA',c:'ia web mobile',cat:'IA · Web · Mobile',d:'Le diagnostic des maladies des plantes par l’IA',role:'Développeur frontend et responsable du frontend',st:'Candidature au SAHAL TECH INNOVATION CHALLENGE 2026',sec:'AgriTech',long:'Application AgriTech qui diagnostique les maladies des plantes à partir d’une photo et restitue le résultat à l’oral dans les langues locales, pour être utile à tous les agriculteurs.',f:['Diagnostic par réseau CNN (MobileNetV3)','Restitution audio en fon, nago, adja et baatonu','PWA offline-first avec expériences desktop et mobile distinctes','Site vitrine one-page déployé sur Vercel'],t:['Next.js 14','TypeScript','PWA','Workbox','MobileNetV3','Vercel']}
-];P.forEach(function(p,i){p.m=i});
-var g=document.getElementById("grid");
-function draw(f){
-  if(!g || !Array.isArray(P))return;
-  g.innerHTML="";
-  P.forEach(function(p,i){
-    if(f!=="all"&&(' '+p.c+' ').indexOf(' '+f+' ')<0)return;
-    var d=document.createElement("div");d.className="card";
-    d.innerHTML='<div class="shot">'+(p.cover?'<img src="'+p.cover+'" alt="" loading="lazy">':p.n.slice(0,2).toUpperCase())+'</div><h3>'+p.n+'</h3><p>'+p.d+'</p><div class="chips">'+p.t.map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><a href="#" class="more" data-i="'+i+'">Voir le projet</a><span class="n">#0'+(i+1)+'</span>';
-    g.appendChild(d);
+/* Projets construits depuis le catalogue public (assets/js/catalog.js). */
+var P=(function(){
+  var src=(window.EA_PROJECTS&&window.EA_PROJECTS.length)?window.EA_PROJECTS:[];
+  var CM={Web:'web',Mobile:'mobile',IA:'ia',Design:'design'};
+  function slug(p){
+    if(p.slug)return p.slug;
+    if(window.eaSlug)return window.eaSlug(p.n);
+    return String(p.n||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+  return src.filter(function(x){return x&&x.st==='Publié'}).map(function(x,i){
+    var cat=x.cat||'Web';
+    var t=String(x.t||'').split(',').map(function(v){return v.trim()}).filter(Boolean);
+    return {
+      n:x.n,
+      c:x.c||CM[cat]||'web',
+      cat:cat,
+      d:x.d||'',
+      role:x.role||'Conception et développement',
+      st:x.st||'Publié',
+      sec:x.sec||cat,
+      long:x.long||x.d||'',
+      f:(x.f||[]).slice(),
+      t:t,
+      m:i,
+      u:x.u||'',
+      preview:x.preview||'',
+      cover:x.cover||'',
+      don:false,
+      dl:'',
+      slug:slug(x),
+      impact:(x.impact||[]).slice()
+    };
   });
-  if(!g.children.length)g.innerHTML='<p class="lead">Bientôt de nouvelles missions…</p>';
-}
-if(g){draw("all");}
-var filters=document.getElementById("filters");
-if(filters){filters.addEventListener("click",function(e){
-  if(e.target.tagName!=="BUTTON")return;
-  document.querySelectorAll("#filters button").forEach(function(b){b.classList.remove("on")});
-  e.target.classList.add("on");draw(e.target.dataset.f);
-});}
+})();
+/* Ancienne grille #grid supprimée : le carrousel dynamique la remplace.
+   `draw` reste défini (no-op) car sections.js et effects.js l'appellent encore. */
+function draw(){}
 var links=document.querySelectorAll("nav a"),secs=[].slice.call(document.querySelectorAll("section"));
 addEventListener("scroll",function(){
   var y=scrollY+120,cur=secs[0].id;
@@ -90,10 +117,15 @@ var fromProject=new URLSearchParams(location.search).get('fromProject')==='1';
 if(fromProject){
   var projectIntro=document.getElementById('intro');
   if(projectIntro)projectIntro.remove();
-  document.addEventListener('DOMContentLoaded',function(){
+  var returnToProjects=function(){
     var projectsSection=document.getElementById('projects');
-    if(projectsSection)projectsSection.scrollIntoView({behavior:'instant'});
-  },{once:true});
+    if(projectsSection)projectsSection.scrollIntoView({behavior:'auto',block:'start'});
+  };
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(returnToProjects)},{once:true});
+  }else{
+    requestAnimationFrame(returnToProjects);
+  }
 }
 document.querySelectorAll('#intro button').forEach(function(b){b.onclick=function(){if(b.dataset.snd==='1'){setSound(true);sfx.slam()}var i=document.getElementById('intro');i.classList.add('out');setTimeout(function(){i.remove()},750)}});
 var wp=document.getElementById('wipe');
@@ -102,8 +134,7 @@ document.addEventListener('mouseover',function(e){if(e.target.closest&&e.target.
 document.addEventListener('click',function(e){if(e.target.closest('a,button'))sfx.click();[0,1].forEach(function(k){var s=document.createElement('i');s.className='star'+(k?' w':'');s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';document.body.appendChild(s);setTimeout(function(){s.remove()},700)})});
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var t=e.target;io.unobserve(t);if(t.classList.contains('pre')){t.classList.add('slam');sfx.slam();document.body.classList.add('shake');setTimeout(function(){document.body.classList.remove('shake')},300)}else{t.classList.add('in');setTimeout(function(){t.classList.remove('rv','in')},1100)}})},{threshold:.25});
 function reveal(l){[].forEach.call(l,function(t,i){if(t.classList.contains('title')||t.classList.contains('note')||t.classList.contains('quote'))t.classList.add('pre');else{t.classList.add('rv');t.style.setProperty('--i',(i%6)*80+'ms')}io.observe(t)})}
-reveal(document.querySelectorAll('.title,.note,.quote,.sk,.links a,.card'));
-var _d=draw;draw=function(f){if(!g)return;_d(f);reveal(g.querySelectorAll('.card'))};
+reveal(document.querySelectorAll('.title,.note,.quote,.sk,.links a'));
 var px=document.querySelectorAll('#home .shard1,#home .shard2,.hero-art,#home .tag');
 addEventListener('mousemove',function(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;px.forEach(function(el,i){el.style.translate=(x*-(14+i*8))+'px '+(y*-(10+i*5))+'px'})});
 var M=document.createElement('div');M.id='modal';M.innerHTML='<div class="mbox" role="dialog" aria-modal="true"><button class="mx" aria-label="Fermer">✕</button><div class="mbody"></div></div>';document.body.appendChild(M);
@@ -112,11 +143,9 @@ function openP(i){var p=P[i];M.querySelector('.mbody').innerHTML='<div class="mh
 function closeP(){M.classList.remove('open');document.body.style.overflow=''}
 M.addEventListener('click',function(e){if(e.target===M||e.target.classList.contains('mx'))closeP()});
 addEventListener('keydown',function(e){if(e.key==='Escape')closeP()});
-if(g){g.addEventListener('click',function(e){if(e.target.closest('a.preview'))return;var c=e.target.closest('.card');if(!c)return;e.preventDefault();openP(+c.querySelector('.more').dataset.i)});}
 var nv=document.getElementById('nav'),bgr=document.getElementById('burger');
 bgr.onclick=function(){var o=nv.classList.toggle('open');bgr.setAttribute('aria-expanded',o)};
 document.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',function(){nv.classList.remove('open');bgr.setAttribute('aria-expanded',false)})});
-draw('all');
 function mock(k){var R='#e60012',o='',i,j;
 var T=(x,y,s,t,c)=>`<text x='${x}' y='${y}' font-family='Anton,Impact,sans-serif' font-size='${s}' fill='${c||'#fff'}'>${t}</text>`;
 var base=`<svg viewBox='0 0 320 180' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'><rect width='320' height='180' fill='#0f0f0f'/><path d='M0 180L120 0H190L70 180Z' fill='#2a0006'/><rect width='320' height='16' fill='#1d1d1d'/><circle cx='9' cy='8' r='3' fill='${R}'/><circle cx='19' cy='8' r='3' fill='#777'/><circle cx='29' cy='8' r='3' fill='#777'/>`;
@@ -129,122 +158,238 @@ if(k===3){o+=`<path d='M160 160C90 140 70 70 100 40C140 30 210 50 220 100C225 14
 return base+o+'</svg>'}
 function safePreviewUrl(s){var v=String(s||'').trim(),u;if(!v)return '';try{u=new URL(v)}catch(e){return ''}return u.protocol==='http:'||u.protocol==='https:'?u.href:''}
 window.safePreviewUrl=safePreviewUrl;
-draw=function(f){
-if(!g||!Array.isArray(P))return;
-g.innerHTML='';
-P.forEach(function(p,i){
-if(f!=='all'&&(' '+p.c+' ').indexOf(' '+f+' ')<0)return;
-var d=document.createElement('div');d.className='card';
-d.innerHTML=`<div class='shot'></div><h3>${p.n}</h3><p>${p.d}</p><div class='chips'>${p.t.slice(0,3).map(x=>'<span>'+x+'</span>').join('')}</div><div class='card-actions'><a href='#' class='more' data-i='${i}'>Voir le projet</a></div><span class='n'>#0${i+1}</span>`;
-var shot=d.querySelector('.shot');
-if(p.cover){
-var img=document.createElement('img');img.src=p.cover;img.alt=p.n;img.loading='lazy';
-img.addEventListener('error',function(){shot.innerHTML=mock(p.m)+'<em>aperçu</em>'});
-shot.appendChild(img);
-}else shot.innerHTML=mock(p.m)+'<em>aperçu</em>';
-var preview=safePreviewUrl(p.preview);
-if(preview){var link=document.createElement('a');link.className='preview';link.href=preview;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Voir l’aperçu';d.querySelector('.card-actions').appendChild(link)}
-g.appendChild(d);
-});
-if(!g.children.length)g.innerHTML=`<p class='lead'>Bientôt de nouvelles missions…</p>`;
-reveal(g.querySelectorAll('.card'))};
 var _o=openP;openP=function(i){_o(i);M.querySelector('.mhead').insertAdjacentHTML('beforeend','<div class="mshot">'+mock(P[i].m)+'</div>')};
-var projectCarouselCards=document.querySelectorAll('#projectCarousel .project-card');
-var projectCarouselState={index:1, interval:null, hover:false};
+/* ===== Carrousel dynamique des projets ===== */
+var EA_CAROUSEL={index:0,interval:null,hover:false,focusInside:false,bound:false,host:null,swiped:false,pointerDown:false};
 
-function updateProjectCarousel(){
-  var cards=document.querySelectorAll('#projectCarousel .project-card');
-  var dots=document.querySelectorAll('#projectDots .dot');
-  var total=cards.length;
+function carouselCards(){return [].slice.call(document.querySelectorAll('#projectCarousel .project-card'))}
+function carouselPaused(){return EA_CAROUSEL.hover||EA_CAROUSEL.focusInside}
 
-  if(!total) return;
-
-  cards.forEach(function(card, index){
-    card.classList.remove('active', 'prev', 'next');
-    var diff=(index-projectCarouselState.index+total)%total;
-    if(diff>total/2){diff-=total;}
-
-    if(diff===0){
-      card.classList.add('active');
-    } else if(diff===-1){
-      card.classList.add('prev');
-    } else if(diff===1){
-      card.classList.add('next');
-    }
-  });
-
-  dots.forEach(function(dot, index){
-    dot.classList.toggle('active', index === projectCarouselState.index);
-  });
+function carouselAutoAllowed(){
+  if(window.CALM)return false;
+  if(document.hidden)return false;
+  try{if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return false}catch(e){}
+  return true;
 }
 
-function nextProjectCarousel(){
-  projectCarouselState.index=(projectCarouselState.index+1)%document.querySelectorAll('#projectCarousel .project-card').length;
-  updateProjectCarousel();
-}
-
-function prevProjectCarousel(){
-  var total=document.querySelectorAll('#projectCarousel .project-card').length;
-  projectCarouselState.index=(projectCarouselState.index-1+total)%total;
-  updateProjectCarousel();
-}
+function stopProjectCarousel(){if(EA_CAROUSEL.interval){clearInterval(EA_CAROUSEL.interval);EA_CAROUSEL.interval=null}}
 
 function startProjectCarousel(){
-  if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
-  projectCarouselState.interval=setInterval(nextProjectCarousel, 4000);
+  stopProjectCarousel();
+  if(carouselPaused()||!carouselAutoAllowed()||carouselCards().length<2)return;
+  EA_CAROUSEL.interval=setInterval(function(){
+    if(carouselPaused()||!carouselAutoAllowed()){stopProjectCarousel();return}
+    nextProjectCarousel();
+  },4000);
 }
 
-var projectCarouselHost=document.getElementById('carouselSection');
-if(projectCarouselHost){
-  projectCarouselHost.addEventListener('mouseenter', function(){ projectCarouselState.hover=true; if(projectCarouselState.interval) clearInterval(projectCarouselState.interval); });
-  projectCarouselHost.addEventListener('mouseleave', function(){ projectCarouselState.hover=false; startProjectCarousel(); });
+function restartProjectCarousel(){if(!carouselPaused())startProjectCarousel()}
+
+function updateProjectCarousel(){
+  var cards=carouselCards(),dots=[].slice.call(document.querySelectorAll('#projectDots .dot')),total=cards.length;
+  if(!total)return;
+  if(EA_CAROUSEL.index<0||EA_CAROUSEL.index>=total)EA_CAROUSEL.index=0;
+  var active=EA_CAROUSEL.index;
+  cards.forEach(function(card,index){
+    var diff=(index-active+total)%total;
+    if(diff>total/2)diff-=total;
+    card.classList.remove('active','prev','next');
+    if(diff===0)card.classList.add('active');
+    else if(diff===-1)card.classList.add('prev');
+    else if(diff===1)card.classList.add('next');
+    card.setAttribute('aria-hidden',diff===0?'false':'true');
+    var link=card.querySelector('.btn-project');
+    if(link)link.setAttribute('tabindex',diff===0?'0':'-1');
+  });
+  dots.forEach(function(dot,index){
+    var on=index===active;
+    dot.classList.toggle('active',on);
+    dot.setAttribute('aria-current',on?'true':'false');
+  });
 }
 
-var projectPrevBtn=document.getElementById('prevBtn');
-var projectNextBtn=document.getElementById('nextBtn');
-if(projectPrevBtn){projectPrevBtn.addEventListener('click', function(){
-  if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
-  prevProjectCarousel();
-  startProjectCarousel();
-});}
-if(projectNextBtn){projectNextBtn.addEventListener('click', function(){
-  if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
-  nextProjectCarousel();
-  startProjectCarousel();
-});}
+function goProjectCarousel(index){
+  var total=carouselCards().length;
+  if(!total)return;
+  EA_CAROUSEL.index=((index%total)+total)%total;
+  updateProjectCarousel();
+}
+function nextProjectCarousel(){goProjectCarousel(EA_CAROUSEL.index+1)}
+function prevProjectCarousel(){goProjectCarousel(EA_CAROUSEL.index-1)}
 
-var projectDots=document.getElementById('projectDots');
-if(projectDots){
-  projectDots.innerHTML='';
-  document.querySelectorAll('#projectCarousel .project-card').forEach(function(card, index){
-    var dot=document.createElement('div');
-    dot.className='dot'+(index===projectCarouselState.index ? ' active' : '');
-    dot.dataset.index=index;
-    dot.setAttribute('role','button');
-    dot.setAttribute('aria-label','Afficher le projet '+(index+1));
-    dot.addEventListener('click', function(){
-      if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
-      projectCarouselState.index=index;
-      updateProjectCarousel();
-      startProjectCarousel();
+/* Changement de carte au geste horizontal.
+   Seuil 40px, geste vertical ignoré (le scroll reste prioritaire).
+   Les liens/boutons ne déclenchent jamais le swipe. */
+function carouselSwipe(dx,dy){
+  if(!isFinite(dx)||!isFinite(dy))return false;
+  if(carouselCards().length<2)return false;
+  if(Math.abs(dx)<40)return false;
+  if(Math.abs(dx)<=Math.abs(dy)*1.2)return false;
+  stopProjectCarousel();
+  EA_CAROUSEL.swiped=true;
+  if(dx<0)nextProjectCarousel();else prevProjectCarousel();
+  restartProjectCarousel();
+  setTimeout(function(){EA_CAROUSEL.swiped=false},350);
+  return true;
+}
+function ignoreSwipeTarget(el){
+  return !!(el&&el.closest&&el.closest('a,button,input,select,textarea'));
+}
+
+function initProjectCarousel(){
+  if(EA_CAROUSEL.bound)return;
+  var host=document.getElementById('carouselSection');
+  if(!host)return;
+  EA_CAROUSEL.bound=true;EA_CAROUSEL.host=host;
+  host.addEventListener('mouseenter',function(){EA_CAROUSEL.hover=true;stopProjectCarousel()});
+  host.addEventListener('mouseleave',function(){EA_CAROUSEL.hover=false;restartProjectCarousel()});
+  host.addEventListener('focusin',function(){
+    /* Un tap tactile ne doit pas couper définitivement l'autoplay : on
+       n'arrête que pour un focus venu du clavier (Tab). */
+    if(EA_CAROUSEL.pointerDown)return;
+    EA_CAROUSEL.focusInside=true;stopProjectCarousel();
+  });
+  host.addEventListener('focusout',function(e){
+    if(host.contains(e.relatedTarget))return;
+    EA_CAROUSEL.focusInside=false;restartProjectCarousel();
+  });
+  host.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'){e.preventDefault();prevProjectCarousel()}
+    else if(e.key==='ArrowRight'){e.preventDefault();nextProjectCarousel()}
+  });
+  /* Swipe tactile (Pointer Events + repli Touch Events) */
+  var sx=0,sy=0,tracking=false;
+  function swipeStart(x,y,target){
+    if(ignoreSwipeTarget(target)){tracking=false;return}
+    sx=x;sy=y;tracking=true;EA_CAROUSEL.pointerDown=true;
+  }
+  function swipeEnd(x,y){
+    if(!tracking)return false;
+    tracking=false;
+    var done=carouselSwipe(x-sx,y-sy);
+    setTimeout(function(){EA_CAROUSEL.pointerDown=false},0);
+    return done;
+  }
+  if(window.PointerEvent){
+    host.addEventListener('pointerdown',function(e){
+      if(e.isPrimary===false)return;
+      EA_CAROUSEL.pointerDown=true;
+      if(e.pointerType==='mouse')return;
+      swipeStart(e.clientX,e.clientY,e.target);
     });
-    projectDots.appendChild(dot);
+    document.addEventListener('pointermove',function(e){
+      if(!tracking)return;
+      var dx=e.clientX-sx,dy=e.clientY-sy;
+      if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)&&e.cancelable)e.preventDefault();
+    },{passive:false});
+    document.addEventListener('pointerup',function(e){
+      if(e.pointerType==='mouse'){tracking=false;EA_CAROUSEL.pointerDown=false;return}
+      if(!tracking){EA_CAROUSEL.pointerDown=false;return}
+      swipeEnd(e.clientX,e.clientY);
+    });
+    document.addEventListener('pointercancel',function(){tracking=false;EA_CAROUSEL.pointerDown=false});
+  }else{
+    host.addEventListener('touchstart',function(e){
+      if(e.touches.length!==1)return;
+      swipeStart(e.touches[0].clientX,e.touches[0].clientY,e.target);
+    },{passive:true});
+    host.addEventListener('touchend',function(e){
+      if(!tracking)return;
+      var t=e.changedTouches&&e.changedTouches[0];
+      if(!t){tracking=false;EA_CAROUSEL.pointerDown=false;return}
+      swipeEnd(t.clientX,t.clientY);
+    },{passive:true});
+    host.addEventListener('touchcancel',function(){tracking=false;EA_CAROUSEL.pointerDown=false},{passive:true});
+  }
+  var prev=document.getElementById('prevBtn');
+  if(prev)prev.addEventListener('click',function(){prevProjectCarousel()});
+  var next=document.getElementById('nextBtn');
+  if(next)next.addEventListener('click',function(){nextProjectCarousel()});
+  var container=document.getElementById('projectCarousel');
+  if(container)container.addEventListener('click',function(e){
+    if(EA_CAROUSEL.swiped)return;
+    if(!e.target.closest)return;
+    if(e.target.closest('a'))return;
+    var card=e.target.closest('.project-card');
+    if(!card)return;
+    var index=parseInt(card.getAttribute('data-index'),10);
+    if(isNaN(index)||index===EA_CAROUSEL.index)return;
+    goProjectCarousel(index);
+  });
+  var dots=document.getElementById('projectDots');
+  if(dots)dots.addEventListener('click',function(e){
+    var button=e.target.closest?e.target.closest('button[data-index]'):null;
+    if(!button)return;
+    goProjectCarousel(parseInt(button.getAttribute('data-index'),10));
+  });
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden)stopProjectCarousel();
+    else restartProjectCarousel();
   });
 }
 
-document.querySelectorAll('#projectCarousel .project-card').forEach(function(card, index){
-  card.addEventListener('click', function(event){
-    if(event.target.closest('a')) return;
-    if(index===projectCarouselState.index) return;
-    if(projectCarouselState.interval) clearInterval(projectCarouselState.interval);
-    projectCarouselState.index=index;
-    updateProjectCarousel();
-    startProjectCarousel();
-  });
-});
+/* Reconstruit les cartes et les pastilles depuis P. Idempotent :
+   peut être appelé au boot, après eaLoad et après fermeture de l'admin. */
+function renderProjectCarousel(){
+  var container=document.getElementById('projectCarousel');
+  if(!container)return;
+  stopProjectCarousel();
+  var previous=EA_CAROUSEL.index;
+  var list=(Array.isArray(P)?P:[]);
+  container.innerHTML='';
+  list.forEach(function(p,index){
+    if(!p)return;
+    var slug=p.slug||(window.eaSlug?window.eaSlug(p.n):'');
+    var art=p.cover||(window.eaProjectArt?window.eaProjectArt(p):'');
+    var card=document.createElement('article');
+    card.className='project-card';
+    card.setAttribute('data-index',String(index));
+    card.setAttribute('data-slug',slug);
+    card.setAttribute('data-name',String(p.n||''));
 
-updateProjectCarousel();
-startProjectCarousel();
+    var image=document.createElement('div');
+    image.className='card-image';
+    if(art)image.style.backgroundImage='url("'+String(art).replace(/"/g,'%22')+'")';
+    var badge=document.createElement('div');
+    badge.className='badge-top-right';
+    badge.textContent='Projet publié';
+    image.appendChild(badge);
+    card.appendChild(image);
+
+    var content=document.createElement('div');
+    content.className='card-content';
+    var tags=(p.t&&p.t.length?p.t.slice(0,3):[]).map(function(tech){
+      return '<span class="tag">'+E(tech)+'</span>';
+    }).join('');
+    content.innerHTML='<div class="tags">'+tags+'</div>'
+      +'<h3 class="project-title">'+E(p.n)+'</h3>'
+      +'<p class="project-desc">'+E(p.d)+'</p>'
+      +'<a class="btn-project" href="project.html?project='+encodeURIComponent(slug)+'">Voir le projet '
+      +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>';
+    card.appendChild(content);
+    container.appendChild(card);
+  });
+
+  var dots=document.getElementById('projectDots');
+  if(dots){
+    dots.innerHTML='';
+    [].forEach.call(container.querySelectorAll('.project-card'),function(card,index){
+      var button=document.createElement('button');
+      button.type='button';
+      button.className='dot';
+      button.setAttribute('data-index',String(index));
+      button.setAttribute('aria-label','Afficher le projet '+(index+1)+(card.getAttribute('data-name')?' : '+card.getAttribute('data-name'):''));
+      dots.appendChild(button);
+    });
+  }
+
+  EA_CAROUSEL.index=(previous>=0&&previous<list.length)?previous:0;
+  updateProjectCarousel();
+  initProjectCarousel();
+  startProjectCarousel();
+}
+window.renderProjectCarousel=renderProjectCarousel;
+renderProjectCarousel();
 var S2=SEED_SKILLS.map(function(s){return s.n}),LV=SEED_SKILLS.map(function(){return 80});
 var sub=document.querySelector('.sub');sub.innerHTML='AI-Augmented <span id="rot"></span>';
 var W=['Agentic Software Engineer','LLM Systems','Automation','Product Engineering'],wi=0,ci=0,dl=false,rt=document.getElementById('rot');

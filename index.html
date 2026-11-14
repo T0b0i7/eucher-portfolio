@@ -41,7 +41,7 @@
     <p class="sub" data-notr="1" translate="no">AI-Augmented &amp; Agentic Software Engineer</p>
     <p>Passionné par le code, l’innovation et les nouvelles technologies.</p>
     <a class="btn" href="#projects">Explorer mon univers →</a><a class="btn alt" href="#contact">Me contacter</a><a class="btn alt" href="#" id="cvBtn3">Voir mon CV</a>
-    <div class="badges"><span>Full Stack</span><span>Web &amp; Mobile</span><span>Laravel · React</span></div>
+    <div class="badges"><span>React</span><span>Next.js</span><span>TypeScript</span><span>Node.js</span><span>Laravel</span><span>React Native</span></div>
   </div>
 </section>
 
@@ -55,84 +55,12 @@
       <p class="project-subtitle">Découvrez quelques-uns de mes projets phares, conçus avec passion et livrés en production.</p>
     </div>
 
-    <div class="carousel-section" id="carouselSection">
+    <div class="carousel-section" id="carouselSection" role="region" aria-roledescription="carrousel" aria-label="Carrousel des projets" tabindex="0">
       <button class="nav-btn prev" id="prevBtn" type="button" aria-label="Projet précédent">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </button>
 
-      <div class="carousel-container" id="projectCarousel" aria-live="polite">
-        <article class="project-card" data-index="0">
-          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');">
-            <div class="badge-top-right">v1.0.0</div>
-          </div>
-          <div class="card-content">
-            <div class="tags"><span class="tag">Next.js</span><span class="tag">Node.js</span><span class="tag">OpenAI</span></div>
-            <h3 class="project-title"><span class="fake-logo logo-relay"></span> Relay</h3>
-            <p class="project-desc">Des agents <span class="highlight">fiables</span>, testés et rejouables.</p>
-            <a href="project.html?project=relay" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </article>
-
-        <article class="project-card active" data-index="1">
-          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop');">
-            <div class="badge-top-right">v1.0.0</div>
-          </div>
-          <div class="card-content">
-            <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span></div>
-            <h3 class="project-title"><span class="fake-logo logo-atlas"></span> Atlas</h3>
-            <p class="project-desc">Une couche de données qui réduit la latence de <span class="highlight">64%</span>.</p>
-            <a href="project.html?project=atlas" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </article>
-
-        <article class="project-card" data-index="2">
-          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop');">
-            <div class="badge-top-right">v1.0.0</div>
-          </div>
-          <div class="card-content">
-            <div class="tags"><span class="tag">React Native</span><span class="tag">Supabase</span><span class="tag">PWA</span></div>
-            <h3 class="project-title"><span class="fake-logo logo-ledger"></span> Ledger</h3>
-            <p class="project-desc">Démarre en <span class="highlight">300ms</span>, même hors ligne.</p>
-            <a href="project.html?project=ledger" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </article>
-
-        <article class="project-card" data-index="3">
-          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop');">
-            <div class="badge-top-right">v2.1.0</div>
-          </div>
-          <div class="card-content">
-            <div class="tags"><span class="tag">Vue.js</span><span class="tag">GraphQL</span><span class="tag">AWS</span></div>
-            <h3 class="project-title"><span class="fake-logo logo-nexus"></span> Nexus</h3>
-            <p class="project-desc">Tableau de bord temps réel pour flottes <span class="highlight">IoT</span>.</p>
-            <a href="project.html?project=nexus" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </article>
-
-        <article class="project-card" data-index="4">
-          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2670&auto=format&fit=crop');">
-            <div class="badge-top-right">v1.2.0</div>
-          </div>
-          <div class="card-content">
-            <div class="tags"><span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">HealthKit</span></div>
-            <h3 class="project-title"><span class="fake-logo logo-pulse"></span> Pulse</h3>
-            <p class="project-desc">App de suivi médical avec analyse prédictive par <span class="highlight">IA</span>.</p>
-            <a href="project.html?project=pulse" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </article>
-
-        <article class="project-card" data-index="5">
-          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=2672&auto=format&fit=crop');">
-            <div class="badge-top-right">v1.0.0</div>
-          </div>
-          <div class="card-content">
-            <div class="tags"><span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Docker</span></div>
-            <h3 class="project-title"><span class="fake-logo logo-orbit"></span> Orbit</h3>
-            <p class="project-desc">Moteur de recommandation pour l'<span class="highlight">e-commerce</span>.</p>
-            <a href="project.html?project=orbit" class="btn-project">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </article>
-      </div>
+      <div class="carousel-container" id="projectCarousel" aria-live="polite"></div>
 
       <button class="nav-btn next" id="nextBtn" type="button" aria-label="Projet suivant">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -154,6 +82,14 @@
     <h2 class="title">Mes Compétences</h2>
     <p class="lead">Un ensemble d’outils pour donner vie à mes idées.</p>
     <div class="skills" id="sk"></div>
+    <dialog class="skill-dialog" id="skillDialog" aria-labelledby="skillDialogTitle">
+      <form method="dialog"><button class="mx" type="submit" aria-label="Fermer">×</button></form>
+      <div class="mhead">
+        <span class="cat" id="skillDialogCategory"></span>
+        <h3 id="skillDialogTitle"></h3>
+        <p id="skillDialogDescription"></p>
+      </div>
+    </dialog>
     <div class="note">Compétences = Possibilités</div>
     <div class="orbit" id="orbit" aria-hidden="true"><div class="orb3" id="orb3"></div><small class="oh">Glisse pour tourner</small></div>
   </div>
@@ -222,7 +158,7 @@
   <div class="wrap">
     <h2 class="title">Me Contacter</h2>
     <p class="lead">Une idée ? Un projet ? Parlons-en !</p>
-    <div class="callcard" id="cc"><div class="cc-in"><small>CARTE DE VISITE</small><h3>EUCHER<br><span>ABATTI</span></h3><p>Full Stack Web &amp; Mobile</p><p>Laravel · React</p></div></div>
+    <div class="callcard" id="cc"><div class="cc-in"><small>CARTE DE VISITE</small><h3>EUCHER<br><span>ABATTI</span></h3><p>React · Next.js · TypeScript · Node.js · Laravel · React Native</p></div></div>
     <div class="links">
       <a href="mailto:abattieucher@gmail.com"><i>@</i><span><b>Email</b><small>abattieucher@gmail.com</small></span></a>
       <a href="https://linkedin.com/in/eucher-abatti" target="_blank" rel="noopener"><i>in</i><span><b>LinkedIn</b><small>linkedin.com/in/eucher-abatti</small></span></a>
@@ -251,6 +187,7 @@
 <div id="adm" aria-label="Espace d’administration"><div class="app"><aside id="sb"></aside><main><div class="top"><button class="bt gh sm" data-a="close">← Portfolio</button><div class="sr"><span id="si"></span><input id="q" placeholder="Rechercher une fonctionnalité…" autocomplete="off"><div id="res"></div></div><button class="bt" id="gen" data-a="gen"><span id="gi"></span><span>Mettre à jour le portfolio</span></button><div class="me"><div class="av">EA</div><div><b id="mn">Eucher ABATTI</b><small>Administrateur</small></div></div></div><div class="ct" id="ct"></div></main></div><div id="md"></div><div id="toast"></div></div>
 <script>/* Supabase : authentification GitHub de l’espace admin */window.EA_SUPABASE={url:'https://pwpfoqgiltdgdlaazdjc.supabase.co',key:'sb_publishable_zJ1a7eLIzCj2RB5WG1DLCQ_0HUG4bK0',owner:'T0b0i7'};</script>
 
+<script src="assets/js/catalog.js" defer></script>
 <script src="assets/js/data.js" defer></script>
 <script src="assets/js/sections.js" defer></script>
 <script src="assets/js/remote.js" defer></script>

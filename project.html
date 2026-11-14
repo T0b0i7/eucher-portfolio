@@ -4,73 +4,86 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#050505">
+  <meta name="description" content="Détails d’un projet d’Eucher ABATTI, AI-Augmented &amp; Agentic Software Engineer.">
   <title translate="no">Détails du projet — Eucher ABATTI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/project-details.css">
+  <script src="assets/js/catalog.js" defer></script>
   <script src="assets/js/project-details.js" defer></script>
 </head>
 <body>
-  <header class="detail-header">
-    <a class="back-link" href="index.html?fromProject=1#projects">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  <main class="container" id="projectDetail">
+    <a class="back-btn" href="index.html?fromProject=1#projects">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
       Retour aux projets
     </a>
-  </header>
 
-  <main class="detail-container" id="projectDetail">
-    <section class="project-hero" aria-labelledby="projectTitle">
-      <div class="project-copy">
-        <p class="eyebrow">ÉTUDE DE PROJET</p>
-        <div class="hero-title-row">
-          <span class="project-mark" aria-hidden="true"></span>
-          <h1 class="project-title" id="projectTitle" translate="no"></h1>
+    <section class="hero-section" aria-labelledby="projectTitle">
+      <div class="hero-text">
+        <div class="hero-logo-title">
+          <div class="hero-logo" aria-hidden="true"><span id="projectLogo"></span></div>
+          <h1 class="hero-title" id="projectTitle" translate="no"></h1>
         </div>
-        <p class="project-summary" id="projectSummary"></p>
-        <div class="project-tags" id="projectTags" aria-label="Technologies du projet"></div>
+        <p class="hero-subtitle" id="projectSubtitle"></p>
+        <div class="hero-tags" id="projectTags" aria-label="Technologies du projet" hidden></div>
       </div>
-      <div class="hero-visual">
-        <img class="hero-image" id="projectCover" alt="">
-        <div class="floating-stat" id="featuredImpact" hidden>
-          <span class="stat-value" id="featuredValue"></span>
-          <span class="stat-label" id="featuredLabel"></span>
+
+      <div class="hero-visual" id="projectVisual">
+        <div class="hero-image-wrapper">
+          <img class="hero-image" id="projectImage" alt="" width="800" height="500" decoding="async">
+          <div class="floating-stat" id="featuredStat" hidden>
+            <span class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span class="value" id="featuredValue"></span>
+            <span class="label" id="featuredLabel"></span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="detail-grid">
-      <div class="detail-left">
-        <section class="detail-section" aria-labelledby="aboutTitle">
+    <div class="main-content">
+      <div class="left-column">
+        <section aria-labelledby="aboutTitle">
           <h2 class="section-title" id="aboutTitle">À propos du projet</h2>
           <div class="project-description" id="projectDescription"></div>
         </section>
-        <section class="detail-section" id="featuresSection" aria-labelledby="featuresTitle">
+
+        <section id="featuresSection" aria-labelledby="featuresTitle">
           <h2 class="section-title" id="featuresTitle">Fonctionnalités clés</h2>
           <ul class="features-list" id="projectFeatures"></ul>
         </section>
       </div>
 
-      <aside class="detail-right" aria-label="Informations du projet">
-        <section class="info-card" aria-labelledby="techTitle">
-          <h2 class="info-title" id="techTitle">Technologies utilisées</h2>
-          <ul class="tech-list" id="projectTechnologies"></ul>
+      <aside class="right-column" aria-label="Informations du projet">
+        <section class="info-card" id="techCard" aria-labelledby="techTitle">
+          <h2 class="info-card-title" id="techTitle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Technologies
+          </h2>
+          <ul class="tech-grid" id="projectTechnologies"></ul>
         </section>
-        <section class="info-card" id="impactSection" aria-labelledby="impactTitle">
-          <h2 class="info-title" id="impactTitle">Résultats et impact</h2>
-          <div class="impact-list" id="projectImpact"></div>
+
+        <section class="info-card" id="resultsCard" aria-labelledby="resultsTitle">
+          <h2 class="info-card-title" id="resultsTitle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/></svg>
+            <span id="resultsTitleText">Repères du projet</span>
+          </h2>
+          <div class="results-grid" id="projectResults"></div>
         </section>
       </aside>
-    </section>
+    </div>
 
-    <section class="preview-section" aria-labelledby="previewTitle">
+    <section class="preview-section" id="previewSection" aria-labelledby="previewTitle">
       <h2 class="section-title" id="previewTitle">Aperçu du projet</h2>
-      <img class="preview-image" id="projectPreview" alt="" loading="lazy">
+      <div class="preview-grid" id="projectPreviewGrid"></div>
     </section>
 
-    <div class="detail-actions">
-      <a class="action-link" href="index.html?fromProject=1#projects">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <div class="action-buttons" id="projectActions">
+      <a class="btn btn-secondary" id="backToProjects" href="index.html?fromProject=1#projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
         Retour aux projets
       </a>
     </div>
@@ -79,8 +92,10 @@
   <main class="not-found" id="projectNotFound" hidden>
     <p class="eyebrow">PROJET INTROUVABLE</p>
     <h1>Ce projet n’est pas disponible.</h1>
-    <a class="action-link" href="index.html?fromProject=1#projects">Retour aux projets</a>
+    <a class="btn btn-secondary" href="index.html?fromProject=1#projects">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Retour aux projets
+    </a>
   </main>
-
 </body>
 </html>
