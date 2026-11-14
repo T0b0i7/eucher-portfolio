@@ -141,3 +141,13 @@ test('fiche projet : un brouillon renvoyé par erreur n’est pas affiché', asy
   assert.equal(page.document.querySelector('#projectNotFound').hidden, false);
   assert.equal(page.document.querySelector('#projectDetail').hidden, true);
 });
+
+test('fiche projet : aperçu local d’un brouillon', async (t) => {
+  const page = loadPage('project.html', PROJECT_SCRIPTS, 'http://localhost/project.html?project=mon-brouillon&preview=1', {
+    seedLocalStorage: { projects: [{ id: 99, n: 'Mon Brouillon', d: 'Description brouillon', st: 'Brouillon', cat: 'Web', t: 'React', f: [], impact: [] }] }
+  });
+  t.after(() => page.close());
+  await flush();
+  assert.equal(page.document.querySelector('.hero-title').textContent.trim(), 'Mon Brouillon');
+  assert.equal(page.document.getElementById('projectNotFound').hidden, true);
+});

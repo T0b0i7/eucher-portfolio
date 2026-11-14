@@ -568,6 +568,9 @@
     requested = '';
   }
 
+  var preview = false;
+  try { preview = new URLSearchParams(window.location.search).get('preview') === '1'; } catch (e) { preview = false; }
+
   function renderLocal() {
     var selected = resolveProject(requested);
     if (selected) renderProject(selected);
@@ -606,7 +609,7 @@
   }
 
   var api = window.EA_API;
-  if (api && typeof api.getProject === 'function' && api.isEnabled()) {
+  if (!preview && api && typeof api.getProject === 'function' && api.isEnabled()) {
     api.getProject(requested).then(function (remote) {
       if (remote && !remote.notFound) renderRemote(remote);
       else renderLocal();

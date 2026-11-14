@@ -71,3 +71,11 @@ L'écran **Taxonomie** de l'admin (onglet dédié) permet de :
 - les modifications sont écrites directement dans les tables (RLS propriétaire), sans passer par le document JSON.
 
 L'éditeur projet accepte désormais des listes de slugs dans **cats** et **tags**, stockées en tableaux JSON ; la projection les convertit en jonctions.
+
+## 5. P2b2 — éditeur projet et aperçu
+
+- Catégories et tags en **cases à cocher** (alimentées par le cache taxonomie de l'admin), plus de saisie de slugs à la main.
+- Statut **Publié / Brouillon / Archivé**, **date de publication**, **mise en avant** et **ordre d'affichage** ; la projection prend en compte `published_at` et `sort`.
+- Après enregistrement d'un brouillon, un **aperçu** s'ouvre sur `project.html?project=<slug>&preview=1` : la fiche se rend depuis le cache local de l'admin (aucune fuite publique, la RLS reste prioritaire).
+
+Les médias (Storage) et l'aperçu de la galerie restent pour P2b3.
