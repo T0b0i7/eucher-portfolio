@@ -3,12 +3,14 @@
 var bs=document.querySelectorAll('#intro .btn');
 if(bs.length){var w=document.createElement('div');w.className='btns';bs[0].parentNode.insertBefore(w,bs[0]);bs.forEach(function(b){w.appendChild(b);b.addEventListener('click',function(){setTimeout(function(){document.body.style.overflow=''},760)})});document.body.style.overflow='hidden'}
 var g0=document.querySelector('#intro .disp'),hr=new Date().getHours();
-if(g0)g0.textContent=(hr<6?'Bonne nuit':hr<18?'Bonjour':'Bonsoir')+' ! Bienvenue sur mon portfolio.';
+/* salutation selon l’heure */
+var GREET=hr<6?'Bonne nuit':hr<17?'Bonjour':'Bonsoir';
+if(g0)g0.textContent=GREET+' ! Bienvenue sur mon portfolio.';
 /* bannière + HUD calendrier / lieu */
 var bn=document.createElement('div');bn.id='banner';document.body.appendChild(bn);
 function flash(t){bn.textContent=t;bn.classList.remove('go');void bn.offsetWidth;bn.classList.add('go')}
 var nw=new Date(),hud=document.createElement('div');hud.id='hud';
-hud.innerHTML='<div class="cal"><b>'+String(nw.getDate()).padStart(2,'0')+'/'+String(nw.getMonth()+1).padStart(2,'0')+'</b><span>'+nw.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','').toUpperCase()+'</span></div><div class="loc"><small>'+(hr<6?'NUIT':hr<12?'MATIN':hr<18?'APRÈS-MIDI':'SOIR')+'</small><b>Accueil</b></div>';
+hud.innerHTML='<div class="cal"><b>'+String(nw.getDate()).padStart(2,'0')+'/'+String(nw.getMonth()+1).padStart(2,'0')+'</b><span>'+nw.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','').toUpperCase()+'</span></div><div class="loc"><small>'+(hr<6?'NUIT':hr<12?'MATIN':hr<17?'APRÈS-MIDI':'SOIR')+'</small><b>Accueil</b></div>';
 document.body.appendChild(hud);
 var NAMES={home:'Accueil',projects:'Projets',skills:'Compétences',about:'À propos',blog:'Blog',shop:'Boutique',services:'Services',journey:'Parcours',contact:'Contact'},cur0='home',hl=hud.querySelector('.loc b');
 addEventListener('scroll',function(){var y=scrollY+innerHeight*.4,c='home';document.querySelectorAll('section').forEach(function(s){if(s.offsetParent&&s.offsetTop<=y)c=s.id});

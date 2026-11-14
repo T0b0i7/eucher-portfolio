@@ -11,7 +11,7 @@ document.body.appendChild(pn);
 var zl=$('#zl'),inp=$('#zin');
 ['Résume les projets','Qui es-tu ?','Qui est Eucher ?','Ses compétences','Va dans le blog','Raconte une blague'].forEach(function(t){var b=document.createElement('button');b.textContent=t;b.onclick=function(){go(t)};$('.zc',pn).appendChild(b)});
 var bx=innerWidth-90,by=innerHeight-170,tx=bx,ty=by,vx=0,vy=0,face=1,hold=false,ht=0,nextMove=Date.now()+2500,mx=bx,my=by,st='idle',lastAct=Date.now(),lastHint=Date.now(),hints=0,tid=0,greeted=false,bt2=0;
-var HINTS=['Psst… essaie « résume les projets » !','Clique sur moi pour écrire une commande !','Essaie : « ouvre ZemPro ».'];
+var HINTS=['Psst… essaie « résume les projets » !','Clique sur moi pour écrire une commande !','Essaie : « ouvre Clavis ».'];
 function setSt(s){st=s;['think','sleep'].forEach(function(c){z.classList.toggle(c,s===c)})}
 function bubble(t,ms){bub.textContent=t.length>120?t.slice(0,117)+'…':t;bub.classList.add('on');clearTimeout(bt2);bt2=setTimeout(function(){bub.classList.remove('on')},ms||Math.max(3500,t.length*60))}
 function logm(w,t){var d=document.createElement('div');d.className='m '+w;d.textContent=t;zl.appendChild(d);while(zl.children.length>14)zl.removeChild(zl.firstChild);zl.scrollTop=zl.scrollHeight}
@@ -77,7 +77,7 @@ if(has(/contact|joindre|email|mail|ecrire|embauch|recrut|collabor/)){nav('contac
 if(has(/^(bonjour|salut|coucou|hello|hey)/))return say('Salut ! Je suis Aether. Demande-moi de résumer les projets !');
 if(has(/merci/))return say('Avec plaisir !');
 setSt('think');bubble('Je réfléchis…',9000);
-askAI(raw).then(function(t){if(my===tid&&t)say(t);else setSt('idle')}).catch(function(){setSt('idle');say('Je n’ai pas compris. Essaie : « résume les projets », « ouvre ZemPro », « qui es-tu ? » ou « va dans le blog ».')})}
+askAI(raw).then(function(t){if(my===tid&&t)say(t);else setSt('idle')}).catch(function(){setSt('idle');say('Je n’ai pas compris. Essaie : « résume les projets », « ouvre Clavis », « qui es-tu ? » ou « va dans le blog ».')})}
 function openPanel(){if(!pn.classList.contains('open')){pn.classList.add('open');if(!zl.children.length)logm('bot','Salut, je suis Aether, l’assistant du portfolio ! Saisis une commande ou choisis une suggestion.')}}
 function closePanel(){pn.classList.remove('open')}
 window.zeoLines=function(){var p=pr(),L=[ME,HELP,'Allons voir les projets de Tobi !','Voilà, c’est la fin du tour ! Saisis “ouvre” suivi du nom d’un projet pour voir son détail.','Salut, je suis Aether, l’assistant du portfolio d’Eucher. Demande-moi de résumer ses projets !','Salut ! Je suis Aether. Demande-moi de résumer les projets !','Avec plaisir !','C’est la fête !','Son coupé.','Son activé.','Tu peux écrire à Eucher par e-mail, ou via LinkedIn et GitHub. Je t’emmène à la section contact.','Ses compétences les plus solides : '+top(5).join(', ')+'. Il en maîtrise '+S2.length+' au total.',p.nom+', '+p.titre+'. Ses technologies phares : '+top(3).join(', ')+'. Il a notamment réalisé '+P.map(function(x){return x.n}).join(', ')+'. Pour le contacter, rendez-vous dans la section contact.'].concat(JOKES);SECS.forEach(function(s){L.push('Direction '+s[1]+' !')});P.forEach(function(x,i){L.push(sumP(x,i),sumP(x,i,true))});return L};
@@ -133,9 +133,9 @@ var D18={
 'Ouvrir Aether':'Open Aether','Fermer':'Close','Commande':'Command','Envoyer':'Send','Palette de commandes':'Command palette','Rechercher':'Search',
 'Salut, je suis Aether, l’assistant du portfolio ! Saisis une commande ou choisis une suggestion.':'Hi, I’m Aether, the portfolio assistant! Type a command or choose a suggestion.',
 'Salut ! Je suis Aether, l’assistant du portfolio. Clique sur moi pour saisir une commande.':'Hi! I’m Aether, the portfolio assistant. Click me to type a command.',
-'Psst… essaie « résume les projets » !':'Psst… try “summarize the projects”!','Clique sur moi pour écrire une commande !':'Click me to type a command!','Essaie : « ouvre ZemPro ».':'Try: “open ZemPro”.',
+'Psst… essaie « résume les projets » !':'Psst… try “summarize the projects”!','Clique sur moi pour écrire une commande !':'Click me to type a command!','Essaie : « ouvre Clavis ».':'Try: “open Clavis”.',
 'Hein ? Je suis réveillé !':'Huh? I’m awake!','Je réfléchis…':'Thinking…',
-'Je n’ai pas compris. Essaie : « résume les projets », « ouvre ZemPro », « qui es-tu ? » ou « va dans le blog ».':'I didn’t get that. Try: “summarize the projects”, “open ZemPro”, “who are you?” or “go to the blog”.',
+'Je n’ai pas compris. Essaie : « résume les projets », « ouvre Clavis », « qui es-tu ? » ou « va dans le blog ».':'I didn’t get that. Try: “summarize the projects”, “open Clavis”, “who are you?” or “go to the blog”.',
 'Merci ! Les dons se font depuis la fiche d’un projet ou depuis la boutique.':'Thank you! Donations can be made from a project page or from the shop.','La boutique ouvre bientôt !':'The shop opens soon!',
 'Je passe en français !':'Switching to French!',
 'Premier projet : ':'First project: ','Deuxième projet : ':'Second project: ','Troisième projet : ':'Third project: ','Quatrième projet : ':'Fourth project: ','Cinquième projet : ':'Fifth project: ','Sixième projet : ':'Sixth project: ',
@@ -143,7 +143,8 @@ var D18={
 'Ses compétences les plus solides : ':'His strongest skills: ','Ses technologies phares : ':'His flagship technologies: ','Il a notamment réalisé ':'He has notably built ','Pour le contacter, rendez-vous dans la section contact.':'To contact him, head to the contact section.',
 'l’accueil':'the home page','les projets':'the projects','les compétences':'the skills','la section à propos':'the About section','le blog':'the blog','la boutique':'the shop','le contact':'the contact section',
 'Ce que je propose':'What I offer','Des solutions sur mesure, du prototype à la mise en ligne.':'Tailor-made solutions, from prototype to launch.','Sites et applications web':'Websites and web applications','Sites vitrines, plateformes et applications métier avec Laravel et React.':'Showcase sites, platforms and business applications built with Laravel and React.','Applications mobiles':'Mobile applications','Des applications pensées mobile-first, rapides et utilisables hors connexion.':'Mobile-first applications that are fast and usable offline.','API et back-office':'APIs and back-office','Des API robustes et des tableaux de bord pour piloter votre activité.':'Robust APIs and dashboards to run your business.','Conseil et accompagnement':'Consulting and support','Cadrage de projet, choix techniques et revue de code pour avancer en confiance.':'Project scoping, technical choices and code reviews to move forward with confidence.','Ma façon de travailler':'How I work','Échange':'Discussion','Je comprends votre besoin et vos objectifs.':'I understand your needs and goals.','Conception':'Design','Maquettes, choix techniques et cahier des charges.':'Mockups, technical choices and specifications.','Développement':'Development','Des livraisons régulières, que vous validez à chaque étape.':'Regular deliveries that you validate at each step.','Mise en ligne':'Launch','Déploiement, formation et suivi après livraison.':'Deployment, training and post-delivery support.','Démarrer un projet →':'Start a project →','Démarrer un projet':'Start a project','Décrivez votre besoin, je vous réponds par e-mail.':'Describe your needs and I will reply by email.','Type de projet':'Project type','Site web':'Website','Application web':'Web application','Application mobile':'Mobile app','API / back-office':'API / back-office','Conseil':'Consulting','Autre':'Other','Budget estimé (optionnel)':'Estimated budget (optional)','Délai souhaité (optionnel)':'Desired timeline (optional)','Votre message':'Your message','Envoyer ma demande →':'Send my request →','Indiquez votre nom et un e-mail.':'Please enter your name and an email.','Mon CV (PDF)':'My CV (PDF)','Imprimer / PDF':'Print / PDF','Fermer le CV':'Close CV','Astuce : Ctrl + P puis « Enregistrer au format PDF ».':'Tip: press Ctrl + P, then “Save as PDF”.','Profil':'Profile','Compétences clés':'Key skills','Technologies :':'Technologies:','🔒 Connexion':'🔒 Sign in','● Disponible pour de nouvelles missions':'● Available for new projects','Aller au contenu':'Skip to content',
-'Entrer sans son':'Enter without sound','Entrer en mode sobre':'Enter in calm mode','Réduire les effets':'Reduce effects','Réactiver les effets':'Restore effects','Glisse pour tourner':'Drag to rotate','Voir mon CV':'View my CV','Détails à venir':'Details coming soon','Projet publié':'Published project','Eucher ABATTI — Développeur Full Stack':'Eucher ABATTI — Full Stack Developer','Eucher ABATTI | Développeur Full Stack':'Eucher ABATTI | Full Stack Developer'
+'Entrer sans son':'Enter without sound','Entrer en mode sobre':'Enter in calm mode','Réduire les effets':'Reduce effects','Réactiver les effets':'Restore effects','Glisse pour tourner':'Drag to rotate','Voir mon CV':'View my CV','Détails à venir':'Details coming soon','Projet publié':'Published project','Eucher ABATTI — Développeur Full Stack':'Eucher ABATTI — Full Stack Developer','Eucher ABATTI | Développeur Full Stack':'Eucher ABATTI | Full Stack Developer',
+'Bienvenue sur mon portfolio.':'Welcome to my portfolio.'
 };
 function pair(fr,en){if(typeof fr==='string'){D18[fr]=en}else fr.forEach(function(x,i){if(en[i]!==undefined)D18[x]=en[i]})}
 (function(){var R=RICH,S=SEED_POSTS,P2=SEED_SHOP;
@@ -165,7 +166,7 @@ var ps=[['Red and black animation pack','Diagonal-band transitions, slamming tit
 P2.forEach(function(p,i){pair([p.n,p.d,p.long,p.lic],[ps[i][0],ps[i][1],ps[i][2],ps[i][4]]);pair(String(p.inc||'').split(',').map(function(x){return x.trim()}),ps[i][3])});
 Object.keys(D18).forEach(function(k){});
 var Z=window.zeoLines?window.zeoLines():[];
-pair(Z.slice(0,11),['I’m Aether, the assistant in Tobi’s portfolio. I can take you to a section, open and summarize projects, or tell you about him. You can also ask me a question in writing!','Here is what I can do: summarize projects, open one (for example “open ZemPro”), take you to a section, introduce Tobi and his skills, read the latest article, turn the sound on or off, or tell you a joke.','Let’s go and see Tobi’s projects!','That’s the end of the tour! Type “open” followed by a project name to see its details.','Hi, I’m Aether, the assistant in Eucher’s portfolio. Ask me to summarize his projects!','Hi! I’m Aether. Ask me to summarize the projects!','My pleasure!','Party time!','Sound off.','Sound on.','You can write to Eucher by email, or via LinkedIn and GitHub. I’ll take you to the contact section.']);
+pair(Z.slice(0,11),['I’m Aether, the assistant in Tobi’s portfolio. I can take you to a section, open and summarize projects, or tell you about him. You can also ask me a question in writing!','Here is what I can do: summarize projects, open one (for example “open Clavis”), take you to a section, introduce Tobi and his skills, read the latest article, turn the sound on or off, or tell you a joke.','Let’s go and see Tobi’s projects!','That’s the end of the tour! Type “open” followed by a project name to see its details.','Hi, I’m Aether, the assistant in Eucher’s portfolio. Ask me to summarize his projects!','Hi! I’m Aether. Ask me to summarize the projects!','My pleasure!','Party time!','Sound off.','Sound on.','You can write to Eucher by email, or via LinkedIn and GitHub. I’ll take you to the contact section.']);
 pair(Z.slice(13,16),['Why do developers prefer dark mode? Because light attracts bugs!','There are 10 types of people: those who understand binary, and those who don’t.','Why is the developer unhappy? Because he has too many problems and not enough solutions.']);
 })();
 (function(){var EN={
@@ -233,12 +234,20 @@ KEYS=null}
 window.regTr=regTr;
 function mtInit(){if(MT!==null)return;MT=false;try{if(window.Translator&&Translator.create)Translator.create({sourceLanguage:'fr',targetLanguage:'en'}).then(function(t){MT=t;if(window.LANG==='en')walk(document.body)}).catch(function(){})}catch(e){}}
 var T0=document.title;
+/* État visuel du bouton mode sobre : la langue ne doit pas l'éteindre. */
+function syncCalmBtn(){var b=document.getElementById('calmb');if(!b)return;
+var on=!!window.CALM,en=window.LANG==='en';
+b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));
+var t=on?(en?'Restore effects':'Réactiver les effets'):(en?'Reduce effects':'Réduire les effets');
+b.setAttribute('title',t);b.setAttribute('aria-label',t)}
+window.syncCalmBtn=syncCalmBtn;
 function setLang(l){window.LANG=LANG=l==='en'?'en':'fr';try{localStorage.setItem('ea_lang',LANG)}catch(e){}document.documentElement.lang=LANG;regTr();
 document.title=LANG==='en'?xl(document.title===T0?T0:document.title):T0;walk(document.body);
 try{drawB();drawS();draw('all')}catch(e){}
-[].forEach.call(document.querySelectorAll('#hud .lg2 button'),function(b){b.classList.toggle('on',b.dataset.l===LANG)})}
+[].forEach.call(document.querySelectorAll('#hud .lg2 button[data-l]'),function(b){b.classList.toggle('on',b.dataset.l===LANG)});
+syncCalmBtn()}
 window.setLang=setLang;
-(function(){var h=document.getElementById('hud');if(h){var g=document.createElement('div');g.className='lg2';g.innerHTML='<button data-l="fr" data-notr="1" title="Français" aria-label="Français">FR</button><button data-l="en" data-notr="1" title="English" aria-label="English">EN</button><button id="calmb" aria-pressed="false" title="Réduire les effets" aria-label="Réduire les effets">✦</button>';h.insertBefore(g,h.firstChild);g.addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.dataset.l)setLang(b.dataset.l)})}
+(function(){var h=document.getElementById('hud');if(h){var g=document.createElement('div');g.className='lg2';g.innerHTML='<button data-l="fr" data-notr="1" title="Français" aria-label="Français">FR</button><button data-l="en" data-notr="1" title="English" aria-label="English">EN</button><button id="calmb" data-notr="1" aria-pressed="false" title="Réduire les effets" aria-label="Réduire les effets">✦</button>';h.insertBefore(g,h.firstChild);g.addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.dataset.l)setLang(b.dataset.l)})}
 var sl=null;try{sl=localStorage.getItem('ea_lang')}catch(e){}
 var init=sl||((navigator.language||'fr').slice(0,2).toLowerCase()==='en'?'en':'fr');window.LANG='fr';setLang(init)})();
 
@@ -273,7 +282,7 @@ window.cvOpen=cvOpen;
 function setCalm(v,persist){window.CALM=!!v;document.body.classList.toggle('calm',window.CALM);
 if(persist!==false)try{localStorage.setItem('ea_calm',window.CALM?'1':'0')}catch(e){}
 if(window.CALM&&window.on)setSound(false);
-var b=document.getElementById('calmb');if(b){b.classList.toggle('on',window.CALM);b.setAttribute('aria-pressed',String(window.CALM));var t=window.CALM?'Réactiver les effets':'Réduire les effets';b.setAttribute('title',t);b.setAttribute('aria-label',t)}}
+if(window.syncCalmBtn)window.syncCalmBtn()}
 window.setCalm=setCalm;
 var cb=document.getElementById('calmb');if(cb)cb.addEventListener('click',function(){setCalm(!window.CALM)});
 [].forEach.call(document.querySelectorAll('#intro [data-calm]'),function(b){b.addEventListener('click',function(){setCalm(true)})});
@@ -314,10 +323,3 @@ requestAnimationFrame(loop)})()}
 window.buildOrbit=buildOrbit;
 })();
 /* compétences : rendu par sections.js (applyData) */
-
-/* Chargement du contenu publié depuis Supabase (remplace le cache local) */
-(function(){
-function rerender(){try{applyData();drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();if(window.regTr)regTr()}catch(e){}}
-if(!window.eaLoad)return;
-window.eaLoad().then(function(ok){if(ok)rerender()}).catch(function(){});
-})();
