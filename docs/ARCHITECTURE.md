@@ -25,7 +25,8 @@ assets/
   js/effects.js                Aether, i18n D18, CV, contact, mode sobre, effets 3D, orbite
   js/project-details.js        rendu de project.html (API puis repli catalogue)
   js/admin.js                  SPA d’administration (chargée seulement à l’ouverture)
-  js/admin-taxonomy.js         écran Taxonomie de l’admin (familles, sous-catégories, tags, technologies)
+  js/admin-taxonomy.js         écran Taxonomie de l’admin
+  js/admin-media.js            écran Médias (upload Storage → portfolio_media)
   js/admin-doc.js              assainissement du document publié (projets publiés, sans données privées)
   img/                         logo et portrait
 supabase/
@@ -67,6 +68,7 @@ docs/
 | `ui.js` | Intro, HUD date/heure/section, mode fête, palette Ctrl+K. |
 | `effects.js` | Aether, traduction FR/EN (`D18`, `regTr`, `setLang`), CV imprimable, formulaire de contact, mode sobre (`setCalm`, bouton `#calmb`) et effets 3D/orbite. |
 | `project-details.js` | Tente `EA_API.getProject(slug)` puis, à défaut, résout dans `EA_PROJECTS` avec surcouche des modifications `ea_admin_v1.projects`, et rend la fiche : hero, tags iconifiés, visuel + stat, description, fonctionnalités, technologies, repères/résultats, galerie d’aperçus générés et boutons d’action. Un brouillon reçu par erreur n’est jamais affiché ; si l’API ne connaît pas le projet, repli local. |
+| `admin-media.js` | Écran Médias : upload/suppression d’images dans le bucket public `media`, références `portfolio_media`, affichées dans la galerie des fiches projet. |
 | `admin-taxonomy.js` | Écran Taxonomie : CRUD catégories (featured, ordre, activation), sous-catégories, tags et technologies via Supabase (RLS propriétaire). |
 | `admin.js` | SPA admin : authentification GitHub, chargement du cache, édition, messages, export, écriture du document. Publie uniquement le document assaini (`admin-doc.js`) et stocke le document complet (brouillons) dans la table privée `portfolio_drafts`. |
 

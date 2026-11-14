@@ -150,7 +150,8 @@
       impact: impact,
       category: category,
       status: status,
-      sector: text(pick(base, override, 'sec', base.sec))
+      sector: text(pick(base, override, 'sec', base.sec)),
+      media: isArray(base.media) ? base.media.slice() : []
     };
   }
 
@@ -469,7 +470,13 @@
     clear(grid);
 
     var shots = [];
-    if (project.cover) shots.push(project.cover);
+    if (isArray(project.media)) {
+      project.media.forEach(function (item) {
+        var source = safeImage(item && (item.url || item.storage_path || item));
+        if (source && shots.indexOf(source) < 0) shots.push(source);
+      });
+    }
+    if (project.cover && shots.indexOf(project.cover) < 0) shots.push(project.cover);
     var index = 0;
     while (shots.length < SHOT_COUNT) {
       var shot = shotSource(project, index);
@@ -600,6 +607,7 @@
       u: remote.u,
       repo: remote.repo,
       cover: '',
+      media: isArray(remote.media) ? remote.media : [],
       f: remote.f,
       impact: remote.impact,
       role: remote.role,
