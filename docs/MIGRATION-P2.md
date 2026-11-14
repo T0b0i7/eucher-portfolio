@@ -61,3 +61,13 @@ where not exists (select 1 from public.portfolio_project_tags pt where pt.tag_id
 ```
 
 Puis réappliquer le seed P0 pour retrouver l'ancien classement si nécessaire. La galerie retombe sur ses filtres catalogue.
+
+## 4. P2b — back-office taxonomie
+
+L'écran **Taxonomie** de l'admin (onglet dédié) permet de :
+- créer/renommer/supprimer des familles et sous-catégories ;
+- activer/désactiver une catégorie et cocher « mise en avant » (12 familles publiques) ;
+- gérer les tags et les technologies ;
+- les modifications sont écrites directement dans les tables (RLS propriétaire), sans passer par le document JSON.
+
+L'éditeur projet accepte désormais des listes de slugs dans **cats** et **tags**, stockées en tableaux JSON ; la projection les convertit en jonctions.

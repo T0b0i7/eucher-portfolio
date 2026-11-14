@@ -23,6 +23,7 @@ Portfolio rouge et noir avec animations, sons, blog, espace d’administration e
 - `assets/js/effects.js` : Aether, traduction FR/EN (`D18`), CV imprimable, formulaire de contact, mode sobre, effets 3D et orbite.
 - `assets/js/project-details.js` : rendu des fiches `project.html` (API puis repli catalogue).
 - `assets/js/admin.js` : espace d’administration, chargé seulement à l’ouverture.
+- `assets/js/admin-taxonomy.js` : écran Taxonomie de l’admin (familles, sous-catégories, tags, technologies).
 - `assets/js/admin-doc.js` : assainit le document publié (projets publiés uniquement, sans messages ni téléphone) ; les brouillons partent dans une table privée.
 - `assets/img/` : logo et portrait.
 - `supabase/` : scripts SQL de la base, migrations P0/P1 et seed des projets.
