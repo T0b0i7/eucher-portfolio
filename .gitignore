@@ -1,0 +1,13 @@
+# Secrets et configuration locale
+.env
+.env.*
+
+# Dépendances
+node_modules/
+
+# Fichiers système
+Thumbs.db
+.DS_Store
+
+# Journaux
+*.log
