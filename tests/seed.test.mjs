@@ -16,6 +16,13 @@ function generate() {
   return { sql: fs.readFileSync(out, 'utf8'), out };
 }
 
+test('seed : conserve les identifiants legacy du catalogue (réconciliation projection)', () => {
+  const { sql } = generate();
+  assert.match(sql, /values \(\s*1, 'akoue-app'/);
+  assert.match(sql, /values \(\s*8, 'portefolio-os'/);
+  assert.match(sql, /values \(\s*9, 'vigilance-bj'/);
+});
+
 test('seed : génère les 8 projets publiés avec leurs slugs', () => {
   const { sql } = generate();
   const inserts = sql.match(/insert into public\.projects/g) || [];

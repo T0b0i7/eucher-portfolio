@@ -54,7 +54,9 @@ lines.push('on conflict (slug) do update set name = excluded.name;');
 lines.push('');
 
 projects.forEach((project, index) => {
-  const legacyId = index + 1;
+  // Conserver l'id du catalogue : c'est le même identifiant que dans le
+  // document portfolio, donc celui utilisé par la projection (réconciliation).
+  const legacyId = Number(project.id) || (index + 1);
   const slug = project.slug || slugify(project.n);
   const values = [
     String(legacyId),

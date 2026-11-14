@@ -211,44 +211,14 @@ select p.id, t.id from public.projects p join public.technologies t
 where p.legacy_id = 6
 on conflict do nothing;
 
--- Projet 7 : Portefolio.OS
+-- Projet 8 : Portefolio.OS
 insert into public.projects (
   legacy_id, slug, title, short_desc, long_desc, status, featured, sort_order,
   role, sector, demo_url, repo_url, demo_visible, repo_visible, impact, features, published_at
 ) values (
-  7, 'portefolio-os', 'Portefolio.OS', 'Template de portfolio prêt à personnaliser : structure modulaire, sections réutilisables et base de design system.', 'Portefolio.OS est un template de portfolio prêt à personnaliser. Il repose sur une structure modulaire, des sections réutilisables et une base de design system.
+  8, 'portefolio-os', 'Portefolio.OS', 'Template de portfolio prêt à personnaliser : structure modulaire, sections réutilisables et base de design system.', 'Portefolio.OS est un template de portfolio prêt à personnaliser. Il repose sur une structure modulaire, des sections réutilisables et une base de design system.
 
 Il est développé avec Next.js, React et TypeScript.', 'published'::public.project_status, false, 7, 'Conception et développement', 'Outils de développement', 'https://portefolio-os-bice.vercel.app', null, true, false, '[]'::jsonb, '["Structure modulaire","Sections réutilisables","Base de design system"]'::jsonb, '2026-11-14T00:00:00Z'
-) on conflict (legacy_id) do update set
-  slug = excluded.slug, title = excluded.title, short_desc = excluded.short_desc,
-  long_desc = excluded.long_desc, status = excluded.status, sort_order = excluded.sort_order,
-  role = excluded.role, sector = excluded.sector, demo_url = excluded.demo_url,
-  repo_url = excluded.repo_url, demo_visible = excluded.demo_visible,
-  repo_visible = excluded.repo_visible, impact = excluded.impact, features = excluded.features,
-  published_at = coalesce(public.projects.published_at, excluded.published_at), updated_at = now();
-
-delete from public.project_categories where project_id = (select id from public.projects where legacy_id = 7);
-delete from public.project_technologies where project_id = (select id from public.projects where legacy_id = 7);
-
-insert into public.project_categories (project_id, category_id)
-select p.id, c.id from public.projects p, public.categories c
-where p.legacy_id = 7 and c.slug = 'web'
-on conflict do nothing;
-
-insert into public.project_technologies (project_id, technology_id)
-select p.id, t.id from public.projects p join public.technologies t
-  on t.slug in ('next-js', 'react', 'typescript')
-where p.legacy_id = 7
-on conflict do nothing;
-
--- Projet 8 : Vigilance BJ
-insert into public.projects (
-  legacy_id, slug, title, short_desc, long_desc, status, featured, sort_order,
-  role, sector, demo_url, repo_url, demo_visible, repo_visible, impact, features, published_at
-) values (
-  8, 'vigilance-bj', 'Vigilance BJ', 'Plateforme collaborative de signalement anonyme des menaces numériques au Bénin : arnaques, faux profils, harcèlement et phishing.', 'Vigilance BJ est une plateforme collaborative de signalement anonyme des menaces numériques au Bénin. Elle couvre les arnaques, les faux profils, le harcèlement et le phishing.
-
-Elle est développée avec Next.js, React, TypeScript et Supabase.', 'published'::public.project_status, false, 8, 'Conception et développement', 'Cybersécurité citoyenne', 'https://vigilance-bj.vercel.app', null, true, false, '[]'::jsonb, '["Signalement anonyme","Menaces numériques : arnaques, faux profils, harcèlement et phishing","Plateforme collaborative"]'::jsonb, '2026-11-14T00:00:00Z'
 ) on conflict (legacy_id) do update set
   slug = excluded.slug, title = excluded.title, short_desc = excluded.short_desc,
   long_desc = excluded.long_desc, status = excluded.status, sort_order = excluded.sort_order,
@@ -267,8 +237,38 @@ on conflict do nothing;
 
 insert into public.project_technologies (project_id, technology_id)
 select p.id, t.id from public.projects p join public.technologies t
-  on t.slug in ('next-js', 'react', 'typescript', 'supabase')
+  on t.slug in ('next-js', 'react', 'typescript')
 where p.legacy_id = 8
+on conflict do nothing;
+
+-- Projet 9 : Vigilance BJ
+insert into public.projects (
+  legacy_id, slug, title, short_desc, long_desc, status, featured, sort_order,
+  role, sector, demo_url, repo_url, demo_visible, repo_visible, impact, features, published_at
+) values (
+  9, 'vigilance-bj', 'Vigilance BJ', 'Plateforme collaborative de signalement anonyme des menaces numériques au Bénin : arnaques, faux profils, harcèlement et phishing.', 'Vigilance BJ est une plateforme collaborative de signalement anonyme des menaces numériques au Bénin. Elle couvre les arnaques, les faux profils, le harcèlement et le phishing.
+
+Elle est développée avec Next.js, React, TypeScript et Supabase.', 'published'::public.project_status, false, 8, 'Conception et développement', 'Cybersécurité citoyenne', 'https://vigilance-bj.vercel.app', null, true, false, '[]'::jsonb, '["Signalement anonyme","Menaces numériques : arnaques, faux profils, harcèlement et phishing","Plateforme collaborative"]'::jsonb, '2026-11-14T00:00:00Z'
+) on conflict (legacy_id) do update set
+  slug = excluded.slug, title = excluded.title, short_desc = excluded.short_desc,
+  long_desc = excluded.long_desc, status = excluded.status, sort_order = excluded.sort_order,
+  role = excluded.role, sector = excluded.sector, demo_url = excluded.demo_url,
+  repo_url = excluded.repo_url, demo_visible = excluded.demo_visible,
+  repo_visible = excluded.repo_visible, impact = excluded.impact, features = excluded.features,
+  published_at = coalesce(public.projects.published_at, excluded.published_at), updated_at = now();
+
+delete from public.project_categories where project_id = (select id from public.projects where legacy_id = 9);
+delete from public.project_technologies where project_id = (select id from public.projects where legacy_id = 9);
+
+insert into public.project_categories (project_id, category_id)
+select p.id, c.id from public.projects p, public.categories c
+where p.legacy_id = 9 and c.slug = 'web'
+on conflict do nothing;
+
+insert into public.project_technologies (project_id, technology_id)
+select p.id, t.id from public.projects p join public.technologies t
+  on t.slug in ('next-js', 'react', 'typescript', 'supabase')
+where p.legacy_id = 9
 on conflict do nothing;
 
 commit;
