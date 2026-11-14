@@ -30,3 +30,13 @@ test('admin taxonomie : navigation et chargement à la demande', () => {
 test('admin projets : cats et tags normalisés en tableaux', () => {
   assert.match(admin, /o\[k\]=String\(o\[k\]\|\|''\)\.split\(','\)/);
 });
+
+test('admin projets : cases à cocher, dates, ordre et aperçu', () => {
+  assert.match(admin, /f\.t==='checks'/);
+  assert.match(admin, /type="date"/);
+  assert.match(admin, /type="number"/);
+  assert.match(admin, /'Archivé'/);
+  assert.match(admin, /published_at/);
+  assert.match(admin, /preview=1/);
+  assert.match(admin, /window\.open\('project\.html/);
+});

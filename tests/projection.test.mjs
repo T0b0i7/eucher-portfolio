@@ -75,3 +75,9 @@ test('projection : rejoue la projection sur la ligne existante', () => {
   const text = sql();
   assert.match(text, /update public\.portfolio set data = data where id = 1/);
 });
+
+test('projection : date de publication et ordre explicite', () => {
+  const text = sql();
+  assert.match(text, /proj->>'published_at'/);
+  assert.match(text, /proj->>'sort'/);
+});
