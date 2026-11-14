@@ -27,6 +27,10 @@ declare
   v_featured boolean;
   v_cat text;
   v_cat_id uuid;
+  v_cats text[];
+  v_tag text;
+  v_tag_id uuid;
+  v_tags text[];
   tech text;
   v_tech_id uuid;
   idx int := 0;
@@ -156,20 +160,67 @@ begin
     returning id into v_id;
 
     -- 4. Relations : purge puis réinsertion (idempotent).
-    delete from public.portfolio_project_categories where project_id = v_id;
-    delete from public.portfolio_project_tags where project_id = v_id;
     delete from public.portfolio_project_technologies where project_id = v_id;
 
-    if nullif(trim(coalesce(proj->>'cat', '')), '') is not null then
-      select c.id into v_cat_id
-      from public.portfolio_categories c
-      where c.slug = public.portfolio_slugify(proj->>'cat')
-      limit 1;
+    -- 4a. Catégories multiples (`cats` tableau ou CSV) sinon repli `cat`.
+    v_cats := case
+      when jsonb_typeof(proj->'cats') = 'array' then array(
+        select trim(value) from jsonb_array_elements_text(proj->'cats') where trim(value) <> ''
+      )
+      when nullif(trim(coalesce(proj->>'cats', '')), '') is not null
+        then string_to_array(proj->>'cats', ',')
+      else array[]::text[]
+    end;
+
+    if cardinality(v_cats) > 0 then
+      delete from public.portfolio_project_categories where project_id = v_id;
+      foreach v_cat in array v_cats loop
+        insert into public.portfolio_categories (slug, name)
+        values (public.portfolio_slugify(v_cat), initcap(replace(public.portfolio_slugify(v_cat), '-', ' ')))
+        on conflict (slug) do nothing;
+        select c.id into v_cat_id from public.portfolio_categories c
+        where c.slug = public.portfolio_slugify(v_cat) limit 1;
+        if v_cat_id is not null then
+          insert into public.portfolio_project_categories (project_id, category_id)
+          values (v_id, v_cat_id) on conflict do nothing;
+        end if;
+      end loop;
+    elsif not exists (select 1 from public.portfolio_project_categories where project_id = v_id)
+          and nullif(trim(coalesce(proj->>'cat', '')), '') is not null then
+      insert into public.portfolio_categories (slug, name)
+      values (public.portfolio_slugify(proj->>'cat'), proj->>'cat')
+      on conflict (slug) do nothing;
+      select c.id into v_cat_id from public.portfolio_categories c
+      where c.slug = public.portfolio_slugify(proj->>'cat') limit 1;
       if v_cat_id is not null then
         insert into public.portfolio_project_categories (project_id, category_id)
-        values (v_id, v_cat_id)
-        on conflict do nothing;
+        values (v_id, v_cat_id) on conflict do nothing;
       end if;
+    end if;
+
+    -- 4b. Tags (`tags` tableau ou CSV) ; absents = on préserve l'existant.
+    v_tags := case
+      when jsonb_typeof(proj->'tags') = 'array' then array(
+        select trim(value) from jsonb_array_elements_text(proj->'tags') where trim(value) <> ''
+      )
+      when nullif(trim(coalesce(proj->>'tags', '')), '') is not null
+        then string_to_array(proj->>'tags', ',')
+      else array[]::text[]
+    end;
+
+    if cardinality(v_tags) > 0 then
+      delete from public.portfolio_project_tags where project_id = v_id;
+      foreach v_tag in array v_tags loop
+        insert into public.portfolio_tags (slug, name)
+        values (public.portfolio_slugify(v_tag), initcap(replace(public.portfolio_slugify(v_tag), '-', ' ')))
+        on conflict (slug) do nothing;
+        select t.id into v_tag_id from public.portfolio_tags t
+        where t.slug = public.portfolio_slugify(v_tag) limit 1;
+        if v_tag_id is not null then
+          insert into public.portfolio_project_tags (project_id, tag_id)
+          values (v_id, v_tag_id) on conflict do nothing;
+        end if;
+      end loop;
     end if;
 
     for tech in

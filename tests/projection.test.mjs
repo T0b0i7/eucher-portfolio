@@ -63,6 +63,14 @@ test('projection : suppression des projets legacy absents du document', () => {
   assert.match(text, /not exists \(/);
 });
 
+test('projection : catégories multiples et tags (tableaux ou CSV)', () => {
+  const text = sql();
+  assert.match(text, /jsonb_typeof\(proj->'cats'\) = 'array'/);
+  assert.match(text, /jsonb_typeof\(proj->'tags'\) = 'array'/);
+  assert.match(text, /foreach v_cat in array v_cats/);
+  assert.match(text, /foreach v_tag in array v_tags/);
+});
+
 test('projection : rejoue la projection sur la ligne existante', () => {
   const text = sql();
   assert.match(text, /update public\.portfolio set data = data where id = 1/);

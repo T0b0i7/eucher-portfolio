@@ -13,6 +13,8 @@ Portfolio rouge et noir avec animations, sons, blog, espace d’administration e
 - `assets/js/config.js` : configuration publique Supabase partagée (clé publishable, aucun secret).
 - `assets/js/api.js` : lecture publique des projets depuis Supabase (recherche, filtres, pagination, détail), avec repli catalogue.
 - `assets/js/gallery.js` : rendu et interactions de la galerie `projects.html`.
+- `assets/data/taxonomy.json` : référentiel des 40 familles, sous-catégories et tags.
+- `assets/data/project-taxonomy.json` : classement initial des projets dans la taxonomie.
 - `assets/js/catalog.js` : le catalogue public des vrais projets (données de repli pour les visiteurs et pour `project.html`).
 - `assets/js/data.js` : données de départ (profil, CV, compétences), utilitaires et carrousel des projets.
 - `assets/js/sections.js` : rendu public (blog, boutique, parcours, à propos, services).
@@ -24,7 +26,7 @@ Portfolio rouge et noir avec animations, sons, blog, espace d’administration e
 - `assets/js/admin-doc.js` : assainit le document publié (projets publiés uniquement, sans messages ni téléphone) ; les brouillons partent dans une table privée.
 - `assets/img/` : logo et portrait.
 - `supabase/` : scripts SQL de la base, migrations P0/P1 et seed des projets.
-- `docs/` : architecture, runbooks de migration (`MIGRATION-P0.md`, `MIGRATION-P1.md`), notes et specs superpowers.
+- `docs/` : architecture, runbooks de migration (`MIGRATION-P0.md`, `MIGRATION-P1.md`, `MIGRATION-P2.md`), notes et specs superpowers.
 - `tests/` et `scripts/` : outillage de développement (jamais déployé).
 
 ## Ouvrir le site
@@ -98,6 +100,7 @@ Double-clique sur `index.html`. Une connexion internet est utile pour charger le
 ## Projets et fiches projet
 
 - Le carrousel de l’accueil affiche les vrais projets publiés. Le site lit d’abord les tables Supabase via l’API, puis retombe sur `assets/js/catalog.js` si la base n’est pas encore migrée ou indisponible ; il se balaie au doigt sur mobile.
+- La taxonomie publique s'appuie sur **40 familles** internes, dont **12 mises en avant** dans la galerie, avec **254 sous-catégories** et des tags ; les technologies restent une dimension séparée (voir `assets/data/taxonomy.json` et `docs/MIGRATION-P2.md`).
 - Le lien « Voir tous les projets » ouvre la galerie `projects.html` : grille responsive, filtres par catégorie/technologie/tag, recherche, tri et bouton « Charger plus ». Les filtres sont repris dans l’URL (partage de lien).
 - La recherche complète (titre, description, technologies et tags) s’active après application de `supabase/migrations/2026-11-14-04-p1-search.sql` ; sans elle, la galerie fonctionne en mode simple (titre/description + filtres) et l’indique discrètement.
 - La migration P0 (tables normalisées + seed) et son rollback sont décrits dans `docs/MIGRATION-P0.md` ; la migration P1 dans `docs/MIGRATION-P1.md`.

@@ -1,0 +1,622 @@
+{
+  "categories": [
+    {
+      "slug": "web-development",
+      "name": "Développement Web",
+      "name_en": "Web Development",
+      "featured": true,
+      "children": [
+        "Frontend Development",
+        "Backend Development",
+        "Full Stack Development",
+        "Web Applications",
+        "Progressive Web Apps (PWA)",
+        "Web Platforms",
+        "E-commerce",
+        "CMS & Headless CMS",
+        "Web Portals"
+      ]
+    },
+    {
+      "slug": "mobile-development",
+      "name": "Développement Mobile",
+      "name_en": "Mobile Development",
+      "featured": true,
+      "children": [
+        "Android Development",
+        "iOS Development",
+        "Cross-Platform Development",
+        "React Native",
+        "Flutter",
+        "Mobile Applications",
+        "Mobile Games",
+        "Wearable Applications"
+      ]
+    },
+    {
+      "slug": "desktop-development",
+      "name": "Développement Desktop",
+      "name_en": "Desktop Development",
+      "featured": false,
+      "children": [
+        "Windows Applications",
+        "macOS Applications",
+        "Linux Applications",
+        "Cross-Platform Desktop",
+        "Electron Applications",
+        "Desktop Utilities"
+      ]
+    },
+    {
+      "slug": "software-engineering",
+      "name": "Ingénierie logicielle",
+      "name_en": "Software Engineering",
+      "featured": true,
+      "children": [
+        "Architecture Logicielle",
+        "Software Design",
+        "Microservices",
+        "Monolithic Architecture",
+        "Distributed Systems",
+        "Event-Driven Architecture",
+        "Domain-Driven Design",
+        "Clean Architecture"
+      ]
+    },
+    {
+      "slug": "api-development",
+      "name": "Développement d’API et intégrations",
+      "name_en": "API Development & Integrations",
+      "featured": false,
+      "children": [
+        "REST API",
+        "GraphQL",
+        "WebSockets",
+        "API Integrations",
+        "Third-Party Integrations",
+        "SDK Development",
+        "Webhooks"
+      ]
+    },
+    {
+      "slug": "artificial-intelligence",
+      "name": "Intelligence artificielle",
+      "name_en": "Artificial Intelligence",
+      "featured": true,
+      "children": [
+        "AI Applications",
+        "AI-Powered Platforms",
+        "Generative AI",
+        "Conversational AI",
+        "Multimodal AI",
+        "AI Assistants",
+        "AI Integration",
+        "AI Solutions"
+      ]
+    },
+    {
+      "slug": "ai-agents-agentic-systems",
+      "name": "Agents IA et systèmes agentiques",
+      "name_en": "AI Agents & Agentic Systems",
+      "featured": true,
+      "children": [
+        "Autonomous AI Agents",
+        "Multi-Agent Systems",
+        "Agentic Workflows",
+        "AI Coding Agents",
+        "AI Research Agents",
+        "AI Customer Support Agents",
+        "Agent Orchestration",
+        "Tool Calling",
+        "Agent Memory Systems"
+      ]
+    },
+    {
+      "slug": "machine-learning",
+      "name": "Machine Learning",
+      "name_en": "Machine Learning",
+      "featured": false,
+      "children": [
+        "Supervised Learning",
+        "Unsupervised Learning",
+        "Reinforcement Learning",
+        "Predictive Modeling",
+        "Classification Models",
+        "Recommendation Systems",
+        "Anomaly Detection"
+      ]
+    },
+    {
+      "slug": "deep-learning",
+      "name": "Deep Learning",
+      "name_en": "Deep Learning",
+      "featured": false,
+      "children": [
+        "Neural Networks",
+        "Computer Vision",
+        "Natural Language Processing (NLP)",
+        "Speech Recognition",
+        "Image Recognition",
+        "Object Detection",
+        "Pattern Recognition"
+      ]
+    },
+    {
+      "slug": "large-language-models",
+      "name": "Grands modèles de langage (LLM)",
+      "name_en": "Large Language Models (LLM)",
+      "featured": false,
+      "children": [
+        "LLM Integration",
+        "RAG Systems",
+        "Fine-Tuning",
+        "Prompt Engineering",
+        "Embeddings",
+        "Vector Search",
+        "Knowledge Bases",
+        "AI Chatbots"
+      ]
+    },
+    {
+      "slug": "ai-automation",
+      "name": "Automatisation IA",
+      "name_en": "AI Automation",
+      "featured": false,
+      "children": [
+        "Workflow Automation",
+        "Intelligent Automation",
+        "Business Process Automation",
+        "AI-Powered Workflows",
+        "Document Automation",
+        "Email Automation",
+        "Data Processing Automation",
+        "AI Orchestration"
+      ]
+    },
+    {
+      "slug": "ai-media-generation",
+      "name": "Génération de médias par IA",
+      "name_en": "AI Media Generation",
+      "featured": false,
+      "children": [
+        "AI Image Generation",
+        "AI Video Generation",
+        "AI Audio Generation",
+        "AI Voice Synthesis",
+        "AI Music Generation",
+        "AI Content Generation"
+      ]
+    },
+    {
+      "slug": "database-engineering",
+      "name": "Bases de données",
+      "name_en": "Database Engineering",
+      "featured": true,
+      "children": [
+        "SQL Databases",
+        "NoSQL Databases",
+        "Database Design",
+        "Database Administration",
+        "Database Optimization",
+        "Database Migration",
+        "Data Modeling"
+      ]
+    },
+    {
+      "slug": "data-science",
+      "name": "Science des données",
+      "name_en": "Data Science",
+      "featured": false,
+      "children": [
+        "Data Analysis",
+        "Statistical Analysis",
+        "Predictive Analytics",
+        "Data Mining",
+        "Business Intelligence",
+        "Data Visualization",
+        "Data Exploration"
+      ]
+    },
+    {
+      "slug": "data-engineering",
+      "name": "Ingénierie des données",
+      "name_en": "Data Engineering",
+      "featured": false,
+      "children": [
+        "ETL / ELT Pipelines",
+        "Data Warehousing",
+        "Big Data",
+        "Data Integration",
+        "Data Streaming",
+        "Data Pipelines",
+        "Data Processing"
+      ]
+    },
+    {
+      "slug": "devops-engineering",
+      "name": "DevOps et infrastructure",
+      "name_en": "DevOps Engineering",
+      "featured": true,
+      "children": [
+        "CI/CD Pipelines",
+        "Infrastructure Automation",
+        "Configuration Management",
+        "Containerization",
+        "Docker",
+        "Kubernetes",
+        "Monitoring & Logging"
+      ]
+    },
+    {
+      "slug": "cloud-computing",
+      "name": "Cloud",
+      "name_en": "Cloud Computing",
+      "featured": false,
+      "children": [
+        "Cloud Architecture",
+        "Cloud Infrastructure",
+        "Serverless Computing",
+        "Cloud Deployment",
+        "Cloud Storage"
+      ]
+    },
+    {
+      "slug": "system-administration",
+      "name": "Administration système",
+      "name_en": "System Administration",
+      "featured": false,
+      "children": [
+        "Linux Administration",
+        "Windows Server",
+        "Server Management",
+        "Network Administration",
+        "Virtualization",
+        "Infrastructure Management"
+      ]
+    },
+    {
+      "slug": "site-reliability-engineering",
+      "name": "Site Reliability Engineering",
+      "name_en": "Site Reliability Engineering (SRE)",
+      "featured": false,
+      "children": [
+        "High Availability",
+        "Performance Monitoring",
+        "Incident Management",
+        "Fault Tolerance",
+        "System Observability"
+      ]
+    },
+    {
+      "slug": "cybersecurity",
+      "name": "Cybersécurité",
+      "name_en": "Cybersecurity",
+      "featured": true,
+      "children": [
+        "Application Security",
+        "Network Security",
+        "Cloud Security",
+        "API Security",
+        "Identity & Access Management",
+        "Security Auditing",
+        "Vulnerability Assessment"
+      ]
+    },
+    {
+      "slug": "ethical-hacking",
+      "name": "Hacking éthique",
+      "name_en": "Ethical Hacking",
+      "featured": false,
+      "children": [
+        "Penetration Testing",
+        "Web Application Testing",
+        "Network Testing",
+        "Security Research",
+        "Vulnerability Analysis"
+      ]
+    },
+    {
+      "slug": "digital-identity-authentication",
+      "name": "Identité numérique et authentification",
+      "name_en": "Digital Identity & Authentication",
+      "featured": false,
+      "children": [
+        "Authentication Systems",
+        "Authorization & RBAC",
+        "JWT Authentication",
+        "Multi-Factor Authentication",
+        "Biometric Authentication",
+        "Digital Identity Management"
+      ]
+    },
+    {
+      "slug": "ui-ux-design",
+      "name": "Design UI/UX",
+      "name_en": "UI/UX Design",
+      "featured": true,
+      "children": [
+        "User Interface Design",
+        "User Experience Design",
+        "Wireframing",
+        "Prototyping",
+        "Design Systems",
+        "Interaction Design",
+        "Accessibility Design"
+      ]
+    },
+    {
+      "slug": "graphic-design",
+      "name": "Design graphique",
+      "name_en": "Graphic Design",
+      "featured": false,
+      "children": [
+        "Brand Identity",
+        "Logo Design",
+        "Visual Communication",
+        "Digital Illustration",
+        "Social Media Design",
+        "Marketing Design"
+      ]
+    },
+    {
+      "slug": "motion-design",
+      "name": "Motion Design",
+      "name_en": "Motion Design",
+      "featured": true,
+      "children": [
+        "Motion Graphics",
+        "UI Animations",
+        "Micro-Interactions",
+        "2D Animation",
+        "3D Animation",
+        "Interactive Animations",
+        "Scroll Animations"
+      ]
+    },
+    {
+      "slug": "3d-immersive-experiences",
+      "name": "3D et expériences immersives",
+      "name_en": "3D & Immersive Experiences",
+      "featured": false,
+      "children": [
+        "3D Web Experiences",
+        "Three.js",
+        "WebGL",
+        "React Three Fiber",
+        "Augmented Reality (AR)",
+        "Virtual Reality (VR)",
+        "Spatial Computing"
+      ]
+    },
+    {
+      "slug": "blockchain-web3",
+      "name": "Blockchain et Web3",
+      "name_en": "Blockchain & Web3",
+      "featured": true,
+      "children": [
+        "Blockchain Applications",
+        "Smart Contracts",
+        "Decentralized Applications",
+        "Cryptocurrency Platforms",
+        "Web3 Integration",
+        "Digital Wallets"
+      ]
+    },
+    {
+      "slug": "internet-of-things",
+      "name": "Internet des objets (IoT)",
+      "name_en": "Internet of Things (IoT)",
+      "featured": false,
+      "children": [
+        "Connected Devices",
+        "Smart Home",
+        "IoT Platforms",
+        "Sensor Integration",
+        "Embedded Systems"
+      ]
+    },
+    {
+      "slug": "robotics-embedded-systems",
+      "name": "Robotique et systèmes embarqués",
+      "name_en": "Robotics & Embedded Systems",
+      "featured": false,
+      "children": [
+        "Robotics Software",
+        "Embedded Programming",
+        "Automation Robotics",
+        "Hardware Integration"
+      ]
+    },
+    {
+      "slug": "ar-vr-xr",
+      "name": "AR / VR / XR",
+      "name_en": "AR / VR / XR",
+      "featured": false,
+      "children": [
+        "Augmented Reality",
+        "Virtual Reality",
+        "Mixed Reality",
+        "Extended Reality",
+        "Interactive 3D Environments"
+      ]
+    },
+    {
+      "slug": "saas-software-products",
+      "name": "SaaS et produits logiciels",
+      "name_en": "SaaS & Software Products",
+      "featured": true,
+      "children": [
+        "SaaS Platforms",
+        "Multi-Tenant Applications",
+        "Subscription Platforms",
+        "B2B Software",
+        "B2C Applications"
+      ]
+    },
+    {
+      "slug": "fintech",
+      "name": "FinTech",
+      "name_en": "FinTech",
+      "featured": false,
+      "children": [
+        "Digital Banking",
+        "Digital Payments",
+        "Personal Finance",
+        "Financial Management",
+        "Budgeting Applications",
+        "Accounting Software"
+      ]
+    },
+    {
+      "slug": "edtech",
+      "name": "EdTech",
+      "name_en": "EdTech",
+      "featured": false,
+      "children": [
+        "E-Learning Platforms",
+        "Learning Management Systems",
+        "Educational Applications",
+        "Online Examination Systems",
+        "Digital Learning Tools"
+      ]
+    },
+    {
+      "slug": "healthtech",
+      "name": "HealthTech",
+      "name_en": "HealthTech",
+      "featured": false,
+      "children": [
+        "Healthcare Applications",
+        "Hospital Management",
+        "Medical Information Systems",
+        "Appointment Management",
+        "Telemedicine"
+      ]
+    },
+    {
+      "slug": "business-enterprise-solutions",
+      "name": "Solutions métiers et entreprise",
+      "name_en": "Business & Enterprise Solutions",
+      "featured": false,
+      "children": [
+        "ERP Systems",
+        "CRM Systems",
+        "HR Management",
+        "Inventory Management",
+        "Project Management",
+        "Document Management",
+        "Workflow Management"
+      ]
+    },
+    {
+      "slug": "e-government-civictech",
+      "name": "E-Gouvernement et CivicTech",
+      "name_en": "E-Government & CivicTech",
+      "featured": false,
+      "children": [
+        "Digital Public Services",
+        "Administrative Platforms",
+        "Digital Governance",
+        "Citizen Services",
+        "Public Information Systems"
+      ]
+    },
+    {
+      "slug": "game-development",
+      "name": "Développement de jeux",
+      "name_en": "Game Development",
+      "featured": false,
+      "children": [
+        "2D Games",
+        "3D Games",
+        "Game Engines",
+        "Multiplayer Games",
+        "Game AI"
+      ]
+    },
+    {
+      "slug": "testing-quality-assurance",
+      "name": "Tests et assurance qualité",
+      "name_en": "Testing & Quality Assurance",
+      "featured": false,
+      "children": [
+        "Unit Testing",
+        "Integration Testing",
+        "End-to-End Testing",
+        "Automated Testing",
+        "Performance Testing",
+        "Quality Assurance"
+      ]
+    },
+    {
+      "slug": "open-source-projects",
+      "name": "Projets open source",
+      "name_en": "Open Source Projects",
+      "featured": false,
+      "children": [
+        "Developer Tools",
+        "Open Source Libraries",
+        "Frameworks",
+        "CLI Tools",
+        "Developer Utilities"
+      ]
+    },
+    {
+      "slug": "technical-research-innovation",
+      "name": "Recherche technique et innovation",
+      "name_en": "Technical Research & Innovation",
+      "featured": false,
+      "children": [
+        "Proof of Concept (PoC)",
+        "Technical Experiments",
+        "Research Projects",
+        "Technology Prototypes",
+        "Emerging Technologies"
+      ]
+    }
+  ],
+  "tags": [
+    "Finance",
+    "Mobile",
+    "Offline-first",
+    "Authentication",
+    "Maritime",
+    "Supervision",
+    "Human-in-the-loop",
+    "Typing",
+    "Productivity",
+    "Immobilier",
+    "3D",
+    "Editorial",
+    "Corporate",
+    "E-commerce",
+    "Beauty",
+    "WhatsApp",
+    "Template",
+    "Design System",
+    "Cybersecurity",
+    "CivicTech",
+    "Anonymity",
+    "Education",
+    "Health",
+    "ERP",
+    "CRM",
+    "API",
+    "Open Source",
+    "PWA",
+    "Accessibility",
+    "Motion",
+    "WebGL",
+    "IoT",
+    "Blockchain",
+    "AI",
+    "LLM",
+    "RAG",
+    "Agents",
+    "Automation",
+    "Data",
+    "Cloud",
+    "DevOps",
+    "SEO"
+  ]
+}
