@@ -37,6 +37,8 @@ section{position:relative;padding:70px 6vw;overflow:hidden}
 .project-shell{position:relative;z-index:1;width:min(1500px,94vw);margin:0 auto}
 .project-header-wrap{max-width:1100px;margin:0 auto 26px;text-align:left}
 .project-subtitle{margin:0;max-width:70ch;color:rgba(255,255,255,.8);font-size:1rem;line-height:1.5;font-family:Inter,Arial,sans-serif;text-align:left}
+.all-projects{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:14px;padding:8px 4px;color:var(--red);font:600 13px/1 Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.all-projects:hover,.all-projects:focus-visible{color:#fff;border-color:var(--red);outline:none}
 
 .carousel-section{
   position:relative;

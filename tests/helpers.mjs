@@ -24,6 +24,13 @@ export const PROJECT_SCRIPTS = [
   'assets/js/project-details.js'
 ];
 
+export const GALLERY_SCRIPTS = [
+  'assets/js/config.js',
+  'assets/js/api.js',
+  'assets/js/catalog.js',
+  'assets/js/gallery.js'
+];
+
 function jsonResponse(body, status = 200) {
   return Promise.resolve({
     ok: status >= 200 && status < 300,

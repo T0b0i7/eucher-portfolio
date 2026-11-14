@@ -25,6 +25,15 @@ test('accueil : le carrousel affiche les 8 projets publiés et 8 pastilles', (t)
   assert.equal(page.errors.length, 0, page.errors.join(' | '));
 });
 
+test('accueil : lien vers la galerie complète', (t) => {
+  const page = loadPage('index.html', INDEX_SCRIPTS, 'http://localhost/index.html');
+  t.after(() => page.close());
+  const link = page.document.querySelector('a.all-projects');
+  assert.ok(link, 'lien absent');
+  assert.equal(link.getAttribute('href'), 'projects.html');
+  assert.match(link.textContent, /Voir tous les projets/);
+});
+
 test('fiche projet : rendu complet pour akoue-app', async (t) => {
   const page = loadPage('project.html', PROJECT_SCRIPTS, 'http://localhost/project.html?project=akoue-app');
   t.after(() => page.close());
