@@ -8,17 +8,20 @@ Portfolio rouge et noir avec animations, sons, blog, espace d’administration e
 - `project.html` : la fiche « étude de cas » d’un projet, ouverte depuis le carrousel.
 - `assets/css/app.css` : tout le style du site principal.
 - `assets/css/project-details.css` : le style des fiches projet.
+- `assets/js/config.js` : configuration publique Supabase partagée (clé publishable, aucun secret).
+- `assets/js/api.js` : lecture publique des projets depuis Supabase (pagination, filtres, détail), avec repli catalogue.
 - `assets/js/catalog.js` : le catalogue public des vrais projets (données de repli pour les visiteurs et pour `project.html`).
 - `assets/js/data.js` : données de départ (profil, CV, compétences), utilitaires et carrousel des projets.
 - `assets/js/sections.js` : rendu public (blog, boutique, parcours, à propos, services).
 - `assets/js/remote.js` : lecture du contenu publié sur Supabase et envoi du formulaire de contact.
 - `assets/js/ui.js` : intro, HUD, palette Ctrl+K.
 - `assets/js/effects.js` : Aether, traduction FR/EN (`D18`), CV imprimable, formulaire de contact, mode sobre, effets 3D et orbite.
-- `assets/js/project-details.js` : rendu des fiches `project.html`.
+- `assets/js/project-details.js` : rendu des fiches `project.html` (API puis repli catalogue).
 - `assets/js/admin.js` : espace d’administration, chargé seulement à l’ouverture.
 - `assets/img/` : logo et portrait.
-- `supabase/` : scripts SQL de la base (installation neuve et migration de sécurité).
-- `docs/` : architecture, notes et specs superpowers.
+- `supabase/` : scripts SQL de la base, migrations P0 et seed des projets.
+- `docs/` : architecture, runbook de migration (`MIGRATION-P0.md`), notes et specs superpowers.
+- `tests/` et `scripts/` : outillage de développement (jamais déployé).
 
 ## Ouvrir le site
 
@@ -90,7 +93,8 @@ Double-clique sur `index.html`. Une connexion internet est utile pour charger le
 
 ## Projets et fiches projet
 
-- Le carrousel de l’accueil affiche les vrais projets publiés, définis dans `assets/js/catalog.js` ; il se balaie au doigt sur mobile.
+- Le carrousel de l’accueil affiche les vrais projets publiés. Le site lit d’abord les tables Supabase via l’API, puis retombe sur `assets/js/catalog.js` si la base n’est pas encore migrée ou indisponible ; il se balaie au doigt sur mobile.
+- La migration P0 (tables normalisées + seed) et la procédure de rollback sont décrites dans `docs/MIGRATION-P0.md`.
 - Chaque carte mène à `project.html?project=<slug>` : une étude de cas avec logo, résumé, tags technos, visuel, description, fonctionnalités clés, carte des technologies, repères du projet, galerie d’aperçus générés, et les boutons « Voir la démo en ligne », « Voir le code sur GitHub » (quand ces liens existent) et « Retour aux projets ».
 - Le contenu publié depuis l’admin est chargé depuis Supabase puis gardé dans le navigateur : le carrousel et les fiches déjà connues reprennent ces modifications quand elles sont présentes.
 - Les visuels sont générés localement (motif rouge et noir avec les initiales du projet) quand il n’y a pas de capture ; le badge indique « Projet publié ». Aucun visuel de démonstration externe n’est utilisé.
