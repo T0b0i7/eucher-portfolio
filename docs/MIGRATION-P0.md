@@ -118,6 +118,19 @@ drop function if exists public.portfolio_set_updated_at();
 3. Restaurer le document depuis la sauvegarde si nécessaire (`update public.portfolio set data = '…'::jsonb where id = 1;`).
 4. Le site continue de fonctionner avec `catalog.js` et le document : aucune dépendance dure au nouveau schéma.
 
+## 5 bis. Entretien des taxonomies
+
+Après suppression d'un projet du document, les catégories et technologies peuvent rester orphelines (la projection ne les purge pas pour ne pas gêner une future gestion de taxonomies en P2). Nettoyage ponctuel :
+
+```sql
+delete from public.portfolio_categories c
+where not exists (select 1 from public.portfolio_project_categories pc where pc.category_id = c.id);
+delete from public.portfolio_technologies t
+where not exists (select 1 from public.portfolio_project_technologies pt where pt.technology_id = t.id);
+delete from public.portfolio_tags t
+where not exists (select 1 from public.portfolio_project_tags pt where pt.tag_id = t.id);
+```
+
 ## 6. Limites connues de P0
 
 - **Images** : les couvertures restent dans le document (base64) ; seuls les visuels générés servent de repli. Le Storage et les vraies galeries arrivent en P2.
