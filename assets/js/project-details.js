@@ -602,7 +602,6 @@
   if (api && typeof api.getProject === 'function' && api.isEnabled()) {
     api.getProject(requested).then(function (remote) {
       if (remote && !remote.notFound) renderRemote(remote);
-      else if (remote && remote.notFound) showNotFound();
       else renderLocal();
     }, renderLocal);
   } else {

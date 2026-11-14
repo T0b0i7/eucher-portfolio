@@ -8,7 +8,7 @@
 -- Rejouable.
 -- ============================================================================
 
-create or replace function public.sync_project_tables()
+create or replace function public.sync_portfolio_projects()
 returns trigger
 language plpgsql
 security definer
@@ -23,7 +23,7 @@ declare
   v_slug text;
   candidate text;
   suffix int;
-  v_status public.project_status;
+  v_status public.portfolio_project_status;
   v_featured boolean;
   v_cat text;
   v_cat_id uuid;
@@ -45,8 +45,8 @@ begin
     ) as cat(value)
     where nullif(trim(cat.value), '') is not null
   loop
-    insert into public.categories (slug, name)
-    values (public.slugify(v_cat), v_cat)
+    insert into public.portfolio_categories (slug, name)
+    values (public.portfolio_slugify(v_cat), v_cat)
     on conflict (slug) do update set name = excluded.name;
   end loop;
 
@@ -59,8 +59,8 @@ begin
     ) as tech(value)
     where nullif(trim(tech.value), '') is not null
   loop
-    insert into public.technologies (slug, name)
-    values (public.slugify(tech), tech)
+    insert into public.portfolio_technologies (slug, name)
+    values (public.portfolio_slugify(tech), tech)
     on conflict (slug) do update set name = excluded.name;
   end loop;
 
@@ -71,12 +71,16 @@ begin
     order by item.ord
   loop
     idx := idx + 1;
-    v_legacy := coalesce(nullif(proj->>'id', '')::int, idx);
+    -- Cast tolérant : un id non numérique ne doit jamais faire échouer une publication.
+    v_legacy := coalesce(
+      case when coalesce(proj->>'id', '') ~ '^[0-9]+$' then (proj->>'id')::int end,
+      idx
+    );
 
     v_status := case lower(unaccent(coalesce(proj->>'st', '')))
-      when 'publie' then 'published'::public.project_status
-      when 'archive' then 'archived'::public.project_status
-      else 'draft'::public.project_status
+      when 'publie' then 'published'::public.portfolio_project_status
+      when 'archive' then 'archived'::public.portfolio_project_status
+      else 'draft'::public.portfolio_project_status
     end;
 
     v_featured := case
@@ -84,20 +88,29 @@ begin
       else false
     end;
 
-    v_slug := public.slugify(coalesce(proj->>'slug', proj->>'n', 'projet-' || v_legacy));
-    if v_slug = '' then v_slug := 'projet-' || v_legacy; end if;
-    candidate := v_slug;
-    suffix := 1;
-    while exists (
-      select 1 from public.projects p
-      where p.slug = candidate and coalesce(p.legacy_id, -1) <> v_legacy
-    ) loop
-      suffix := suffix + 1;
-      candidate := v_slug || '-' || suffix;
-    end loop;
-    v_slug := candidate;
+    -- Slug : calculé une seule fois, puis préservé (un renommage ne casse pas
+    -- les liens existants et un réordonnancement n'échange pas les URLs).
+    select p.slug into v_slug
+    from public.portfolio_projects p
+    where p.legacy_id = v_legacy
+    limit 1;
 
-    insert into public.projects (
+    if v_slug is null then
+      v_slug := public.portfolio_slugify(coalesce(proj->>'slug', proj->>'n', 'projet-' || v_legacy));
+      if v_slug = '' then v_slug := 'projet-' || v_legacy; end if;
+      candidate := v_slug;
+      suffix := 1;
+      while exists (
+        select 1 from public.portfolio_projects p
+        where p.slug = candidate
+      ) loop
+        suffix := suffix + 1;
+        candidate := v_slug || '-' || suffix;
+      end loop;
+      v_slug := candidate;
+    end if;
+
+    insert into public.portfolio_projects (
       legacy_id, slug, title, short_desc, long_desc, status, featured, sort_order,
       role, sector, demo_url, repo_url, demo_visible, repo_visible, impact, features, published_at
     ) values (
@@ -120,7 +133,7 @@ begin
       case when v_status = 'published' then now() else null end
     )
     on conflict (legacy_id) do update set
-      slug          = excluded.slug,
+      slug          = public.portfolio_projects.slug,
       title         = excluded.title,
       short_desc    = excluded.short_desc,
       long_desc     = excluded.long_desc,
@@ -130,27 +143,30 @@ begin
       role          = excluded.role,
       sector        = excluded.sector,
       demo_url      = excluded.demo_url,
-      repo_url      = excluded.repo_url,
+      repo_url      = coalesce(excluded.repo_url, public.portfolio_projects.repo_url),
       demo_visible  = excluded.demo_visible,
-      repo_visible  = excluded.repo_visible,
+      repo_visible  = case
+                        when jsonb_exists(proj, 'repo') then true
+                        else public.portfolio_projects.repo_visible
+                      end,
       impact        = excluded.impact,
       features      = excluded.features,
-      published_at  = coalesce(public.projects.published_at, excluded.published_at),
+      published_at  = coalesce(public.portfolio_projects.published_at, excluded.published_at),
       updated_at    = now()
     returning id into v_id;
 
     -- 4. Relations : purge puis réinsertion (idempotent).
-    delete from public.project_categories where project_id = v_id;
-    delete from public.project_tags where project_id = v_id;
-    delete from public.project_technologies where project_id = v_id;
+    delete from public.portfolio_project_categories where project_id = v_id;
+    delete from public.portfolio_project_tags where project_id = v_id;
+    delete from public.portfolio_project_technologies where project_id = v_id;
 
     if nullif(trim(coalesce(proj->>'cat', '')), '') is not null then
       select c.id into v_cat_id
-      from public.categories c
-      where c.slug = public.slugify(proj->>'cat')
+      from public.portfolio_categories c
+      where c.slug = public.portfolio_slugify(proj->>'cat')
       limit 1;
       if v_cat_id is not null then
-        insert into public.project_categories (project_id, category_id)
+        insert into public.portfolio_project_categories (project_id, category_id)
         values (v_id, v_cat_id)
         on conflict do nothing;
       end if;
@@ -162,11 +178,11 @@ begin
       where nullif(trim(t.value), '') is not null
     loop
       select v.id into v_tech_id
-      from public.technologies v
-      where v.slug = public.slugify(tech)
+      from public.portfolio_technologies v
+      where v.slug = public.portfolio_slugify(tech)
       limit 1;
       if v_tech_id is not null then
-        insert into public.project_technologies (project_id, technology_id)
+        insert into public.portfolio_project_technologies (project_id, technology_id)
         values (v_id, v_tech_id)
         on conflict do nothing;
       end if;
@@ -175,13 +191,16 @@ begin
 
   -- 5. Un projet retiré du document est retiré de la projection (les projets
   --    sans legacy_id, gérés hors document, ne sont jamais supprimés).
-  if jsonb_exists(doc, 'projects') then
-    delete from public.projects p
+  if jsonb_typeof(doc->'projects') = 'array' then
+    delete from public.portfolio_projects p
     where p.legacy_id is not null
       and not exists (
         select 1
         from jsonb_array_elements(arr) with ordinality as item(value, ord)
-        where coalesce(nullif(item.value->>'id', '')::int, item.ord) = p.legacy_id
+        where coalesce(
+          case when coalesce(item.value->>'id', '') ~ '^[0-9]+$' then (item.value->>'id')::int end,
+          item.ord
+        ) = p.legacy_id
       );
   end if;
 
@@ -189,10 +208,10 @@ begin
 end;
 $$;
 
-drop trigger if exists trg_sync_project_tables on public.portfolio;
-create trigger trg_sync_project_tables
+drop trigger if exists trg_sync_portfolio_projects on public.portfolio;
+create trigger trg_sync_portfolio_projects
 after insert or update on public.portfolio
-for each row execute function public.sync_project_tables();
+for each row execute function public.sync_portfolio_projects();
 
 -- Rejoue la projection sur la ligne existante (sans modifier le document).
 do $$

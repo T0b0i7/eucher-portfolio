@@ -43,8 +43,9 @@ function projectRow(overrides = {}) {
     updated_at: '2026-11-14T00:00:00Z',
     impact: [],
     features: ['Portefeuilles'],
-    project_categories: [{ categories: { slug: 'mobile', name: 'Mobile' } }],
-    project_technologies: [{ technologies: { slug: 'react-native', name: 'React Native', icon: 'react' } }],
+    portfolio_project_categories: [{ portfolio_categories: { slug: 'mobile', name: 'Mobile' } }],
+    portfolio_project_tags: [{ portfolio_tags: { slug: 'mobile', name: 'Mobile' } }],
+    portfolio_project_technologies: [{ portfolio_technologies: { slug: 'react-native', name: 'React Native', icon: 'react' } }],
     project_media: []
   }, overrides);
 }
@@ -62,7 +63,7 @@ test('listProjects : requête paginée des seuls projets publiés', async () => 
   assert.match(decoded, /order=featured\.desc,sort_order\.asc,published_at\.desc/);
   assert.match(decoded, /limit=12/);
   assert.match(decoded, /offset=0/);
-  assert.match(decoded, /select=.*project_technologies/);
+  assert.match(decoded, /select=.*portfolio_project_technologies/);
   assert.equal(result.total, 1);
   assert.equal(result.hasMore, false);
   assert.equal(result.items[0].slug, 'akoue-app');
@@ -73,8 +74,8 @@ test('listProjects : filtres catégories et technologies combinables', async () 
   const api = apiWith((url) => { captured = url; return response([], '0-0/0'); });
   await api.listProjects({ categories: ['web', 'ia'], technologies: ['react'], page: 2, perPage: 6 });
   const decoded = decodeURIComponent(captured);
-  assert.match(decoded, /project_categories\.categories\.slug=in\.\(web,ia\)/);
-  assert.match(decoded, /project_technologies\.technologies\.slug=in\.\(react\)/);
+  assert.match(decoded, /portfolio_project_categories\.portfolio_categories\.slug=in\.\(web,ia\)/);
+  assert.match(decoded, /portfolio_project_technologies\.portfolio_technologies\.slug=in\.\(react\)/);
   assert.match(decoded, /limit=6/);
   assert.match(decoded, /offset=6/);
 });
@@ -106,6 +107,22 @@ test('getProject : résolution par slug et projet introuvable', async () => {
   assert.equal(decodeURIComponent(captured).includes('status=eq.published'), true);
   const missing = await api.getProject('inconnu');
   assert.equal(missing.notFound, true);
+});
+
+test('listProjects : neutralise les caractères dangereux des filtres', async () => {
+  let captured;
+  const api = apiWith((url) => { captured = url; return response([], '0-0/0'); });
+  await api.listProjects({ categories: ['web),x'], q: 'foo) or 1=1' });
+  const decoded = decodeURIComponent(captured);
+  assert.match(decoded, /in\.\(webx\)/);
+  assert.doesNotMatch(decoded, /1=1/);
+});
+
+test('listProjects : Content-Range */N (page hors bornes) donne le total', async () => {
+  const api = apiWith(() => response([], '*/42'));
+  const result = await api.listProjects({ page: 9 });
+  assert.equal(result.total, 42);
+  assert.equal(result.hasMore, false);
 });
 
 test('isEnabled : faux sans clé Supabase', () => {

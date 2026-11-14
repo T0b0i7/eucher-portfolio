@@ -396,6 +396,7 @@ renderProjectCarousel();
   var api=window.EA_API;
   if(!api||typeof api.listProjects!=='function'||!api.isEnabled()){
     document.body.dataset.dataSource='catalog';
+    try{console.warn('[EA] API non configurée, catalogue utilisé')}catch(e){}
     return;
   }
   api.listProjects({perPage:24}).then(function(res){
@@ -411,9 +412,11 @@ renderProjectCarousel();
         n:x.n,c:'web',cat:x.cat||'',d:x.d||'',role:x.role||'',st:'Publié',sec:x.sec||'',
         long:x.long||x.d||'',f:Array.isArray(x.f)?x.f:[],t:tech,m:i,u:x.u||'',preview:'',cover:'',
         don:false,dl:'',slug:x.slug||(window.eaSlug?window.eaSlug(x.n):''),
-        repo:x.repo||'',repo_visible:!!x.repo_visible,demo_visible:x.demo_visible!==false
+        repo:x.repo||'',repo_visible:!!x.repo_visible,demo_visible:x.demo_visible!==false,
+        impact:Array.isArray(x.impact)?x.impact:[]
       };
     });
+    window.EA_API_READY=true;
     document.body.dataset.dataSource='api';
     renderProjectCarousel();
   },function(){

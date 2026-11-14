@@ -26,9 +26,10 @@
     'id', 'slug', 'title', 'short_desc', 'long_desc', 'status', 'featured', 'sort_order',
     'role', 'sector', 'demo_url', 'repo_url', 'demo_visible', 'repo_visible',
     'published_at', 'updated_at', 'impact', 'features',
-    'project_categories(categories(slug,name))',
-    'project_technologies(technologies(slug,name,icon))',
-    'project_media(url,storage_path,alt,caption,kind,sort_order)'
+    'portfolio_project_categories(portfolio_categories(slug,name))',
+    'portfolio_project_tags(portfolio_tags(slug,name))',
+    'portfolio_project_technologies(portfolio_technologies(slug,name,icon))',
+    'portfolio_media(url,storage_path,alt,caption,kind,sort_order)'
   ].join(',');
 
   function createApi(config) {
@@ -92,12 +93,20 @@
       try {
         var raw = headers && headers.get ? headers.get('content-range') : null;
         if (!raw) return fallback;
-        var match = /^(\d+)-(\d+)\/(\d+|\*)$/.exec(String(raw).trim());
+        var match = /^(?:(\d+)-(\d+)|\*)\/(\d+|\*)$/.exec(String(raw).trim());
         if (!match) return fallback;
         return match[3] === '*' ? fallback : Number(match[3]);
       } catch (e) {
         return fallback;
       }
+    }
+
+    function safeSlug(value) {
+      return String(value == null ? '' : value).trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+    }
+
+    function safeQuery(value) {
+      return String(value == null ? '' : value).replace(/[(),*%=\\]/g, ' ').replace(/\s+/g, ' ').trim();
     }
 
     function mapTaxonomy(row) {
@@ -106,13 +115,16 @@
 
     function mapProject(row) {
       if (!row) return null;
-      var categories = (row.project_categories || []).map(function (link) {
-        return mapTaxonomy(link && link.categories);
+      var categories = (row.portfolio_project_categories || []).map(function (link) {
+        return mapTaxonomy(link && link.portfolio_categories);
       }).filter(Boolean);
-      var technologies = (row.project_technologies || []).map(function (link) {
-        return mapTaxonomy(link && link.technologies);
+      var tags = (row.portfolio_project_tags || []).map(function (link) {
+        return mapTaxonomy(link && link.portfolio_tags);
       }).filter(Boolean);
-      var media = (row.project_media || []).slice().sort(function (a, b) {
+      var technologies = (row.portfolio_project_technologies || []).map(function (link) {
+        return mapTaxonomy(link && link.portfolio_technologies);
+      }).filter(Boolean);
+      var media = (row.portfolio_media || []).slice().sort(function (a, b) {
         return (a && a.sort_order ? a.sort_order : 0) - (b && b.sort_order ? b.sort_order : 0);
       }).map(function (item) {
         return {
@@ -131,6 +143,7 @@
         long: row.long_desc || '',
         cat: categories.length ? categories[0].name : '',
         categories: categories,
+        tags: tags,
         sec: row.sector || '',
         role: row.role || '',
         st: row.status,
@@ -155,13 +168,13 @@
       var opts = options || {};
       var page = Math.max(1, parseInt(opts.page, 10) || 1);
       var perPage = Math.min(48, Math.max(1, parseInt(opts.perPage, 10) || 12));
-      var categories = (opts.categories || []).filter(Boolean);
-      var technologies = (opts.technologies || []).filter(Boolean);
-      var tags = (opts.tags || []).filter(Boolean);
+      var categories = (opts.categories || []).map(safeSlug).filter(Boolean);
+      var technologies = (opts.technologies || []).map(safeSlug).filter(Boolean);
+      var tags = (opts.tags || []).map(safeSlug).filter(Boolean);
       var select = BASE_SELECT;
-      if (categories.length) select = select.replace('project_categories(', 'project_categories!inner(');
-      if (technologies.length) select = select.replace('project_technologies(', 'project_technologies!inner(');
-      if (tags.length) select += ',project_tags!inner(tags(slug,name))';
+      if (categories.length) select = select.replace('portfolio_project_categories(', 'portfolio_project_categories!inner(');
+      if (technologies.length) select = select.replace('portfolio_project_technologies(', 'portfolio_project_technologies!inner(');
+      if (tags.length) select = select.replace('portfolio_project_tags(', 'portfolio_project_tags!inner(');
 
       var params = {
         select: select,
@@ -171,15 +184,15 @@
         offset: (page - 1) * perPage
       };
       if (opts.featured === true) params.featured = 'eq.true';
-      if (opts.q && String(opts.q).trim()) {
-        var term = String(opts.q).trim().replace(/[*,]/g, ' ');
+      var term = safeQuery(opts.q);
+      if (term) {
         params.or = '(title.ilike.*' + term + '*,short_desc.ilike.*' + term + '*)';
       }
-      if (categories.length) params['project_categories.categories.slug'] = 'in.(' + categories.join(',') + ')';
-      if (technologies.length) params['project_technologies.technologies.slug'] = 'in.(' + technologies.join(',') + ')';
-      if (tags.length) params['project_tags.tags.slug'] = 'in.(' + tags.join(',') + ')';
+      if (categories.length) params['portfolio_project_categories.portfolio_categories.slug'] = 'in.(' + categories.join(',') + ')';
+      if (technologies.length) params['portfolio_project_technologies.portfolio_technologies.slug'] = 'in.(' + technologies.join(',') + ')';
+      if (tags.length) params['portfolio_project_tags.portfolio_tags.slug'] = 'in.(' + tags.join(',') + ')';
 
-      return request('/projects', params, { Prefer: 'count=exact' }).then(function (result) {
+      return request('/portfolio_projects', params, { Prefer: 'count=exact' }).then(function (result) {
         if (!result || !Array.isArray(result.body)) return null;
         var items = result.body.map(mapProject).filter(Boolean);
         var total = parseTotal(result.headers, (page - 1) * perPage + items.length);
@@ -194,7 +207,7 @@
 
     function getProject(slug) {
       if (!slug) return Promise.resolve({ notFound: true });
-      return request('/projects', {
+      return request('/portfolio_projects', {
         select: BASE_SELECT,
         status: 'eq.published',
         slug: 'eq.' + String(slug).trim(),
@@ -208,9 +221,9 @@
 
     function listTaxonomies() {
       return Promise.all([
-        request('/categories', { select: 'slug,name', enabled: 'eq.true', order: 'sort_order.asc,name.asc' }),
-        request('/tags', { select: 'slug,name', order: 'name.asc' }),
-        request('/technologies', { select: 'slug,name,icon', order: 'name.asc' })
+        request('/portfolio_categories', { select: 'slug,name', enabled: 'eq.true', order: 'sort_order.asc,name.asc' }),
+        request('/portfolio_tags', { select: 'slug,name', order: 'name.asc' }),
+        request('/portfolio_technologies', { select: 'slug,name,icon', order: 'name.asc' })
       ]).then(function (results) {
         var out = { categories: [], tags: [], technologies: [] };
         if (results[0] && Array.isArray(results[0].body)) out.categories = results[0].body;

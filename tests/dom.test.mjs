@@ -63,9 +63,10 @@ function apiRow(overrides = {}) {
     updated_at: '2026-11-14T00:00:00Z',
     impact: [],
     features: ['Fonction API'],
-    project_categories: [{ categories: { slug: 'web', name: 'Web' } }],
-    project_technologies: [{ technologies: { slug: 'react', name: 'React', icon: null } }],
-    project_media: []
+    portfolio_project_categories: [{ portfolio_categories: { slug: 'web', name: 'Web' } }],
+    portfolio_project_tags: [{ portfolio_tags: { slug: 'web', name: 'Web' } }],
+    portfolio_project_technologies: [{ portfolio_technologies: { slug: 'react', name: 'React', icon: null } }],
+    portfolio_media: []
   }, overrides);
 }
 
@@ -73,7 +74,7 @@ function apiFetch(rows, fail) {
   return (url) => {
     const decoded = decodeURIComponent(String(url));
     if (fail) return Promise.reject(new Error('offline'));
-    if (decoded.indexOf('/rest/v1/projects?') >= 0) {
+    if (decoded.indexOf('/rest/v1/portfolio_projects?') >= 0) {
       return Promise.resolve({
         ok: true,
         status: 200,
@@ -113,6 +114,14 @@ test('fiche projet : projet servi par l’API hors catalogue', async (t) => {
   t.after(() => page.close());
   await flush();
   assert.equal(page.document.querySelector('.hero-title').textContent.trim(), 'Projet API');
+  assert.equal(page.document.querySelector('#projectNotFound').hidden, true);
+});
+
+test('fiche projet : API introuvable mais catalogue connu -> repli local', async (t) => {
+  const page = loadPage('project.html', PROJECT_SCRIPTS, 'http://localhost/project.html?project=akoue-app', { fetch: apiFetch([]) });
+  t.after(() => page.close());
+  await flush();
+  assert.equal(page.document.querySelector('.hero-title').textContent.trim(), 'Akouè App');
   assert.equal(page.document.querySelector('#projectNotFound').hidden, true);
 });
 

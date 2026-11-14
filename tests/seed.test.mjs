@@ -25,7 +25,7 @@ test('seed : conserve les identifiants legacy du catalogue (réconciliation proj
 
 test('seed : génère les 8 projets publiés avec leurs slugs', () => {
   const { sql } = generate();
-  const inserts = sql.match(/insert into public\.projects/g) || [];
+  const inserts = sql.match(/insert into public\.portfolio_projects/g) || [];
   assert.equal(inserts.length, 8);
   for (const slug of [
     'akoue-app', 'navigarde-ia', 'clavis', 'havre',
@@ -34,15 +34,15 @@ test('seed : génère les 8 projets publiés avec leurs slugs', () => {
     assert.ok(sql.includes("'" + slug + "'"), 'slug manquant : ' + slug);
   }
   assert.match(sql, /on conflict \(legacy_id\) do update/);
-  assert.match(sql, /'published'::public\.project_status/);
+  assert.match(sql, /'published'::public\.portfolio_project_status/);
 });
 
-test('seed : catégories et technologies dérivées puis reliées', () => {
+test('seed : catégories et portfolio_technologies dérivées puis reliées', () => {
   const { sql } = generate();
-  assert.match(sql, /insert into public\.categories/);
-  assert.match(sql, /insert into public\.technologies/);
-  assert.match(sql, /insert into public\.project_categories/);
-  assert.match(sql, /insert into public\.project_technologies/);
+  assert.match(sql, /insert into public\.portfolio_categories/);
+  assert.match(sql, /insert into public\.portfolio_technologies/);
+  assert.match(sql, /insert into public\.portfolio_project_categories/);
+  assert.match(sql, /insert into public\.portfolio_project_technologies/);
   assert.match(sql, /on conflict \(slug\) do update/);
   assert.match(sql, /on conflict do nothing/);
 });

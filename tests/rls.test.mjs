@@ -13,27 +13,27 @@ function sql() {
 
 test('RLS : lecture publique des projets limitée aux publiés', () => {
   const text = sql();
-  assert.match(text, /create policy "projets lecture publique" on public\.projects for select to anon, authenticated using \(status = 'published'\)/);
+  assert.match(text, /create policy "projets lecture publique" on public\.portfolio_projects for select to anon, authenticated using \(status = 'published'\)/);
   assert.doesNotMatch(text, /create policy "projets lecture publique"[^;]*using \(true\)/);
 });
 
 test('RLS : écriture des projets réservée au propriétaire', () => {
   const text = sql();
-  assert.match(text, /create policy "projets ecriture proprietaire" on public\.projects for all to authenticated using \(public\.is_owner\(\)\) with check \(public\.is_owner\(\)\)/);
+  assert.match(text, /create policy "projets ecriture proprietaire" on public\.portfolio_projects for all to authenticated using \(public\.is_owner\(\)\) with check \(public\.is_owner\(\)\)/);
 });
 
 test('RLS : relations publiques seulement si le projet est publié', () => {
   const text = sql();
-  assert.match(text, /create policy "relations lecture publique" on public\.project_categories/);
+  assert.match(text, /create policy "relations lecture publique" on public\.portfolio_project_categories/);
   assert.match(text, /p\.status = 'published'/);
-  assert.match(text, /create policy "medias lecture publique" on public\.project_media/);
+  assert.match(text, /create policy "medias lecture publique" on public\.portfolio_media/);
 });
 
 test('RLS : catégories activées et taxonomies lisibles', () => {
   const text = sql();
-  assert.match(text, /create policy "categories lecture publique" on public\.categories for select to anon, authenticated using \(enabled = true\)/);
-  assert.match(text, /create policy "tags lecture publique" on public\.tags/);
-  assert.match(text, /create policy "technologies lecture publique" on public\.technologies/);
+  assert.match(text, /create policy "portfolio_categories lecture publique" on public\.portfolio_categories for select to anon, authenticated using \(enabled = true\)/);
+  assert.match(text, /create policy "portfolio_tags lecture publique" on public\.portfolio_tags/);
+  assert.match(text, /create policy "portfolio_technologies lecture publique" on public\.portfolio_technologies/);
 });
 
 test('Storage : bucket média public en lecture, écriture admin', () => {
@@ -42,4 +42,11 @@ test('Storage : bucket média public en lecture, écriture admin', () => {
   assert.match(text, /create policy "media lecture publique" on storage\.objects/);
   assert.match(text, /bucket_id = 'media'/);
   assert.match(text, /create policy "media ecriture proprietaire" on storage\.objects/);
+});
+
+test('Brouillons : aucune lecture publique, uniquement le propriétaire', () => {
+  const text = sql();
+  assert.match(text, /create policy "brouillons proprietaire" on public\.portfolio_drafts for all to authenticated/);
+  assert.match(text, /public\.is_owner\(\)/);
+  assert.doesNotMatch(text, /create policy "[^"]+" on public\.portfolio_drafts for select to anon/);
 });

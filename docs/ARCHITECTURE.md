@@ -20,11 +20,12 @@ assets/
   js/effects.js                Aether, i18n D18, CV, contact, mode sobre, effets 3D, orbite
   js/project-details.js        rendu de project.html (API puis repli catalogue)
   js/admin.js                  SPA d’administration (chargée seulement à l’ouverture)
+  js/admin-doc.js              assainissement du document publié (projets publiés, sans données privées)
   img/                         logo et portrait
 supabase/
   schema-complete.sql          installation neuve : tables, RLS, trigger, table admins
   migration-securite.sql       migration idempotente pour une base existante
-  migrations/                  P0 : schéma projet normalisé, RLS/Storage, projection
+  migrations/                  P0 : schéma projet normalisé (tables portfolio_*), RLS/Storage, projection
   seed/                        seed des projets généré depuis le catalogue
   import-projects.sql          ancien import, obsolète après la migration de sécurité
 tests/                         harnais jsdom + contrôles statiques (dev uniquement)
@@ -48,23 +49,23 @@ docs/
 | Module | Rôle |
 | --- | --- |
 | `config.js` | Configuration publique Supabase (`url`, clé publishable, owner) partagée par les deux pages. Aucun secret. |
-| `api.js` | Couche de lecture publique : `listProjects` (pagination, catégories, technologies, recherche, tri), `getProject(slug)`, `listTaxonomies`. Interroge PostgREST et ne renvoie que les projets `published` ; erreurs silencieuses (null) pour laisser le repli. |
+| `api.js` | Couche de lecture publique : `listProjects` (pagination, catégories, technologies, recherche, tri), `getProject(slug)`, `listTaxonomies`. Interroge PostgREST (tables `portfolio_*`) et ne renvoie que les projets `published` ; erreurs silencieuses (null) pour laisser le repli. |
 | `catalog.js` | Repli statique des 8 projets publiés : textes, technologies, URL, rôle, secteur, `repo` GitHub quand il existe, icônes technos (`eaTechIcon`), visuels générés (`eaProjectArt`, `eaProjectShot`). Sert aussi de premier rendu et de secours quand l’API est indisponible. |
 | `data.js` | Construit `P` depuis `catalog.js`, puis remplace le carrousel par les projets de l’API quand elle répond (`document.body.dataset.dataSource` = `api` ou `catalog`). Expose les seeds profil/CV/compétences, l’échappement `E`, les sons, la modale projet et le carrousel (dont le balayage tactile). |
 | `sections.js` | Peint blog, boutique, parcours, à propos et services depuis `localStorage`, applique les réglages du document (`applyData`) et rappelle les rendus. |
 | `remote.js` | Lit le document public `portfolio` au boot, écrit le cache `ea_admin_v1` puis relance le rendu. Expose `eaSend` (contact) uniquement si une clé Supabase existe. Charge l’admin à la demande. |
 | `ui.js` | Intro, HUD date/heure/section, mode fête, palette Ctrl+K. |
 | `effects.js` | Aether, traduction FR/EN (`D18`, `regTr`, `setLang`), CV imprimable, formulaire de contact, mode sobre (`setCalm`, bouton `#calmb`) et effets 3D/orbite. |
-| `project-details.js` | Tente `EA_API.getProject(slug)` puis, à défaut, résout dans `EA_PROJECTS` avec surcouche des modifications `ea_admin_v1.projects`, et rend la fiche : hero, tags iconifiés, visuel + stat, description, fonctionnalités, technologies, repères/résultats, galerie d’aperçus générés et boutons d’action. Un brouillon reçu par erreur n’est jamais affiché. |
-| `admin.js` | SPA admin : authentification GitHub, chargement du cache, édition, messages, export, et écriture du document. |
+| `project-details.js` | Tente `EA_API.getProject(slug)` puis, à défaut, résout dans `EA_PROJECTS` avec surcouche des modifications `ea_admin_v1.projects`, et rend la fiche : hero, tags iconifiés, visuel + stat, description, fonctionnalités, technologies, repères/résultats, galerie d’aperçus générés et boutons d’action. Un brouillon reçu par erreur n’est jamais affiché ; si l’API ne connaît pas le projet, repli local. |
+| `admin.js` | SPA admin : authentification GitHub, chargement du cache, édition, messages, export, écriture du document. Publie uniquement le document assaini (`admin-doc.js`) et stocke le document complet (brouillons) dans la table privée `portfolio_drafts`. |
 
 ## Flux de données
 
 1. Au chargement de `index.html`, `catalog.js` fournit un premier rendu immédiat (8 projets), puis `data.js` interroge `EA_API.listProjects()` : si les tables P0 répondent, le carrousel est remplacé par les projets `published` de la base et `document.body.dataset.dataSource` passe à `api` ; sinon (erreur, base non migrée) le catalogue reste affiché (`catalog`) avec un avertissement console.
 2. `remote.js` appelle `eaLoad()` : `GET /rest/v1/portfolio?id=eq.1&select=data`. Si le document public contient des projets, il remplace le cache local puis relance `applyData` et les rendus (projets, blog, boutique, parcours, à propos…). C’est le **seul** chargement du document au boot : `effects.js` ne le refait plus. Pendant P0, le document reste la source d’écriture du back-office.
-3. Dans l’admin, `save()` met à jour `ea_admin_v1` puis appelle `eaPush` : `remotePush()` pousse une copie **assainie** du document (sans `msgs`, sans `act`, sans `profile.tel`) vers `portfolio`, avec un debounce de 700 ms.
-4. Le trigger historique `sync_portfolio_tables` décompose ce document dans les tables « legacy » (`profile`, `settings`, `projects`, `skills`, `experiences`, `education`, `posts`, `products`, `services`, `steps`, `activity`).
-5. Le trigger `trg_sync_project_tables` (P0) projette les projets du document vers le **modèle de lecture normalisé** : `projects`, `categories`, `technologies` et leurs jonctions, avec slug stable, statut mappé, dates et déduplication. Toute écriture du document met donc les tables P0 à jour automatiquement.
+3. Dans l’admin, `save()` met à jour `ea_admin_v1` puis appelle `eaPush` : `remotePush()` publie une copie **assainie** (`admin-doc.js`) du document — projets `Publié` uniquement, sans `msgs`, `act` ni `profile.tel` — vers `portfolio`, et enregistre le document complet (brouillons inclus) dans la table privée `portfolio_drafts` (RLS propriétaire), avec un debounce de 700 ms.
+4. Le trigger historique `sync_portfolio_tables` décompose ce document dans les tables « legacy » (`profile`, `settings`, `projects`, `skills`, `experiences`, `education`, `posts`, `products`, `services`, `steps`, `activity`). Les nouvelles tables P0 sont préfixées `portfolio_*` pour cohabiter sans collision avec ces tables legacy.
+5. Le trigger `trg_sync_portfolio_projects` (P0) projette les projets du document vers le **modèle de lecture normalisé** : `portfolio_projects`, `portfolio_categories`, `portfolio_technologies` et leurs jonctions, avec slug préservé, statut mappé, dates et déduplication. Toute écriture du document met donc les tables P0 à jour automatiquement.
 6. Le formulaire de contact appelle `eaSend()` → insertion dans `messages`. Sans clé Supabase, `eaSend` n’existe pas et le bouton garde son repli `mailto:`.
 7. `project.html` interroge d’abord l’API (`getProject(slug)`) ; en cas d’échec ou de base non migrée, il retombe sur `EA_PROJECTS` + cache local. Un projet `draft`/`archived` reçu par erreur est traité comme introuvable.
 8. La migration P0 est décrite dans `docs/MIGRATION-P0.md` (ordre, vérifications, rollback). Les écritures directes en tables et la fin du document JSON sont prévues en P2.
@@ -73,7 +74,7 @@ docs/
 
 - **Plusieurs modules lisent `localStorage`** : `sections.js`, `effects.js` (i18n, CV, contact), `project-details.js`, `admin.js`. `ui.js` ne lit que les globales déjà chargées.
 - **Seul `admin.js` modifie le document** `ea_admin_v1` ; `remote.js` se contente d’y écrire la copie reçue de Supabase.
-- **Accès Supabase** : `api.js` en lecture publique (projets publiés, taxonomies) ; `remote.js` pour le document public et le contact ; `admin.js` pour l’écriture authentifiée (document et messages). `effects.js` passe uniquement par `eaSend` exposé par `remote.js` ; aucun autre module ne crée de client Supabase.
+- **Accès Supabase** : `api.js` en lecture publique (projets publiés, taxonomies) ; `remote.js` pour le document public et le contact ; `admin.js` pour l’écriture authentifiée (document, brouillons privés et messages). `effects.js` passe uniquement par `eaSend` exposé par `remote.js` ; aucun autre module ne crée de client Supabase.
 - **Pas de build, pas de bundler** : les fichiers sont servis tels quels et partagent la portée globale (`P`, `S2`, `BP`, `M`, `sfx`, etc.). Ne pas changer l’ordre de chargement sans vérifier ces dépendances.
 - **i18n** : les textes français vivent dans le HTML et les modules ; `effects.js` porte le dictionnaire `D18` et traduit le DOM, y compris les attributs (`placeholder`, `aria-label`, `title`, `alt`). L’admin fournit les versions anglaises du contenu et `regTr()` les enregistre.
 - **Aether est textuel uniquement** : ni micro ni lecture audio ; le mode sobre masque `#zeo` et `#zp` via `body.calm`.
@@ -81,8 +82,8 @@ docs/
 ## Sécurité
 
 - Table `public.admins(uid)` : source de vérité de l’ownership. `is_owner()` est `security definer` et teste l’existence de `auth.uid()` dans cette table — plus aucun champ du JWT modifiable (`user_metadata.user_name`) n’entre dans la décision.
-- RLS activée sur toutes les tables. Le document `portfolio` est lisible publiquement ; son écriture est réservée au propriétaire. `profile` et `settings` ne sont plus lisibles publiquement ; `projects`, `posts` et `products` restent lisibles pour les lignes au statut « Publié ».
-- Le document public est assaini avant publication : `msgs` (messages privés), `act` (activité) et `profile.tel` (téléphone) sont exclus. Les messages se consultent uniquement dans l’admin, via la table `messages` protégée.
+- RLS activée sur toutes les tables. Le document `portfolio` reste lisible publiquement (mais ne contient plus que les projets publiés) ; son écriture est réservée au propriétaire. `profile` et `settings` ne sont plus lisibles publiquement ; les ligne `portfolio_projects`, `posts` et `products` restent lisibles pour les statuts publiés.
+- Le document public est assaini avant publication : projets non publiés, `msgs` (messages privés), `act` (activité) et `profile.tel` (téléphone) sont exclus. Les brouillons complets vivent dans `portfolio_drafts`, jamais lisibles par `anon`. Les messages se consultent uniquement dans l’admin, via la table `messages` protégée.
 - L’insertion dans `messages` est limitée par une policy : nom entre 2 et 120 caractères, e-mail contenant `@`, sujet ≤ 200, message entre 1 et 5000 caractères.
 - Migration à exécuter **une fois** sur une base existante : `supabase/migration-securite.sql` (idempotent), après déploiement du nouveau `admin.js`/`remote.js` ; puis se connecter avec GitHub. Pour une base neuve : `supabase/schema-complete.sql`. Le bootstrap de la table `admins` est expliqué en tête de la migration et se rejoue manuellement si le compte GitHub n’existait pas encore.
 - P0 ajoute ses propres policies (`supabase/migrations/`) : lecture publique des seuls projets `published`, relations et médias visibles seulement si le projet est publié, écriture réservée au propriétaire, bucket `media` public en lecture. Le runbook et le rollback sont dans `docs/MIGRATION-P0.md`.

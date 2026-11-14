@@ -5,9 +5,9 @@
 
 ## Ce que fait P0
 
-- Crée les tables éditoriales (`projects`, `categories`, `tags`, `technologies`, jonctions, `project_media`), les enums, les slugs, les index et la RLS.
+- Crée les tables éditoriales (`portfolio_projects`, `portfolio_categories`, `portfolio_tags`, `portfolio_technologies`, jonctions, `portfolio_media`), les enums, les slugs, les index et la RLS.
 - Crée le bucket Storage `media` (lecture publique, écriture propriétaire).
-- Ajoute un trigger dédié `trg_sync_project_tables` qui projette **le document `portfolio` actuel** vers ces tables. Le back-office continue d'écrire le document ; la projection suit automatiquement.
+- Ajoute un trigger dédié `trg_sync_portfolio_projects` qui projette **le document `portfolio` actuel** vers ces tables. Le back-office continue d'écrire le document ; la projection suit automatiquement.
 - Le site public lit désormais ces tables via `assets/js/api.js`, avec repli sur `catalog.js` et le cache local.
 - `project.html` charge la même API avec repli catalogue.
 
@@ -29,49 +29,61 @@ Copier le JSON obtenu dans un fichier local daté. Faire également une sauvegar
 3. `supabase/migrations/2026-11-14-03-p0-projection.sql`
 4. `supabase/seed/2026-11-14-projects.sql` (généré par `node scripts/build-seed.mjs`)
 
-Chaque fichier est idempotent (rejouable) sauf le seed qui fait des upserts. Si un fichier échoue, **ne pas continuer** : lire l'erreur, corriger, restaures la sauvegarde si nécessaire.
+Chaque fichier est rejouable (idempotent). Si un fichier échoue, **ne pas continuer** : lire l'erreur, corriger, restaurer la sauvegarde si nécessaire. Les nouvelles tables sont préfixées `portfolio_*` pour ne pas entrer en collision avec les tables legacy de `schema-complete.sql` (dont `public.projects`) ; le document JSON reste la source d'écriture pendant P0.
 
-## 3. Vérifications (V1–V10)
+## 3. Vérifications (V1–V11)
 
 ```sql
--- V1. Les tables existent (attendu : 8 lignes)
+-- V1. Les tables P0 existent (attendu : 9 lignes)
 select table_name from information_schema.tables
 where table_schema = 'public'
-  and table_name in ('projects','categories','tags','technologies',
-                     'project_categories','project_tags','project_technologies','project_media');
+  and table_name in ('portfolio_projects','portfolio_categories','portfolio_tags','portfolio_technologies',
+                     'portfolio_project_categories','portfolio_project_tags','portfolio_project_technologies',
+                     'portfolio_media','portfolio_drafts');
 
 -- V2. Tous les projets sont là (attendu : 8)
-select count(*) from public.projects;
+select count(*) from public.portfolio_projects;
 
 -- V3. Slugs attendus (attendu : 8 lignes)
-select slug from public.projects order by slug;
+select slug from public.portfolio_projects order by slug;
 
 -- V4. Statuts (attendu : 8 published, 0 draft/archived)
-select status, count(*) from public.projects group by status;
+select status, count(*) from public.portfolio_projects group by status;
 
 -- V5. Relations (attendu : 8 catégories liées, > 20 technologies liées)
-select count(*) from public.project_categories;
-select count(*) from public.project_technologies;
+select count(*) from public.portfolio_project_categories;
+select count(*) from public.portfolio_project_technologies;
 
 -- V6. Aucune policy anon ne laisse voir un brouillon (attendu : 0 ligne)
 select policyname, roles, qual from pg_policies
-where schemaname = 'public' and tablename = 'projects' and cmd = 'SELECT';
+where schemaname = 'public' and tablename = 'portfolio_projects' and cmd = 'SELECT';
 
 -- V7. Les deux triggers existent (legacy + projection)
-select tgname from pg_trigger where tgname in ('trg_sync_portfolio','trg_sync_project_tables');
+select tgname from pg_trigger where tgname in ('trg_sync_portfolio','trg_sync_portfolio_projects');
 
 -- V8. Le seed correspond au catalogue
-select count(*) from public.projects where legacy_id is not null; -- 8
-select count(*) from public.categories;                          -- 3
-select count(*) from public.technologies;                        -- 16
+select count(*) from public.portfolio_projects where legacy_id is not null; -- 8
+select count(*) from public.portfolio_categories;                          -- 3
+select count(*) from public.portfolio_technologies;                        -- 16
 
 -- V9. Test de lecture publique (à exécuter avec la clé anon via l'API)
--- GET /rest/v1/projects?select=slug,title&status=eq.published
+-- GET /rest/v1/portfolio_projects?select=slug,title&status=eq.published
 -- attendu : 8 projets, aucun brouillon
 
--- V10. Test de non-fuite du document : le document public ne contient ni msgs ni tel
-select data ? 'msgs' as msgs, data -> 'profile' ? 'tel' as tel
-from public.portfolio where id = 1; -- false / false
+-- V10. Test de non-fuite du document public (attendu : false / false / 0)
+select data ? 'msgs' as msgs,
+       data -> 'profile' ? 'tel' as tel,
+       (select count(*) from jsonb_array_elements(coalesce(data->'projects', '[]'::jsonb)) p
+        where coalesce(p->>'st', '') <> 'Publié') as brouillons_publics
+from public.portfolio where id = 1;
+
+-- V11. Les brouillons sont privés (attendu : policy propriétaire, aucun rôle anon)
+select policyname, roles from pg_policies
+where schemaname = 'public' and tablename = 'portfolio_drafts';
+
+-- V0 (avant migration). Vérifier qu'aucune collision n'existe :
+select column_name from information_schema.columns
+where table_schema = 'public' and table_name = 'projects'; -- table legacy, non modifiée par P0
 ```
 
 ## 4. Recette fonctionnelle
@@ -88,19 +100,19 @@ from public.portfolio where id = 1; -- false / false
 1. Retirer la projection et le trigger :
 
 ```sql
-drop trigger if exists trg_sync_project_tables on public.portfolio;
-drop function if exists public.sync_project_tables();
+drop trigger if exists trg_sync_portfolio_projects on public.portfolio;
+drop function if exists public.sync_portfolio_projects();
 ```
 
 2. (Optionnel) Supprimer les tables P0 (aucune donnée éditoriale unique n'y est stockée : elles sont projetées depuis le document) :
 
 ```sql
-drop table if exists public.project_media, public.project_technologies, public.project_tags,
-  public.project_categories, public.technologies, public.tags, public.categories, public.projects;
-drop type if exists public.media_kind;
-drop type if exists public.project_status;
-drop function if exists public.slugify(text);
-drop function if exists public.set_updated_at();
+drop table if exists public.portfolio_media, public.portfolio_project_technologies, public.portfolio_project_tags,
+  public.portfolio_project_categories, public.portfolio_technologies, public.portfolio_tags, public.portfolio_categories, public.portfolio_projects;
+drop type if exists public.portfolio_media_kind;
+drop type if exists public.portfolio_project_status;
+drop function if exists public.portfolio_slugify(text);
+drop function if exists public.portfolio_set_updated_at();
 ```
 
 3. Restaurer le document depuis la sauvegarde si nécessaire (`update public.portfolio set data = '…'::jsonb where id = 1;`).
