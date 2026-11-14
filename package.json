@@ -1,0 +1,16 @@
+{
+  "name": "eucher-portfolio",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Portfolio statique d'Eucher ABATTI — tests et outillage de développement uniquement.",
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\"",
+    "test:dom": "node --test tests/dom.test.mjs",
+    "seed:projects": "node scripts/build-seed.mjs",
+    "check:sql": "node scripts/check-sql.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^31.0.1"
+  }
+}
