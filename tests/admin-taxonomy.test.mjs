@@ -40,3 +40,9 @@ test('admin projets : cases à cocher, dates, ordre et aperçu', () => {
   assert.match(admin, /preview=1/);
   assert.match(admin, /window\.open\('project\.html/);
 });
+
+test('connexion admin : vérification serveur is_owner et diagnostic', () => {
+  assert.match(admin, /SB\.rpc\('is_owner'\)/);
+  assert.match(admin, /compte détecté/);
+  assert.match(admin, /attempt<3/);
+});

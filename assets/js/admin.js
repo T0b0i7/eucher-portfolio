@@ -216,8 +216,8 @@ function msgPull(){if(!SB)return;SB.from('messages').select('*').order('created_
 window.eaMsgPull=msgPull;
 var lg=document.createElement('div');lg.id='lg';lg.setAttribute('data-notr','1');document.body.appendChild(lg);
 var GH='<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>';
-function login(mode){var M2={net:'Impossible de joindre Supabase. Réessaie dans un instant.',denied:'Connexion refusée : ce compte GitHub n’est pas autorisé.',cfg:'La connexion administrateur n’est pas encore configurée.'},cfg=!!SB;
-lg.innerHTML='<div class="lb" role="dialog" aria-modal="true"><h3>Espace administrateur</h3><p>'+(M2[mode]||'Accès réservé au propriétaire du site. Connecte-toi avec ton compte GitHub autorisé.')+'</p><button class="gh" id="lgb">'+GH+'<span>Se connecter avec GitHub</span></button><p class="lgn" id="lgn"'+(cfg?' hidden':'')+'>⚙ La connexion administrateur n’est pas encore configurée.</p><div id="lgo"></div><button class="x" id="lgx">Fermer</button></div>';
+function login(mode,who){var M2={net:'Impossible de joindre Supabase. Réessaie dans un instant.',denied:'Connexion refusée : ce compte GitHub n’est pas autorisé.',cfg:'La connexion administrateur n’est pas encore configurée.'},cfg=!!SB,msg=M2[mode]||'Accès réservé au propriétaire du site. Connecte-toi avec ton compte GitHub autorisé.';if(who&&mode==='denied')msg+=' (compte détecté : '+esc(who)+')';
+lg.innerHTML='<div class="lb" role="dialog" aria-modal="true"><h3>Espace administrateur</h3><p>'+msg+'</p><button class="gh" id="lgb">'+GH+'<span>Se connecter avec GitHub</span></button><p class="lgn" id="lgn"'+(cfg?' hidden':'')+'>⚙ La connexion administrateur n’est pas encore configurée.</p><div id="lgo"></div><button class="x" id="lgx">Fermer</button></div>';
 lg.classList.add('open');
 document.getElementById('lgb').onclick=function(){if(!cfg){var n=document.getElementById('lgn');n.hidden=false;n.classList.remove('fl');void n.offsetWidth;n.classList.add('fl');return}SB.auth.signInWithOAuth({provider:'github',options:{redirectTo:location.origin+location.pathname}}).then(function(r){if(r&&r.error)login('net')}).catch(function(){login('net')})};
 document.getElementById('lgx').onclick=function(){lg.classList.remove('open')};
@@ -226,9 +226,23 @@ document.getElementById('lgx').onclick=function(){lg.classList.remove('open')};
    dans public.admins ? Aucun champ du JWT modifiable (user_metadata) n'est lu. */
 function checkAdmin(sess,cb){
   if(!SB||!sess||!sess.user){cb(false);return}
-  SB.from('admins').select('uid').eq('uid',sess.user.id).maybeSingle()
-    .then(function(r){cb(!r.error&&!!r.data)})
-    .catch(function(){cb(false)});
+  var attempt=0;
+  function fromSession(){return !!(sess.user&&sess.user.id)}
+  function run(){
+    attempt+=1;
+    SB.rpc('is_owner').then(function(r){
+      if(r&&!r.error&&r.data===true){cb(true);return}
+      if(r&&r.error&&attempt<3){setTimeout(run,350*attempt);return}
+      if(!fromSession()){cb(false);return}
+      SB.from('admins').select('uid').eq('uid',sess.user.id).maybeSingle()
+        .then(function(t){cb(!t.error&&!!t.data)})
+        .catch(function(){cb(false)});
+    }).catch(function(){
+      if(attempt<3){setTimeout(run,350*attempt);return}
+      cb(false);
+    });
+  }
+  run();
 }
 function enter(){
   if(!SB||(window.SB_ADMIN&&A.classList.contains('open')))return;
@@ -247,7 +261,7 @@ window.__requestAdmin=function(){
     if(!s){login();return}
     checkAdmin(s,function(ok){
       if(ok)enter();
-      else{window.SB_ADMIN=false;SB.auth.signOut();login('denied')}
+      else{window.SB_ADMIN=false;login('denied',(sess.user.user_metadata&&(sess.user.user_metadata.user_name||sess.user.user_metadata.preferred_username))||sess.user.email||'')}
     })
   }).catch(function(){login('net')})
 };
@@ -260,7 +274,7 @@ if(SB)SB.auth.onAuthStateChange(function(ev,s){
     checkAdmin(sess,function(ok){
       window.SB_ADMIN=!!ok;
       if(ok)enter();
-      else{SB.auth.signOut();login('denied')}
+      else{window.SB_ADMIN=false;login('denied',(sess.user.user_metadata&&(sess.user.user_metadata.user_name||sess.user.user_metadata.preferred_username))||sess.user.email||'')}
     })
   },0)
 });
