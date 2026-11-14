@@ -169,14 +169,21 @@ var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function
 function applyClose(){log('Portfolio mis à jour',D.projects.filter(function(p){return p.st==='Publié'}).length+' projets publiés','bolt','var(--ok)');save();window.closeAdmin()}
 var openAdminRaw=function(){load();V='dash';SEL=0;render();A.classList.add('open');document.body.classList.add('adm-open');document.body.style.overflow='hidden';A.scrollTo(0,0);A._s=window.on;if(window.on)setSound(false)};
 window.closeAdmin=function(){A.classList.remove('open');document.body.classList.remove('adm-open');document.body.style.overflow='';if(A._s){setSound(true);A._s=false}applyData()};
-var SB=null;try{SB=supabase.createClient(SBU.url,SBU.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});window.SB=SB}catch(e){SB=null}
-if(!window.claude)document.documentElement.classList.add('no-ai');
+/* Client Supabase unique : créé une seule fois, exposé sous window.SB. */
+var SB=null;
 try{if(window.supabase&&SBU.url&&SBU.key)SB=supabase.createClient(SBU.url,SBU.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(e){SB=null}
-function sbName(s){var u=s&&s.user;return u?String((u.user_metadata&&(u.user_metadata.user_name||u.user_metadata.preferred_username))||u.email||''):''}
-function sbOk(s){return !!s&&sbName(s).toLowerCase()===OWNER.toLowerCase()}
 window.SB=SB;
+if(!window.claude)document.documentElement.classList.add('no-ai');
 var pushT=null;
-function remotePush(){if(!SB||!window.SB_ADMIN)return;clearTimeout(pushT);pushT=setTimeout(function(){SB.from('portfolio').upsert({id:1,data:D,updated_at:new Date().toISOString()}).then(function(r){if(r.error)console.warn('sync',r.error.message)}).catch(function(e){console.warn('sync',e)})},700)}
+/* Le document complet (messages, téléphone) reste en localStorage, mais seul un
+   document assaini (sans msgs, act et profile.tel) est publié dans Supabase. */
+function remotePush(){if(!SB||!window.SB_ADMIN)return;clearTimeout(pushT);pushT=setTimeout(function(){
+  var pub=Object.assign({},D);
+  delete pub.msgs;
+  delete pub.act;
+  if(pub.profile){pub.profile=Object.assign({},pub.profile);delete pub.profile.tel}
+  SB.from('portfolio').upsert({id:1,data:pub,updated_at:new Date().toISOString()}).then(function(r){if(r.error)console.warn('sync',r.error.message)}).catch(function(e){console.warn('sync',e)})
+},700)}
 window.eaPush=remotePush;
 /* eaLoad et le client Supabase vivent dans remote.js */
 function msgPull(){if(!SB)return;SB.from('messages').select('*').order('created_at',{ascending:false}).then(function(r){if(r.error)return;D.msgs=(r.data||[]).map(function(m){return{id:m.id,from:m.name||'Anonyme',email:m.email||'',txt:m.body||'',subject:m.subject||'',t:m.created_at?new Date(m.created_at).getTime():Date.now(),r:m.read?1:0}});try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}if(A.classList.contains('open'))render()}).catch(function(){})}
@@ -189,7 +196,45 @@ lg.classList.add('open');
 document.getElementById('lgb').onclick=function(){if(!cfg){var n=document.getElementById('lgn');n.hidden=false;n.classList.remove('fl');void n.offsetWidth;n.classList.add('fl');return}SB.auth.signInWithOAuth({provider:'github',options:{redirectTo:location.origin+location.pathname}}).then(function(r){if(r&&r.error)login('net')}).catch(function(){login('net')})};
 document.getElementById('lgx').onclick=function(){lg.classList.remove('open')};
 }
-function enter(){lg.classList.remove('open');window.SB_ADMIN=true;openAdminRaw();if(SB){msgPull();SB.from('portfolio').select('id').eq('id',1).maybeSingle().then(function(r){if(!r.error&&!r.data)remotePush()}).catch(function(){})}}
-window.__requestAdmin=function(){if(!SB)return login('cfg');SB.auth.getSession().then(function(r){var s=r&&r.data&&r.data.session;if(sbOk(s))enter();else if(s){SB.auth.signOut();login('denied')}else login()}).catch(function(){login('net')})};
-if(SB)SB.auth.onAuthStateChange(function(ev,s){window.SB_ADMIN=!!(s&&sbOk(s));if((ev==='SIGNED_IN'||ev==='INITIAL_SESSION')&&sbOk(s))enter()});
+/* Vérification serveur de l'ownership : la ligne de la session existe-t-elle
+   dans public.admins ? Aucun champ du JWT modifiable (user_metadata) n'est lu. */
+function checkAdmin(sess,cb){
+  if(!SB||!sess||!sess.user){cb(false);return}
+  SB.from('admins').select('uid').eq('uid',sess.user.id).maybeSingle()
+    .then(function(r){cb(!r.error&&!!r.data)})
+    .catch(function(){cb(false)});
+}
+function enter(){
+  if(!SB||(window.SB_ADMIN&&A.classList.contains('open')))return;
+  lg.classList.remove('open');
+  window.SB_ADMIN=true;
+  openAdminRaw();
+  msgPull();
+  SB.from('portfolio').select('id').eq('id',1).maybeSingle().then(function(r){if(!r.error&&!r.data)remotePush()}).catch(function(){});
+}
+window.SB_ADMIN=window.SB_ADMIN||false;
+window.__requestAdmin=function(){
+  if(!SB)return login('cfg');
+  SB.auth.getSession().then(function(r){
+    var s=r&&r.data&&r.data.session;
+    if(!s){login();return}
+    checkAdmin(s,function(ok){
+      if(ok)enter();
+      else{window.SB_ADMIN=false;SB.auth.signOut();login('denied')}
+    })
+  }).catch(function(){login('net')})
+};
+if(SB)SB.auth.onAuthStateChange(function(ev,s){
+  if(ev!=='SIGNED_IN'&&ev!=='INITIAL_SESSION')return;
+  var sess=s||null;
+  /* setTimeout : on ne rappelle pas l'API auth depuis le callback lui-même. */
+  setTimeout(function(){
+    if(!sess){window.SB_ADMIN=false;return}
+    checkAdmin(sess,function(ok){
+      window.SB_ADMIN=!!ok;
+      if(ok)enter();
+      else{SB.auth.signOut();login('denied')}
+    })
+  },0)
+});
 })();

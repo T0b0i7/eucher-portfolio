@@ -1,6 +1,10 @@
 -- Base de données complète du portfolio (Supabase)
 -- À coller dans Supabase → SQL Editor → Run.
 -- Ce script remplace supabase/schema.sql.
+--
+-- INSTALLATION NEUVE UNIQUEMENT.
+-- Pour une base EXISTANTE, ne pas rejouer ce fichier : exécuter
+-- supabase/migration-securite.sql (idempotent, conserve les données).
 
 -- 1. Source de vérité utilisée par le site (un seul document JSON)
 create table if not exists public.portfolio (
@@ -259,10 +263,23 @@ create trigger trg_sync_portfolio
 after insert or update on public.portfolio
 for each row execute function public.sync_portfolio_tables();
 
+-- 3. Administrateurs de confiance : source de vérité de l'ownership.
+--    Aucune écriture publique : les lignes sont ajoutées uniquement en SQL
+--    (bootstrap du propriétaire : voir supabase/migration-securite.sql).
+create table if not exists public.admins (
+  uid         uuid primary key references auth.users(id) on delete cascade,
+  created_at  timestamptz not null default now()
+);
+alter table public.admins enable row level security;
+drop policy if exists "admins lecture soi" on public.admins;
+create policy "admins lecture soi" on public.admins for select to authenticated
+  using (uid = auth.uid());
+
+-- L'ownership est vérifiée côté serveur par la table admins, jamais par un champ
+-- du JWT modifiable par l'utilisateur tel que user_metadata.user_name.
 create or replace function public.is_owner() returns boolean
-language sql stable as $$
-  select coalesce(auth.jwt() -> 'user_metadata' ->> 'user_name', '') = 'T0b0i7'
-      or coalesce(auth.jwt() -> 'user_metadata' ->> 'preferred_username', '') = 'T0b0i7';
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from public.admins where uid = auth.uid());
 $$;
 
 alter table public.portfolio   enable row level security;
@@ -291,7 +308,7 @@ declare t text; cond text;
 begin
   foreach t in array array['profile','settings','skills','experiences','education','services','steps','projects','posts','products','activity'] loop
     cond := case when t in ('projects','posts','products') then 'status = ''Publié'''
-                 when t = 'activity' then 'false'
+                 when t in ('profile','settings','activity') then 'false'
                  else 'true' end;
     execute format('drop policy if exists "lecture publique" on public.%I', t);
     if cond <> 'false' then
@@ -303,7 +320,13 @@ begin
 end $$;
 
 drop policy if exists "messages envoi public" on public.messages;
-create policy "messages envoi public" on public.messages for insert to anon, authenticated with check (true);
+create policy "messages envoi public" on public.messages for insert to anon, authenticated
+  with check (
+    length(btrim(coalesce(name, ''))) between 2 and 120
+    and position('@' in coalesce(email, '')) > 1
+    and length(coalesce(subject, '')) <= 200
+    and length(coalesce(body, '')) between 1 and 5000
+  );
 drop policy if exists "messages proprietaire" on public.messages;
 create policy "messages proprietaire" on public.messages for all to authenticated
   using (public.is_owner()) with check (public.is_owner());
@@ -319,6 +342,7 @@ grant select, insert, update, delete on public.profile, public.settings, public.
   public.steps, public.activity to authenticated;
 grant insert on public.messages to anon, authenticated;
 grant select, update, delete on public.messages to authenticated;
+grant select on public.admins to authenticated;
 grant usage, select on sequence public.messages_id_seq to anon, authenticated;
 grant usage, select on sequence public.activity_id_seq to authenticated;
 
