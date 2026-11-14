@@ -36,7 +36,7 @@ img{max-width:100%}
 }
 .gl-lead{margin:0;color:#d1d5db;font-size:clamp(.95rem,1.6vw,1.1rem);line-height:1.6;max-width:60ch}
 
-.gl-filters{display:grid;grid-template-columns:2fr repeat(3,1fr) 1.2fr auto;gap:12px;align-items:end;margin:0 0 24px;padding:18px;background:var(--card);border:1px solid var(--line)}
+.gl-filters{display:grid;grid-template-columns:2fr repeat(4,1fr) 1.2fr auto;gap:12px;align-items:end;margin:0 0 24px;padding:18px;background:var(--card);border:1px solid var(--line)}
 .gl-field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .gl-field span{font-family:var(--font-ui);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .gl-field input,.gl-field select{

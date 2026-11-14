@@ -41,7 +41,11 @@ function galleryFetch(cfg = {}) {
   const fetchImpl = (url, options = {}) => {
     const target = String(url);
     if (target.indexOf('/portfolio_categories') >= 0) {
-      return ok([{ slug: 'web', name: 'Web' }, { slug: 'mobile', name: 'Mobile' }]);
+      return ok([
+        { id: 'c1', slug: 'web-development', name: 'Web Development', name_en: 'Web Development', featured: true, parent_id: null },
+        { id: 'c2', slug: 'mobile-development', name: 'Mobile Development', name_en: 'Mobile Development', featured: true, parent_id: null },
+        { id: 'c3', slug: 'frontend-development', name: 'Frontend Development', name_en: 'Frontend Development', featured: false, parent_id: 'c1' }
+      ]);
     }
     if (target.indexOf('/portfolio_tags') >= 0) return ok([{ slug: 'public', name: 'Public' }]);
     if (target.indexOf('/portfolio_technologies') >= 0) return ok([{ slug: 'react', name: 'React' }]);
@@ -84,7 +88,7 @@ test('galerie : état vide explicite', async (t) => {
   assert.equal(page.document.getElementById('galleryEmpty').hidden, false);
 });
 
-test('galerie : le filtre catégorie met à jour la requête et l’URL', async (t) => {
+test('galerie : le filtre catégorie inclut les sous-catégories et met à jour l’URL', async (t) => {
   const mock = galleryFetch({
     rpc: (body) => ok({
       total: body.p_categories && body.p_categories.length ? 1 : 2,
@@ -95,13 +99,32 @@ test('galerie : le filtre catégorie met à jour la requête et l’URL', async 
   t.after(() => page.close());
   await flush();
   const category = page.document.getElementById('galleryCategory');
-  category.value = 'web';
+  category.value = 'web-development';
   category.dispatchEvent(new page.window.Event('change', { bubbles: true }));
   await flush();
   const last = mock.calls[mock.calls.length - 1];
-  assert.deepEqual(last.p_categories, ['web']);
+  assert.deepEqual(last.p_categories, ['web-development', 'frontend-development']);
   assert.equal(page.document.querySelectorAll('#galleryGrid .gl-card').length, 1);
-  assert.match(page.window.location.search, /cat=web/);
+  assert.match(page.window.location.search, /cat=web-development/);
+});
+
+test('galerie : sous-catégorie sélectionnable et prioritaire', async (t) => {
+  const mock = galleryFetch({ rpc: () => ok({ total: 1, items: [row()] }) });
+  const page = loadPage('projects.html', GALLERY_SCRIPTS, 'http://localhost/projects.html', { fetch: mock.fetchImpl });
+  t.after(() => page.close());
+  await flush();
+  const category = page.document.getElementById('galleryCategory');
+  category.value = 'web-development';
+  category.dispatchEvent(new page.window.Event('change', { bubbles: true }));
+  await flush();
+  const sub = page.document.getElementById('gallerySub');
+  assert.ok(Array.from(sub.options).some((option) => option.value === 'frontend-development'));
+  sub.value = 'frontend-development';
+  sub.dispatchEvent(new page.window.Event('change', { bubbles: true }));
+  await flush();
+  const last = mock.calls[mock.calls.length - 1];
+  assert.deepEqual(last.p_categories, ['frontend-development']);
+  assert.match(page.window.location.search, /sub=frontend-development/);
 });
 
 test('galerie : « Charger plus » ajoute la page suivante sans doublon', async (t) => {
@@ -136,12 +159,12 @@ test('galerie : repli catalogue quand l’API est indisponible', async (t) => {
 
 test('galerie : URL filtrée restaurée au chargement', async (t) => {
   const mock = galleryFetch({ rpc: () => ok({ total: 1, items: [row()] }) });
-  const page = loadPage('projects.html', GALLERY_SCRIPTS, 'http://localhost/projects.html?cat=web&sort=alpha', { fetch: mock.fetchImpl });
+  const page = loadPage('projects.html', GALLERY_SCRIPTS, 'http://localhost/projects.html?cat=web-development&sort=alpha', { fetch: mock.fetchImpl });
   t.after(() => page.close());
   await flush();
-  assert.equal(page.document.getElementById('galleryCategory').value, 'web');
+  assert.equal(page.document.getElementById('galleryCategory').value, 'web-development');
   assert.equal(page.document.getElementById('gallerySort').value, 'alpha');
   const last = mock.calls[mock.calls.length - 1];
-  assert.deepEqual(last.p_categories, ['web']);
+  assert.ok(last.p_categories.indexOf('web-development') >= 0);
   assert.equal(last.p_sort, 'alpha');
 });

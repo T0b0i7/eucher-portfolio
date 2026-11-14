@@ -13,10 +13,11 @@
     hasMore: false,
     loading: false,
     degraded: false,
-    filters: { q: '', cat: '', tech: '', tag: '', sort: 'recent' }
+    filters: { q: '', cat: '', sub: '', tech: '', tag: '', sort: 'recent' }
   };
   var els = {};
   var debounceTimer = null;
+  var allCategories = [];
 
   function byId(id) { return document.getElementById(id); }
 
@@ -47,6 +48,7 @@
     try { params = new URLSearchParams(window.location.search); } catch (e) { return; }
     state.filters.q = params.get('q') || '';
     state.filters.cat = params.get('cat') || '';
+    state.filters.sub = params.get('sub') || '';
     state.filters.tech = params.get('tech') || '';
     state.filters.tag = params.get('tag') || '';
     var sort = params.get('sort') || '';
@@ -58,6 +60,7 @@
     function add(key, value) { if (value) params.push(encodeURIComponent(key) + '=' + encodeURIComponent(value)); }
     add('q', state.filters.q);
     add('cat', state.filters.cat);
+    add('sub', state.filters.sub);
     add('tech', state.filters.tech);
     add('tag', state.filters.tag);
     if (state.filters.sort && state.filters.sort !== 'recent') add('sort', state.filters.sort);
@@ -68,6 +71,7 @@
   function syncControls() {
     els.search.value = state.filters.q;
     els.category.value = state.filters.cat || '';
+    if (els.sub) els.sub.value = state.filters.sub || '';
     els.tech.value = state.filters.tech || '';
     els.tag.value = state.filters.tag || '';
     els.sort.value = state.filters.sort || 'recent';
@@ -90,6 +94,25 @@
     select.value = current;
   }
 
+  function childrenOf(parentSlug) {
+    if (!parentSlug) return [];
+    return allCategories.filter(function (category) { return category.parent_slug === parentSlug; });
+  }
+
+  function fillSubSelect() {
+    if (!els.sub) return;
+    var children = childrenOf(els.category.value);
+    var current = els.sub.value;
+    fillSelect(els.sub, children, 'Toutes');
+    if (children.some(function (category) { return category.slug === current; })) els.sub.value = current;
+  }
+
+  function categoryQueryValues() {
+    if (state.filters.sub) return [state.filters.sub];
+    if (!state.filters.cat) return [];
+    return [state.filters.cat].concat(childrenOf(state.filters.cat).map(function (category) { return category.slug; }));
+  }
+
   function catalogProjects() {
     var projects = (typeof window.eaPublishedProjects === 'function')
       ? window.eaPublishedProjects()
@@ -105,9 +128,11 @@
         if (project.cat) categories[project.cat] = true;
         splitTechnologies(project.t).forEach(function (tech) { technologies[tech] = true; });
       });
-      fillSelect(els.category, Object.keys(categories).map(function (name) { return { slug: slugify(name), name: name }; }), 'Toutes');
+      allCategories = Object.keys(categories).map(function (name) { return { slug: slugify(name), name: name, featured: true, parent_slug: null }; });
+      fillSelect(els.category, allCategories, 'Toutes');
       fillSelect(els.tech, Object.keys(technologies).map(function (name) { return { slug: slugify(name), name: name }; }), 'Toutes');
       fillSelect(els.tag, [], 'Tous');
+      fillSubSelect();
       syncControls();
     };
     if (!api || typeof api.listTaxonomies !== 'function' || !api.isEnabled()) {
@@ -116,9 +141,11 @@
     }
     api.listTaxonomies().then(function (taxonomies) {
       if (!taxonomies) { fallback(); return; }
-      fillSelect(els.category, taxonomies.categories, 'Toutes');
+      allCategories = taxonomies.categories || [];
+      fillSelect(els.category, allCategories.filter(function (category) { return category.featured && !category.parent_slug; }), 'Toutes');
       fillSelect(els.tech, taxonomies.technologies, 'Toutes');
       fillSelect(els.tag, taxonomies.tags, 'Tous');
+      fillSubSelect();
       syncControls();
     }, fallback);
   }
@@ -226,7 +253,7 @@
       page: page,
       perPage: PER_PAGE,
       q: state.filters.q,
-      categories: state.filters.cat ? [state.filters.cat] : [],
+      categories: categoryQueryValues(),
       technologies: state.filters.tech ? [state.filters.tech] : [],
       tags: state.filters.tag ? [state.filters.tag] : [],
       sort: state.filters.sort
@@ -258,6 +285,7 @@
   function applyFilters() {
     state.filters.q = els.search.value.trim();
     state.filters.cat = els.category.value;
+    state.filters.sub = els.sub ? els.sub.value : '';
     state.filters.tech = els.tech.value;
     state.filters.tag = els.tag.value;
     state.filters.sort = els.sort.value || 'recent';
@@ -268,6 +296,7 @@
   function init() {
     els.search = byId('gallerySearch');
     els.category = byId('galleryCategory');
+    els.sub = byId('gallerySub');
     els.tech = byId('galleryTech');
     els.tag = byId('galleryTag');
     els.sort = byId('gallerySort');
@@ -291,13 +320,15 @@
       debounceTimer = setTimeout(applyFilters, 300);
       updateUrl();
     });
-    [els.category, els.tech, els.tag, els.sort].forEach(function (select) {
+    if (els.category) els.category.addEventListener('change', function () { fillSubSelect(); applyFilters(); });
+    [els.sub, els.tech, els.tag, els.sort].forEach(function (select) {
       if (select) select.addEventListener('change', applyFilters);
     });
     if (els.reset) {
       els.reset.addEventListener('click', function () {
-        state.filters = { q: '', cat: '', tech: '', tag: '', sort: 'recent' };
+        state.filters = { q: '', cat: '', sub: '', tech: '', tag: '', sort: 'recent' };
         syncControls();
+        fillSubSelect();
         updateUrl();
         load(true);
       });

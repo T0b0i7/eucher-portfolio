@@ -1,0 +1,44 @@
+{
+  "projects": {
+    "akoue-app": {
+      "categories": ["mobile-development", "fintech", "saas-software-products"],
+      "subcategories": ["cross-platform-development", "mobile-applications", "personal-finance"],
+      "tags": ["finance", "mobile", "offline-first", "authentication"]
+    },
+    "navigarde-ia": {
+      "categories": ["artificial-intelligence", "ai-agents-agentic-systems", "web-development"],
+      "subcategories": ["ai-powered-platforms", "agentic-workflows", "web-applications"],
+      "tags": ["maritime", "supervision", "human-in-the-loop"]
+    },
+    "clavis": {
+      "categories": ["web-development", "ui-ux-design"],
+      "subcategories": ["web-applications", "frontend-development", "interaction-design"],
+      "tags": ["typing", "productivity", "design-system"]
+    },
+    "havre": {
+      "categories": ["web-development", "business-enterprise-solutions"],
+      "subcategories": ["web-applications", "web-platforms"],
+      "tags": ["immobilier", "3d", "editorial"]
+    },
+    "cauris-group-international": {
+      "categories": ["web-development", "business-enterprise-solutions"],
+      "subcategories": ["web-platforms", "web-applications"],
+      "tags": ["corporate", "seo"]
+    },
+    "savekari-beauty": {
+      "categories": ["web-development", "saas-software-products"],
+      "subcategories": ["e-commerce", "web-applications"],
+      "tags": ["beauty", "whatsapp", "e-commerce"]
+    },
+    "portefolio-os": {
+      "categories": ["saas-software-products", "web-development", "ui-ux-design"],
+      "subcategories": ["saas-platforms", "design-systems", "web-platforms"],
+      "tags": ["template", "design-system", "open-source"]
+    },
+    "vigilance-bj": {
+      "categories": ["cybersecurity", "e-government-civictech", "web-development"],
+      "subcategories": ["application-security", "citizen-services", "web-applications"],
+      "tags": ["cybersecurity", "civictech", "anonymity"]
+    }
+  }
+}

@@ -15,6 +15,8 @@ assets/
   js/config.js                configuration publique Supabase partagée (clé publishable)
   js/api.js                   lecture publique des projets (PostgREST, recherche, filtres, détail)
   js/gallery.js                rendu et interactions de projects.html
+  data/taxonomy.json           référentiel des 40 familles, sous-catégories et tags
+  data/project-taxonomy.json   classement initial des projets
   js/catalog.js                catalogue public des projets (EA_PROJECTS, eaSlug, eaProjectArt) — repli
   js/data.js                   données de départ (profil, CV, compétences), utilitaires, carrousel
   js/sections.js               rendu public : blog, boutique, parcours, à propos, services, pont admin
@@ -28,7 +30,7 @@ assets/
 supabase/
   schema-complete.sql          installation neuve : tables, RLS, trigger, table admins
   migration-securite.sql       migration idempotente pour une base existante
-  migrations/                  P0 : schéma projet normalisé (tables portfolio_*), RLS/Storage, projection ; P1 : recherche
+  migrations/                  P0 : schéma, RLS/Storage, projection ; P1 : recherche ; P2 : taxonomie
   seed/                        seed des projets généré depuis le catalogue
   import-projects.sql          ancien import, obsolète après la migration de sécurité
 tests/                         harnais jsdom + contrôles statiques (dev uniquement)
@@ -36,7 +38,8 @@ scripts/                       génération du seed, vérification SQL (dev uniq
 docs/
   ARCHITECTURE.md
   MIGRATION-P0.md              runbook d’application et de rollback de P0
-  MIGRATION-P1.md              runbook d’application de la recherche P1
+  MIGRATION-P1.md              runbook de la recherche P1
+  MIGRATION-P2.md              runbook de la taxonomie P2a
   aether-voiceover-script.md
   voix/, voix-assets/          anciens scripts vocaux conservés pour référence
   superpowers/specs|plans/     specs et plans de travail
@@ -75,7 +78,8 @@ docs/
 6. Le formulaire de contact appelle `eaSend()` → insertion dans `messages`. Sans clé Supabase, `eaSend` n’existe pas et le bouton garde son repli `mailto:`.
 7. `project.html` interroge d’abord l’API (`getProject(slug)`) ; en cas d’échec ou de base non migrée, il retombe sur `EA_PROJECTS` + cache local. Un projet `draft`/`archived` reçu par erreur est traité comme introuvable.
 8. `projects.html` interroge `EA_API.searchProjects()` (fonction RPC `search_portfolio_projects` si la migration P1 est appliquée) ; en repli, `listProjects` applique les filtres catégorie/technologie/tag et la recherche titre/description ; en dernier recours, le catalogue est filtré côté client. Les filtres sont reflétés dans l’URL.
-9. La migration P0 est décrite dans `docs/MIGRATION-P0.md` et la migration P1 dans `docs/MIGRATION-P1.md` (ordre, vérifications, rollback). Les écritures directes en tables et la fin du document JSON sont prévues en P2.
+9. La taxonomie (P2a) sépare trois niveaux : familles (`portfolio_categories` racines), sous-catégories (`parent_id`) et tags (`portfolio_tags`) ; les technologies restent dans `portfolio_technologies`. Seules les familles `featured` alimentent le filtre public, la sélection d'une famille incluant ses sous-catégories.
+10. La migration P0 est décrite dans `docs/MIGRATION-P0.md`, la P1 dans `docs/MIGRATION-P1.md` et la taxonomie dans `docs/MIGRATION-P2.md` (ordre, vérifications, rollback). Les écritures directes en tables et la fin du document JSON sont prévues en P2.
 
 ## Règles
 
