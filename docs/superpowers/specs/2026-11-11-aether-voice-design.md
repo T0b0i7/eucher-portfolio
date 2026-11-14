@@ -1,3 +1,5 @@
+> **ABANDONNÉ** — remplacé par `2026-11-13-aether-text-only-design.md`.
+
 # Voix hybride d’Aether
 
 ## Intention
