@@ -188,8 +188,8 @@ function remotePush(){if(!SB||!window.SB_ADMIN)return;clearTimeout(pushT);pushT=
   SB.from('portfolio').upsert({id:1,data:pub,updated_at:now}).then(function(r){
     if(r.error){syncFail('portfolio',r.error);return}
     SB.from('portfolio_drafts').upsert({id:1,data:D,updated_at:now}).then(function(r2){
-      if(r2.error)syncFail('drafts',r2.error)
-    }).catch(function(e){syncFail('drafts',e)})
+      if(r2.error)try{console.warn('sync drafts',r2.error.message)}catch(e){}
+    }).catch(function(e){try{console.warn('sync drafts',e&&e.message||e)}catch(x){}})
   }).catch(function(e){syncFail('portfolio',e)})
 },700)}
 window.eaPush=remotePush;
