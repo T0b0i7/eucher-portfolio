@@ -46,3 +46,8 @@ test('connexion admin : vérification serveur is_owner et diagnostic', () => {
   assert.match(admin, /compte détecté/);
   assert.match(admin, /attempt<3/);
 });
+
+test('connexion admin : diagnostic serveur journalisé', () => {
+  assert.match(admin, /log_admin_attempt/);
+  assert.match(admin, /__ADMIN_DIAG/);
+});
