@@ -26,7 +26,7 @@ skills:window.SEED_SKILLS.map(function(s){return Object.assign({},s)}),exp:windo
 msgs:[],
 set:{titre:'Eucher ABATTI | Développeur Full Stack',desc:'Portfolio de Eucher ABATTI, développeur Full Stack Web et Mobile spécialisé en Laravel et React.',domain:'',online:true,maint:false,sound:true,sh_bot:true,accent:'#e60012'},
 posts:[],services:(window.SEED_SERVICES||[]).map(function(x){return Object.assign({},x)}),steps:(window.SEED_STEPS||[]).map(function(x){return Object.assign({},x)}),shopV:3,shop:[],act:[{t:n-6*H,a:'Portfolio créé',b:'Thème rouge et noir',c:'var(--ac)',i:'home'},{t:n-5*H,a:'Projets importés',b:'CodeDrive, ZemPro, CertiDiplôme BJ, Kiffa-Agro IA',c:'var(--ok)',i:'folder'}],upd:n}}
-function load(){try{D=JSON.parse(localStorage.getItem(K))}catch(e){D=null}if(!D||!D.projects)D=seed();D.set=Object.assign({sh_bot:true},D.set||{});if(D.projV!==1){D.projV=1;D.projects=[];save()}if(D.impV!==1){D.impV=1;D.projects=IMP.map(function(x){return Object.assign({},x)});save()}if(D.projectMediaV!==1){D.projects=D.projects.filter(function(p){return p.n!=='Victoria Ahouéfa Camillia'});D.projects.forEach(function(p){var preview=PREVIEWS[p.n];if(preview&&(p.n==='Cauris Group International'||!String(p.preview||'').trim()))p.preview=preview});D.projectMediaV=1;save()}if(!D.posts)D.posts=[];if(!D.shop)D.shop=[];if(D.mockV!==1){D.mockV=1;D.posts=[];D.shop=[];save()}if(D.shopV!==3){D.shopV=3}
+function load(){try{D=JSON.parse(localStorage.getItem(K))}catch(e){D=null}if(!D||!D.projects)D=seed();D.msgs=Array.isArray(D.msgs)?D.msgs:[];D.skills=Array.isArray(D.skills)?D.skills:[];D.exp=Array.isArray(D.exp)?D.exp:[];D.edu=Array.isArray(D.edu)?D.edu:[];D.act=Array.isArray(D.act)?D.act:[];D.posts=Array.isArray(D.posts)?D.posts:[];D.shop=Array.isArray(D.shop)?D.shop:[];D.services=Array.isArray(D.services)?D.services:[];D.steps=Array.isArray(D.steps)?D.steps:[];D.profile=D.profile&&typeof D.profile==='object'?D.profile:{};D.set=Object.assign({sh_bot:true,desc:''},D.set||{});if(D.projV!==1){D.projV=1;D.projects=[];save()}if(D.impV!==1){D.impV=1;D.projects=IMP.map(function(x){return Object.assign({},x)});save()}if(D.projectMediaV!==1){D.projects=D.projects.filter(function(p){return p.n!=='Victoria Ahouéfa Camillia'});D.projects.forEach(function(p){var preview=PREVIEWS[p.n];if(preview&&(p.n==='Cauris Group International'||!String(p.preview||'').trim()))p.preview=preview});D.projectMediaV=1;save()}if(!D.posts)D.posts=[];if(!D.shop)D.shop=[];if(D.mockV!==1){D.mockV=1;D.posts=[];D.shop=[];save()}if(D.shopV!==3){D.shopV=3}
 if(D.msgV!==2){D.msgV=2;D.msgs=(D.msgs||[]).filter(function(m){return ['Jean Dupont','Marie L.','Thomas K.'].indexOf(m.from)<0});save()}
 if(!D.services||!D.steps){D.services=D.services||window.SEED_SERVICES.map(function(x){return Object.assign({},x)});D.steps=D.steps||window.SEED_STEPS.map(function(x){return Object.assign({},x)});save()}
 if(!D.cvV){D.cvV=1;var cp=function(x){return Object.assign({},x)};D.profile=Object.assign({},D.profile,window.SEED_PROFILE);D.skills=window.SEED_SKILLS.map(cp);D.exp=window.SEED_EXP.map(cp);D.edu=window.SEED_EDU.map(cp);save()}
@@ -179,7 +179,7 @@ try{if(window.supabase&&SBU.url&&SBU.key)SB=supabase.createClient(SBU.url,SBU.ke
 window.SB=SB;
 window.EA_TAX_CACHE={categories:[],tags:[],technologies:[]};
 function loadTaxCache(){if(!SB)return;Promise.all([SB.from('portfolio_categories').select('slug,name,parent_id,sort_order').order('sort_order',{ascending:true}),SB.from('portfolio_tags').select('slug,name').order('name',{ascending:true}),SB.from('portfolio_technologies').select('slug,name').order('name',{ascending:true})]).then(function(r){window.EA_TAX_CACHE={categories:(r[0]&&r[0].data)||[],tags:(r[1]&&r[1].data)||[],technologies:(r[2]&&r[2].data)||[]}})}
-loadTaxCache();
+loadTaxCache();window.addEventListener('unhandledrejection',function(e){try{console.warn('admin async',e.reason&&e.reason.message||e.reason)}catch(x){}});
 if(!window.claude)document.documentElement.classList.add('no-ai');
 var pushT=null;
 /* Le document public ne reçoit que les projets publiés et est assaini
@@ -232,7 +232,7 @@ function checkAdmin(sess,cb){
     attempt+=1;
     SB.rpc('is_owner').then(function(r){
       if(r&&!r.error&&r.data===true){cb(true);return}
-      if(r&&r.error&&attempt<3){setTimeout(run,350*attempt);return}
+      if(attempt<4){setTimeout(run,300*attempt);return}
       if(!fromSession()){cb(false);return}
       SB.rpc('log_admin_attempt').then(function(d){window.__ADMIN_DIAG=d&&d.data}).catch(function(){});
       SB.from('admins').select('uid').eq('uid',sess.user.id).maybeSingle()
@@ -257,14 +257,29 @@ function enter(){
 window.SB_ADMIN=window.SB_ADMIN||false;
 window.__requestAdmin=function(){
   if(!SB)return login('cfg');
-  SB.auth.getSession().then(function(r){
-    var s=r&&r.data&&r.data.session;
-    if(!s){login();return}
-    checkAdmin(s,function(ok){
-      if(ok)enter();
-      else{window.SB_ADMIN=false;login('denied',(sess.user.user_metadata&&(sess.user.user_metadata.user_name||sess.user.user_metadata.preferred_username))||sess.user.email||'')}
+  var tries=0;
+  function ask(){
+    tries+=1;
+    SB.auth.getSession().then(function(r){
+      var s=r&&r.data&&r.data.session;
+      if(!s){
+        if(tries<6){setTimeout(ask,300*tries);return}
+        login();return
+      }
+      checkAdmin(s,function(ok){
+        if(ok)enter();
+        else{
+          window.SB_ADMIN=false;
+          var who=(s.user.user_metadata&&(s.user.user_metadata.user_name||s.user.user_metadata.preferred_username))||s.user.email||'';
+          login('denied',who);
+        }
+      })
+    }).catch(function(){
+      if(tries<6){setTimeout(ask,300*tries);return}
+      login('net');
     })
-  }).catch(function(){login('net')})
+  }
+  ask();
 };
 if(SB)SB.auth.onAuthStateChange(function(ev,s){
   if(ev!=='SIGNED_IN'&&ev!=='INITIAL_SESSION')return;
@@ -272,11 +287,10 @@ if(SB)SB.auth.onAuthStateChange(function(ev,s){
   /* setTimeout : on ne rappelle pas l'API auth depuis le callback lui-même. */
   setTimeout(function(){
     if(!sess){window.SB_ADMIN=false;return}
-    checkAdmin(sess,function(ok){
-      window.SB_ADMIN=!!ok;
-      if(ok)enter();
-      else{window.SB_ADMIN=false;login('denied',(sess.user.user_metadata&&(sess.user.user_metadata.user_name||sess.user.user_metadata.preferred_username))||sess.user.email||'')}
-    })
+    setTimeout(function(){checkAdmin(sess,function(ok){
+      if(ok){enter();return}
+      if(!window.SB_ADMIN&&!A.classList.contains('open'))window.SB_ADMIN=false;
+    })},250)
   },0)
 });
 })();
