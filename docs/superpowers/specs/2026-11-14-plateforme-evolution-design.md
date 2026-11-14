@@ -1,6 +1,7 @@
 # Évolution du portfolio en plateforme — analyse et architecture cible
 
-> **Statut : proposition à valider.** Aucun code de production n'est modifié par ce document.
+> **Statut : architecture validée le 2026-11-14** (décisions §5 confirmées : Supabase Edge Functions + GitHub App, tables = vérité avec cache transitoire, P0+P1 en premier, checkpoint Git effectué).
+> **Plan d'implémentation associé :** `docs/superpowers/plans/2026-11-14-p0-socle-donnees-api.md`
 > **Date :** 2026-11-14
 > **Périmètre :** cahier des charges « Évolution du portfolio TobiDev » (12 sections + vision finale).
 > **Principe directeur demandé :** séparer nettement le **contenu éditorial** (back-office) des **données techniques GitHub** (synchronisées), sans reconstruire ce qui fonctionne.
