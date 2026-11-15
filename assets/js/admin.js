@@ -1,5 +1,6 @@
 (function(){
-var ADMIN_V='2026.11.15h';
+var ADMIN_V='2026.11.15i';
+(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='assets/css/admin-premium.css?v=20261115i';document.head.appendChild(l);})();
 var A=document.getElementById('adm');
 
 var K='ea_admin_v1',D,V='dash',SEL=0,MS=null;
