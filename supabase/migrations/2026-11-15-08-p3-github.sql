@@ -95,3 +95,6 @@ select r.project_id, r.full_name, c.category, count(*)::int as commits
 from public.portfolio_github_repositories r
 join public.portfolio_github_commits c on c.repository_id = r.id
 group by r.project_id, r.full_name, c.category;
+
+-- La vue doit respecter la RLS des tables sous-jacentes.
+alter view public.portfolio_github_commit_stats set (security_invoker = true);

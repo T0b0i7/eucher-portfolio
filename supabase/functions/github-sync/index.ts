@@ -49,7 +49,7 @@ async function verifyOwner(req, admin) {
   });
   const { data: userData, error: userError } = await userClient.auth.getUser(token);
   if (userError || !userData || !userData.user) return null;
-  const { data: owner, error } = await admin.rpc('is_owner');
+  const { data: owner, error } = await userClient.rpc('is_owner');
   if (error || owner !== true) return null;
   return userData.user;
 }
