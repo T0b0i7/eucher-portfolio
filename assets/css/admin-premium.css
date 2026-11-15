@@ -60,3 +60,24 @@
 #adm *::-webkit-scrollbar-thumb:hover{background:#33405f;background-clip:padding-box}
 #adm .mb2{background:var(--card);border:1px solid var(--ln);border-radius:16px;box-shadow:0 30px 80px -30px rgba(0,0,0,.9)}
 @media(prefers-reduced-motion:reduce){#adm *{transition:none!important;animation:none!important}}
+
+/* Formulaires : labels au-dessus, champs larges, rythme net */
+#adm .row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+#adm .row>label{display:flex;flex-direction:column;gap:7px;flex:1 1 200px;min-width:170px;margin:0;font-size:12px;font-weight:500;color:#aab3cc;letter-spacing:.01em;text-transform:none}
+#adm .row>label>input,#adm .row>label>select,#adm .row>label>textarea{width:100%;min-height:44px;padding:11px 13px;font-size:14px;background:#080d1a;border:1px solid rgba(255,255,255,.16);border-radius:10px}
+#adm .row>label>select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#8b94b3 50%),linear-gradient(135deg,#8b94b3 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px}
+#adm .row>label>input:hover,#adm .row>label>select:hover{border-color:rgba(255,255,255,.28)}
+#adm .row>button{align-self:flex-end;min-height:44px;padding:0 18px;white-space:nowrap}
+#adm .row>label:has(input[type="checkbox"]){flex-direction:row;align-items:center;min-width:auto;font-size:13px;color:#c9d0e4;padding-bottom:12px}
+#adm .row>label:has(input[type="checkbox"]) input{width:18px;height:18px;min-height:0;accent-color:var(--ac)}
+#adm .row>label:has(input[type="color"]){flex:0 0 120px}
+#adm .row>label:has(input[type="color"]) input{height:44px;padding:4px}
+#adm .row>label:has(input[type="file"]){flex:2 1 240px}
+#adm .row>label>small{color:#7d86a3;font-size:11px}
+#adm form .row{margin-bottom:4px}
+#adm .cd>h3+.row{margin-top:14px}
+#adm #taxCatList [data-cat-row]>div:first-child{gap:14px}
+#adm #taxCatList button.bt.sm{min-height:36px;padding:0 12px}
+#adm .mb2 label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:500;color:#aab3cc;margin-bottom:12px}
+#adm .mb2 label input,#adm .mb2 label select,#adm .mb2 label textarea{width:100%;min-height:44px;padding:11px 13px;font-size:14px;background:#080d1a;border:1px solid rgba(255,255,255,.16);border-radius:10px}
+#adm .mb2 .ac{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
