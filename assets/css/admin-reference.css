@@ -141,3 +141,15 @@
 #adm .hd .bt{width:100%}}
 @media(max-width:480px){#adm .g4{grid-template-columns:1fr}
 #adm #gen span:last-child{display:none}}
+
+/* Sidebar stable : scroll interne, citation masquée, items compacts */
+#adm .app{grid-template-columns:264px minmax(0,1fr)}
+#adm #sb{position:sticky;top:0;height:100dvh;display:flex;flex-direction:column;overflow:hidden;gap:6px;padding:16px 12px 12px}
+#adm #sb .brand{flex:0 0 auto;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07)}
+#adm #sb .nv{min-height:36px;display:flex;align-items:center;gap:10px}
+#adm #sb{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a2a33 transparent}
+#adm #sb::-webkit-scrollbar{width:8px}
+#adm #sb::-webkit-scrollbar-thumb{background:#2a2a33;border-radius:99px;border:2px solid #0a0a0c}
+#adm #sb .qt{display:none}
+#adm .main{min-width:0}
+@media(max-width:900px){#adm #sb{position:static;height:auto;max-height:none}}
