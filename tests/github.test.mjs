@@ -37,3 +37,17 @@ test('github : Edge Function de synchronisation', () => {
   assert.match(fn, /portfolio_github_repositories/);
   assert.match(fn, /portfolio_github_commits/);
 });
+
+const inventory = fs.readFileSync(path.join(repoRoot, 'supabase/functions/github-inventory/index.ts'), 'utf8');
+test('github : inventaire universel de tous les dépôts', () => {
+  assert.match(inventory, /\/user\/repos/);
+  assert.match(inventory, /visibility=all/);
+  assert.match(inventory, /portfolio_github_catalog/);
+  assert.match(inventory, /archived/);
+  assert.match(inventory, /private/);
+  assert.match(inventory, /portfolio_github_catalog.*upsert|upsert\(chunk/);
+  const sql2 = fs.readFileSync(path.join(repoRoot, 'supabase/migrations/2026-11-15-09-p6-github-catalog.sql'), 'utf8');
+  assert.match(sql2, /portfolio_github_catalog/);
+  assert.match(sql2, /enable row level security/);
+  assert.match(sql2, /is_owner\(\)/);
+});
