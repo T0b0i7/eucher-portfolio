@@ -51,3 +51,14 @@ test('github : inventaire universel de tous les dépôts', () => {
   assert.match(sql2, /enable row level security/);
   assert.match(sql2, /is_owner\(\)/);
 });
+
+const catalog = fs.readFileSync(path.join(repoRoot, 'assets/js/admin-catalog.js'), 'utf8');
+test('github : UI catalogue admin (recherche, filtres, detail, sync)', () => {
+  assert.match(catalog, /EA_CATALOG/);
+  assert.match(catalog, /portfolio_github_catalog/);
+  assert.match(catalog, /private/);
+  assert.match(catalog, /archived/);
+  assert.match(catalog, /published_project_id/);
+  assert.match(catalog, /github-inventory/);
+  assert.match(catalog, /renderDetail/);
+});
