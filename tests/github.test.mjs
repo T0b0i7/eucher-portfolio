@@ -72,3 +72,12 @@ test('jarvis : orchestrateur tools et securite', () => {
   assert.match(jarvis, /tool_calls/);
   assert.match(jarvis, /requires_confirmation/);
 });
+
+const jui = fs.readFileSync(path.join(repoRoot, 'assets/js/admin-jarvis.js'), 'utf8');
+test('jarvis : interface conversation, actions, annulation', () => {
+  assert.match(jui, /EA_JARVIS/);
+  assert.match(jui, /functions\/v1\/jarvis/);
+  assert.match(jui, /AbortController/);
+  assert.match(jui, /data-jarvis/);
+  assert.match(jui, /localStorage/);
+});
