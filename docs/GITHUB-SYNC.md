@@ -41,3 +41,9 @@ curl -X POST "https://<ref>.supabase.co/functions/v1/github-sync" \
 ```
 
 Retour attendu : `{ ok: true, repository, commits }`. La limite de commits est bornée (1–100).
+
+## JARVIS (P8)
+
+Edge Function `jarvis` : model adapter OpenAI-compatible (`OPENAI_BASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`). Outils : `search_catalog`, `get_repository`, `prepare_project_page` (aucune publication). Mode outil direct pour tester sans LLM : `{"tool":"search_catalog","args":{...}}`.
+
+Déploiement : `npx supabase@latest functions deploy jarvis --no-verify-jwt --project-ref <ref> --yes`.

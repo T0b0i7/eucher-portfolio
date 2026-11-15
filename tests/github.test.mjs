@@ -62,3 +62,13 @@ test('github : UI catalogue admin (recherche, filtres, detail, sync)', () => {
   assert.match(catalog, /github-inventory/);
   assert.match(catalog, /renderDetail/);
 });
+
+const jarvis = fs.readFileSync(path.join(repoRoot, 'supabase/functions/jarvis/index.ts'), 'utf8');
+test('jarvis : orchestrateur tools et securite', () => {
+  assert.match(jarvis, /search_catalog/);
+  assert.match(jarvis, /get_repository/);
+  assert.match(jarvis, /prepare_project_page/);
+  assert.match(jarvis, /is_owner/);
+  assert.match(jarvis, /tool_calls/);
+  assert.match(jarvis, /requires_confirmation/);
+});

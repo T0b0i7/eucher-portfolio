@@ -66,7 +66,7 @@ async function mapRepo(admin, repo, withDetails) {
       base.languages = langs || {};
       const readme = await gh(`/repos/${repo.full_name}/readme`);
       base.readme = readme && readme.content
-        ? atob(readme.content.replace(/\n/g, '')).slice(0, 20000)
+        ? new TextDecoder('utf-8').decode(Uint8Array.from(atob(readme.content.replace(/\n/g, '')), (c) => c.charCodeAt(0))).slice(0, 20000)
         : null;
       const branches = await gh(`/repos/${repo.full_name}/branches?per_page=100`);
       base.branches = Array.isArray(branches) ? branches.map((b) => ({ name: b.name, sha: b.commit && b.commit.sha })) : [];
