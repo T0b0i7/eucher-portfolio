@@ -18,7 +18,7 @@
 - Hide the subcategory control until a category with subcategories is selected.
 - Keep the desktop filter layout and existing search, URL, filtering, and reset behavior.
 - Provide generated Supabase seed updates but do not apply them to a remote database.
-- Do not modify the existing translation changes in the worktree.
+- Do not modify the existing translation changes in the original checkout.
 
 ## Review Focus
 
@@ -36,7 +36,7 @@
 - Modify: `assets/data/taxonomy.json`
 - Modify: `scripts/build-taxonomy.mjs`
 - Modify: `supabase/seed/2026-11-14-taxonomy.sql` (regenerate)
-- Create: `tests/taxonomy.test.mjs`
+- Modify: `tests/taxonomy.test.mjs`
 - Create: `docs/superpowers/specs/2026-11-17-gallery-filters-design.md`
 - Create: `docs/superpowers/plans/2026-11-17-gallery-filters.md`
 
@@ -48,8 +48,7 @@
 
 Add a test named `taxonomy: only the seven active gallery families are featured`. Assert that the featured root slugs equal:
 `web-development`, `mobile-development`, `artificial-intelligence`, `ai-agents-agentic-systems`, `saas-software-products`, `ui-ux-design`, and `cybersecurity`.
-Also assert each slug appears in at least one current project's category mapping.
-Assert that the source still contains 40 roots and 254 child categories.
+Also assert each slug appears in at least one current project's category mapping and the source still contains 40 roots and 254 child categories.
 
 - [ ] **Step 2: Run the test and confirm it fails**
 

@@ -28,7 +28,7 @@ Le référentiel compte 40 familles, 254 sous-catégories et 42 tags. La galerie
 - Pas de suppression ni de réaffectation des catégories dans les données des projets.
 - Pas de changement des filtres de recherche, de pagination ou de tri.
 - La mise à jour de la taxonomie Supabase sera fournie sous forme de seed SQL généré; elle ne sera pas appliquée au projet distant par l'agent.
-- Les fichiers de traduction déjà modifiés dans le worktree ne font pas partie de cette tâche.
+- Les fichiers de traduction déjà modifiés dans le worktree d'origine ne font pas partie de cette tâche.
 
 ## Validation attendue
 

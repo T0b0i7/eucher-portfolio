@@ -1,6 +1,6 @@
 -- ============================================================================
 -- P2a — seed de la taxonomie (généré par scripts/build-taxonomy.mjs)
--- 40 familles, 12 mises en avant, 254 sous-catégories, 42 tags.
+-- 40 familles, 7 mises en avant, 254 sous-catégories, 42 tags.
 -- À appliquer APRÈS les migrations P0 et 2026-11-14-05-p2-taxonomy.sql.
 -- ============================================================================
 
@@ -10,7 +10,7 @@ insert into public.portfolio_categories (slug, name, name_en, featured, sort_ord
   ('web-development', 'Développement Web', 'Web Development', true, 1),
   ('mobile-development', 'Développement Mobile', 'Mobile Development', true, 2),
   ('desktop-development', 'Développement Desktop', 'Desktop Development', false, 3),
-  ('software-engineering', 'Ingénierie logicielle', 'Software Engineering', true, 4),
+  ('software-engineering', 'Ingénierie logicielle', 'Software Engineering', false, 4),
   ('api-development', 'Développement d’API et intégrations', 'API Development & Integrations', false, 5),
   ('artificial-intelligence', 'Intelligence artificielle', 'Artificial Intelligence', true, 6),
   ('ai-agents-agentic-systems', 'Agents IA et systèmes agentiques', 'AI Agents & Agentic Systems', true, 7),
@@ -19,10 +19,10 @@ insert into public.portfolio_categories (slug, name, name_en, featured, sort_ord
   ('large-language-models', 'Grands modèles de langage (LLM)', 'Large Language Models (LLM)', false, 10),
   ('ai-automation', 'Automatisation IA', 'AI Automation', false, 11),
   ('ai-media-generation', 'Génération de médias par IA', 'AI Media Generation', false, 12),
-  ('database-engineering', 'Bases de données', 'Database Engineering', true, 13),
+  ('database-engineering', 'Bases de données', 'Database Engineering', false, 13),
   ('data-science', 'Science des données', 'Data Science', false, 14),
   ('data-engineering', 'Ingénierie des données', 'Data Engineering', false, 15),
-  ('devops-engineering', 'DevOps et infrastructure', 'DevOps Engineering', true, 16),
+  ('devops-engineering', 'DevOps et infrastructure', 'DevOps Engineering', false, 16),
   ('cloud-computing', 'Cloud', 'Cloud Computing', false, 17),
   ('system-administration', 'Administration système', 'System Administration', false, 18),
   ('site-reliability-engineering', 'Site Reliability Engineering', 'Site Reliability Engineering (SRE)', false, 19),
@@ -31,9 +31,9 @@ insert into public.portfolio_categories (slug, name, name_en, featured, sort_ord
   ('digital-identity-authentication', 'Identité numérique et authentification', 'Digital Identity & Authentication', false, 22),
   ('ui-ux-design', 'Design UI/UX', 'UI/UX Design', true, 23),
   ('graphic-design', 'Design graphique', 'Graphic Design', false, 24),
-  ('motion-design', 'Motion Design', 'Motion Design', true, 25),
+  ('motion-design', 'Motion Design', 'Motion Design', false, 25),
   ('3d-immersive-experiences', '3D et expériences immersives', '3D & Immersive Experiences', false, 26),
-  ('blockchain-web3', 'Blockchain et Web3', 'Blockchain & Web3', true, 27),
+  ('blockchain-web3', 'Blockchain et Web3', 'Blockchain & Web3', false, 27),
   ('internet-of-things', 'Internet des objets (IoT)', 'Internet of Things (IoT)', false, 28),
   ('robotics-embedded-systems', 'Robotique et systèmes embarqués', 'Robotics & Embedded Systems', false, 29),
   ('ar-vr-xr', 'AR / VR / XR', 'AR / VR / XR', false, 30),

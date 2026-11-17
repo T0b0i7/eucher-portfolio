@@ -24,12 +24,23 @@ function allCategorySlugs() {
   return set;
 }
 
-test('taxonomie : 40 familles, 12 mises en avant, sous-catégories et tags', () => {
+test('taxonomy: only the seven active gallery families are featured', () => {
   assert.equal(taxonomy.categories.length, 40);
-  assert.equal(taxonomy.categories.filter((c) => c.featured).length, 12);
+  const featuredSlugs = taxonomy.categories.filter((c) => c.featured).map((c) => c.slug).sort();
+  assert.deepEqual(featuredSlugs, [
+    'web-development',
+    'mobile-development',
+    'artificial-intelligence',
+    'ai-agents-agentic-systems',
+    'saas-software-products',
+    'ui-ux-design',
+    'cybersecurity'
+  ].sort());
+  const mappedCategories = new Set(Object.values(mapping.projects).flatMap((project) => project.categories || []));
+  featuredSlugs.forEach((slug) => assert.ok(mappedCategories.has(slug), 'famille sans projet publié : ' + slug));
   const childCount = taxonomy.categories.reduce((sum, c) => sum + (c.children || []).length, 0);
-  assert.ok(childCount >= 200, 'sous-catégories : ' + childCount);
-  assert.ok(taxonomy.tags.length >= 30, 'tags : ' + taxonomy.tags.length);
+  assert.equal(childCount, 254);
+  assert.equal(taxonomy.tags.length, 42);
   const slugs = taxonomy.categories.map((c) => c.slug);
   assert.equal(new Set(slugs).size, slugs.length, 'slugs racines dupliqués');
 });

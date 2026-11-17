@@ -51,7 +51,7 @@
       "slug": "software-engineering",
       "name": "Ingénierie logicielle",
       "name_en": "Software Engineering",
-      "featured": true,
+      "featured": false,
       "children": [
         "Architecture Logicielle",
         "Software Design",
@@ -191,7 +191,7 @@
       "slug": "database-engineering",
       "name": "Bases de données",
       "name_en": "Database Engineering",
-      "featured": true,
+      "featured": false,
       "children": [
         "SQL Databases",
         "NoSQL Databases",
@@ -236,7 +236,7 @@
       "slug": "devops-engineering",
       "name": "DevOps et infrastructure",
       "name_en": "DevOps Engineering",
-      "featured": true,
+      "featured": false,
       "children": [
         "CI/CD Pipelines",
         "Infrastructure Automation",
@@ -362,7 +362,7 @@
       "slug": "motion-design",
       "name": "Motion Design",
       "name_en": "Motion Design",
-      "featured": true,
+      "featured": false,
       "children": [
         "Motion Graphics",
         "UI Animations",
@@ -392,7 +392,7 @@
       "slug": "blockchain-web3",
       "name": "Blockchain et Web3",
       "name_en": "Blockchain & Web3",
-      "featured": true,
+      "featured": false,
       "children": [
         "Blockchain Applications",
         "Smart Contracts",
