@@ -63,7 +63,7 @@ Object.keys(mapped).forEach((projectSlug) => {
 const lines = [];
 lines.push('-- ============================================================================');
 lines.push('-- P2a — seed de la taxonomie (généré par scripts/build-taxonomy.mjs)');
-lines.push('-- ' + roots.length + ' familles, 12 mises en avant, ' + children.length + ' sous-catégories, ' + tagSlugs.size + ' tags.');
+lines.push('-- ' + roots.length + ' familles, ' + roots.filter((category) => category.featured).length + ' mises en avant, ' + children.length + ' sous-catégories, ' + tagSlugs.size + ' tags.');
 lines.push('-- À appliquer APRÈS les migrations P0 et 2026-11-14-05-p2-taxonomy.sql.');
 lines.push('-- ============================================================================');
 lines.push('');
