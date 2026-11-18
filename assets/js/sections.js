@@ -99,6 +99,7 @@ function tickFill(el,unit){el.innerHTML='<span>'+E(unit)+'</span>';var w=el.firs
 el.innerHTML='<span>'+E(half)+'</span><span>'+E(half)+'</span>';var hw=el.firstChild.offsetWidth||window.innerWidth;el.style.animationDuration=Math.max(12,hw/85)+'s'}
 function drawTicker(){var d;try{d=JSON.parse(localStorage.getItem('ea_admin_v1'))}catch(e){d=null}
 var raw=(d&&d.set&&String(d.set.ticker||'').trim())||TICK0,t=raw.split(',').map(function(x){return x.trim()}).filter(Boolean);if(!t.length)t=TICK0.split(',').map(function(x){return x.trim()});
+if(window.LANG==='en'&&window.trs)t=t.map(window.trs);
 var a=document.querySelector('#mq1 .mqt'),b=document.querySelector('#mq2 .mqt');if(!a||!b)return;
 tickFill(a,t.join(' ★ ')+' ★ ');tickFill(b,t.slice().reverse().join(' ★ ')+' ★ ');tickRun()}
 var _tkR=0;

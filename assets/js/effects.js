@@ -96,7 +96,13 @@ var D18={
 'Accueil':'Home','Projets':'Projects','Compétences':'Skills','À propos':'About','Boutique':'Shop',
 'Développeur':'Developer','Développeur Full Stack':'Full Stack Developer','Développeur Full Stack Web et Mobile':'Full Stack Web and Mobile Developer',
 'Passionné par le code, l’innovation et les nouvelles technologies.':'Passionate about code, innovation and new technologies.',
+'Publié':'Published',
+'Code propre. Impact réel.':'Clean code. Real impact.','Code propre':'Clean code','Impact réel':'Real-world impact',
 'Explorer mon univers →':'Explore my world →','Me contacter':'Contact me','Innovation numérique':'Digital innovation',
+'Des idées. Des solutions. Un impact réel.':'Ideas. Solutions. Real-world impact.',
+'Découvrez quelques-uns de mes projets phares, conçus avec passion et livrés en production.':'Discover some of my featured projects, crafted with care and shipped to production.',
+'Voir tous les projets':'View all projects','Carrousel des projets':'Project carousel','Projet précédent':'Previous project','Projet suivant':'Next project','Navigation des projets':'Project navigation','Afficher le projet ':'Show project ',
+'Portrait d’Eucher ABATTI':'Portrait of Eucher ABATTI','Logo EA Eucher ABATTI':'EA logo — Eucher ABATTI',
 'Entrer avec le son ♪':'Enter with sound ♪','Entrer sans le son':'Enter without sound',
 '♪ SON : OFF':'♪ SOUND: OFF','♪ SON : ON':'♪ SOUND: ON',
 'NUIT':'NIGHT','MATIN':'MORNING','APRÈS-MIDI':'AFTERNOON','SOIR':'EVENING','LUN':'MON','MAR':'TUE','MER':'WED','JEU':'THU','VEN':'FRI','SAM':'SAT','DIM':'SUN',
@@ -154,6 +160,53 @@ var pj={'CodeDrive':[['Le permis de conduire numérique pour le Bénin','Concept
 'Kiffa-Agro IA':[['Le diagnostic des maladies des plantes par l’IA','Développeur frontend et responsable du frontend','Candidature au SAHAL TECH INNOVATION CHALLENGE 2026','Application AgriTech qui diagnostique les maladies des plantes à partir d’une photo et restitue le résultat à l’oral dans les langues locales, pour être utile à tous les agriculteurs.'],['AI-powered plant disease diagnosis','Frontend developer and frontend lead','Pitch for the SAHAL TECH INNOVATION CHALLENGE 2026','An AgriTech app that diagnoses plant diseases from a photo and reads the result aloud in local languages, so it is useful to every farmer.'],['Diagnosis with a CNN (MobileNetV3)','Audio output in Fon, Nago, Adja and Baatonu','Offline-first PWA with distinct desktop and mobile experiences','One-page showcase site deployed on Vercel']]};
 Object.keys(pj).forEach(function(k){var o=R[k];if(!o)return;var a=pj[k],ks=k==='CodeDrive'?['d','role','st','sec','long']:k==='ZemPro'?['d','sec','long']:k==='CertiDiplôme BJ'?['d','role','sec','long']:['d','role','st','sec','long'];
 pair(ks.map(function(f){return o[f]}),a[1]);pair(o.f,a[2])});
+
+var currentProjects={
+'Akouè App':{
+d:'Personal finance app: multiple wallets, transaction tracking and statistics to manage your daily budget.',
+long:'Akouè App is a personal finance app. It brings together multiple wallets, transaction tracking and statistics to help users manage their everyday budget.\n\nIt is built with Expo 54 and React Native in TypeScript, with Supabase for data.',
+f:['Multiple wallets','Transaction tracking','Budget management statistics'],role:'Design and development',sec:'Personal finance'
+},
+'NaviGarde IA':{
+d:'Maritime monitoring cockpit for vessels, alerts, inspections, reports and bulletins, with AI assistance and human validation.',
+long:'NaviGarde IA is a maritime monitoring cockpit. It brings vessels, alerts, inspections, reports and bulletins together in a single interface.\n\nAI assistance supports monitoring, with human validation before any action is applied. The stack combines React and TypeScript for the interface, Node.js with tRPC for services, and MySQL for data.',
+f:['Vessel monitoring','Alert management','Inspections and reports','Bulletins','AI assistance with human validation'],role:'Design and development',sec:'Maritime'
+},
+'Clavis':{
+d:'Typing test app with timed, quote and zen modes, an interactive keyboard, mechanical sounds and accuracy stats.',
+long:'Clavis is a typing test app. It offers timed, quote and zen modes, an interactive keyboard, mechanical sounds and accuracy stats.\n\nIt is built with Next.js 16 and React 19 in TypeScript.',
+f:['Timed, quote and zen modes','Interactive keyboard','Mechanical sounds','Accuracy stats'],role:'Design and development',sec:'Productivity'
+},
+'Havre':{
+d:'Complete real estate website with a landing page, property catalogue, editorial journal and floor-plan-based 3D tour.',
+long:'Havre is a complete real estate website. It includes a home page, property catalogue, editorial journal and a 3D tour generated from a floor plan.\n\nIt is built with JavaScript, HTML and CSS.',
+f:['Home page','Property catalogue','Editorial journal','3D tour generated from a floor plan'],role:'Design and development',sec:'Real estate'
+},
+'Cauris Group International':{
+d:'Multi-page corporate website covering home, about, services, projects, blog and contact, with reusable components and consistent styling.',
+long:'Cauris Group International is a multi-page corporate website. It brings together home, about, services, projects, blog and contact pages, with reusable components and consistent styling.\n\nIt is built with Next.js 13 and React 18 in TypeScript.',
+f:['Home, about, services, projects, blog and contact pages','Reusable components','Consistent styling'],role:'Design and development',sec:'Corporate'
+},
+'Savekari Beauty':{
+d:'Digital portfolio and product catalogue for a beauty brand, featuring its story, values, flagship products and direct WhatsApp ordering.',
+long:'Savekari Beauty is a digital portfolio and product catalogue for a beauty brand. It showcases the brand story, values and flagship products, with direct ordering via WhatsApp.\n\nIt is built with Next.js, React and TypeScript.',
+f:['Brand portfolio','Product catalogue','Brand story and values','Direct ordering via WhatsApp'],role:'Design and development',sec:'Beauty and commerce'
+},
+'Portefolio.OS':{
+d:'Customizable portfolio template with a modular structure, reusable sections and a design-system foundation.',
+long:'Portefolio.OS is a customizable portfolio template. It is built around a modular structure, reusable sections and the foundations of a design system.\n\nIt is built with Next.js, React and TypeScript.',
+f:['Modular structure','Reusable sections','Design-system foundation'],role:'Design and development',sec:'Developer tools'
+},
+'Vigilance BJ':{
+d:'Collaborative platform for anonymous reporting of digital threats in Benin, including scams, fake profiles, harassment and phishing.',
+long:'Vigilance BJ is a collaborative platform for anonymously reporting digital threats in Benin. It covers scams, fake profiles, harassment and phishing.\n\nIt is built with Next.js, React, TypeScript and Supabase.',
+f:['Anonymous reporting','Digital threats: scams, fake profiles, harassment and phishing','Collaborative platform'],role:'Design and development',sec:'Citizen cybersecurity'
+}
+};
+(window.EA_PROJECTS||[]).forEach(function(p){
+var en=currentProjects[p.n];if(!en)return;
+pair([p.d,p.long,p.role,p.sec].concat(p.f),[en.d,en.long,en.role,en.sec].concat(en.f))
+});
 
 var ps=[['Red and black animation pack','Diagonal-band transitions, slamming titles, animated cursor: ready-to-copy effects.','A collection of CSS and JavaScript effects that give a site a bold graphic style: diagonal-band transition, slamming titles, click stars and an animated cursor. Every effect comes with a commented example.',['Diagonal-band transition','Slamming titles','Click stars','Animated cursor','Commented examples'],'Personal and commercial use on your own projects. Reselling or sharing the code is not allowed.'],
 ['Admin dashboard kit','A dark, responsive dashboard with projects, blog and settings.','An admin dashboard in a single HTML file, with management of projects, articles, skills and messages, a Markdown editor with preview and a mobile-friendly layout.',['Projects, Blog, Skills and Messages menus','Markdown editor with preview','Mobile layout','Single HTML file'],'Use on unlimited projects of your own. Reselling the template is not allowed.'],
@@ -243,7 +296,7 @@ b.setAttribute('title',t);b.setAttribute('aria-label',t)}
 window.syncCalmBtn=syncCalmBtn;
 function setLang(l){window.LANG=LANG=l==='en'?'en':'fr';try{localStorage.setItem('ea_lang',LANG)}catch(e){}document.documentElement.lang=LANG;regTr();
 document.title=LANG==='en'?xl(document.title===T0?T0:document.title):T0;walk(document.body);
-try{drawB();drawS();draw('all')}catch(e){}
+try{drawB();drawS();drawTicker();draw('all')}catch(e){}
 [].forEach.call(document.querySelectorAll('#hud .lg2 button[data-l]'),function(b){b.classList.toggle('on',b.dataset.l===LANG)});
 syncCalmBtn()}
 window.setLang=setLang;

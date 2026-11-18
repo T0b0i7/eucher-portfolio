@@ -34,6 +34,46 @@ test('accueil : lien vers la galerie complète', (t) => {
   assert.match(link.textContent, /Voir tous les projets/);
 });
 
+test('accueil : la version anglaise traduit les textes de présentation, le ticker et les projets', async (t) => {
+  const page = loadPage('index.html', INDEX_SCRIPTS, 'http://localhost/index.html');
+  t.after(() => page.close());
+
+  page.window.setLang('en');
+  await flush();
+
+  assert.equal(page.document.querySelector('#projects .lead').textContent, 'Ideas. Solutions. Real-world impact.');
+  assert.equal(page.document.querySelector('.project-subtitle').textContent, 'Discover some of my featured projects, crafted with care and shipped to production.');
+  assert.match(page.document.querySelector('#mq1 .mqt').textContent, /Clean code/);
+  assert.match(page.document.querySelector('#mq1 .mqt').textContent, /Real-world impact/);
+  assert.doesNotMatch(page.document.querySelector('#mq1 .mqt').textContent, /Code propre|Impact réel/);
+  assert.deepEqual(
+    Array.from(page.document.querySelectorAll('.project-desc')).map((description) => description.textContent),
+    [
+      'Personal finance app: multiple wallets, transaction tracking and statistics to manage your daily budget.',
+      'Maritime monitoring cockpit for vessels, alerts, inspections, reports and bulletins, with AI assistance and human validation.',
+      'Typing test app with timed, quote and zen modes, an interactive keyboard, mechanical sounds and accuracy stats.',
+      'Complete real estate website with a landing page, property catalogue, editorial journal and floor-plan-based 3D tour.',
+      'Multi-page corporate website covering home, about, services, projects, blog and contact, with reusable components and consistent styling.',
+      'Digital portfolio and product catalogue for a beauty brand, featuring its story, values, flagship products and direct WhatsApp ordering.',
+      'Customizable portfolio template with a modular structure, reusable sections and a design-system foundation.',
+      'Collaborative platform for anonymous reporting of digital threats in Benin, including scams, fake profiles, harassment and phishing.'
+    ]
+  );
+  page.window.openP(0);
+  await flush();
+  const projectDetails = page.document.querySelector('.mbody').textContent;
+  assert.match(projectDetails, /StatusPublished/);
+  assert.doesNotMatch(projectDetails, /Publié/);
+  assert.equal(page.document.documentElement.lang, 'en');
+
+  page.window.setLang('fr');
+  await flush();
+  assert.equal(page.document.querySelector('#projects .lead').textContent, 'Des idées. Des solutions. Un impact réel.');
+  assert.equal(page.document.querySelector('.project-desc').textContent, 'Application mobile de gestion financière personnelle : portefeuilles multiples, suivi des transactions et statistiques pour piloter son budget au quotidien.');
+  assert.match(page.document.querySelector('#mq1 .mqt').textContent, /Code propre/);
+  assert.doesNotMatch(page.document.querySelector('#mq1 .mqt').textContent, /Clean code|Real-world impact/);
+});
+
 test('fiche projet : rendu complet pour akoue-app', async (t) => {
   const page = loadPage('project.html', PROJECT_SCRIPTS, 'http://localhost/project.html?project=akoue-app');
   t.after(() => page.close());
