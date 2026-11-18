@@ -1,9 +1,9 @@
 (function(){
-var ADMIN_V='2026.11.15j';
-(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='assets/css/admin-reference.css?v=20261115j';document.head.appendChild(l);})();
+var ADMIN_V='2026.11.18a';
+(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='assets/css/admin-reference.css?v=20261118a';document.head.appendChild(l);})();
 var A=document.getElementById('adm');
 
-var K='ea_admin_v1',D,V='dash',SEL=0,MS=null;
+var K='ea_admin_v1',D,V='dash',SEL=0,MS=null,MODAL_RETURN_FOCUS=null;
 var IMP=[
 {id:1,n:'Akouè App',d:'Application mobile de gestion financière personnelle : portefeuilles multiples, suivi des transactions et statistiques pour piloter son budget au quotidien.',cat:'Mobile',st:'Publié',t:'Expo 54, React Native, TypeScript, Supabase',u:'https://akoue-app.vercel.app',preview:PREVIEWS['Akouè App'],don:'Non',dl:'',cover:''},
 {id:2,n:'NaviGarde IA',d:'Cockpit maritime de supervision : embarcations, alertes, inspections, rapports et bulletins, avec assistance IA et validation humaine.',cat:'IA',st:'Publié',t:'React, TypeScript, Node.js, tRPC, MySQL',u:'https://t0b0i7.github.io/NaviGarde_IA/',preview:PREVIEWS['NaviGarde IA'],don:'Non',dl:'',cover:''},
@@ -85,12 +85,83 @@ return '<div class="hd"><div><h1>Paramètres</h1><p class="sbt">Réglez la publi
 +'<div class="cd"><h3>Données</h3><div class="row"><div><b>Exporter</b><small>Télécharge un fichier JSON avec tout le contenu</small></div><button class="bt gh sm" data-a="exp">'+I('dl',16)+'Exporter</button></div><div class="row"><div><b>Réinitialiser</b><small>Revient aux données de départ</small></div><button class="bt gh sm" data-a="reset">Réinitialiser</button></div></div></div>'}};
 function render(){nav();document.getElementById('ct').innerHTML=VW[V]();if(V==='tax'&&window.EA_TAX)window.EA_TAX.load();if(V==='media'&&window.EA_MEDIA)window.EA_MEDIA.load();if(V==='github'&&window.EA_GITHUB)window.EA_GITHUB.load();if(V==='catalog'&&window.EA_CATALOG)window.EA_CATALOG.load();if(V==='appearance'&&window.EA_APPEARANCE)window.EA_APPEARANCE.load();document.getElementById('si').innerHTML=I('search');document.getElementById('gi').innerHTML=I('bolt',18)}
 function go(v){V=v;render();A.scrollTo(0,0)}
-function closeM(){document.getElementById('md').className=''}
-function formM(title,F,Vl,ok){var m=document.getElementById('md');m.innerHTML='<div class="mb2" role="dialog" aria-modal="true"><h3>'+title+'</h3>'+F.map(function(f){if(f.t==='img')return '<label>'+f.l+'<input type="file" accept="image/*" data-imgfor="'+f.k+'"><input type="hidden" data-k="'+f.k+'" value="'+esc(Vl[f.k]||'')+'">'+(Vl[f.k]&&String(Vl[f.k]).indexOf('data:image')===0?'<img class="imgp" src="'+esc(Vl[f.k])+'" alt="" style="max-height:48px;margin-top:6px;background:#fff;padding:3px">':(Vl[f.k]==='ea'?'<small style="color:var(--mu)">Logo EA par défaut. Choisis une image pour le remplacer.</small>':''))+'</label>';if(f.t==='tr')return '<div><button class="bt gh" data-a="tren" type="button" data-map=\''+JSON.stringify(f.map)+'\'>✨ '+f.l+'</button><small style="color:var(--mu);display:block;margin-top:4px">Brouillon à relire avant d’enregistrer.</small></div>';if(f.t==='checks'){var arr=Array.isArray(Vl[f.k])?Vl[f.k]:String(Vl[f.k]==null?'':Vl[f.k]).split(',').map(function(x){return x.trim()});return '<div style="margin:8px 0"><b style="display:block;margin-bottom:4px">'+f.l+'</b>'+(f.o||[]).map(function(opt){var val=opt.v||opt;var lab=opt.l||opt;return '<label style="display:flex;gap:6px;align-items:center;font-weight:400;margin:3px 0"><input type="checkbox" data-k="'+f.k+'" value="'+esc(val)+'"'+(arr.indexOf(val)>=0?' checked':'')+'> '+esc(lab)+'</label>'}).join('')+'</div>'}
-if(f.t==='date'){return '<label>'+f.l+'<input type="date" data-k="'+f.k+'" value="'+esc(String(Vl[f.k]||'').slice(0,10))+'"></label>'}
-if(f.t==='number'){return '<label>'+f.l+'<input type="number" min="0" step="1" data-k="'+f.k+'" value="'+esc(Vl[f.k]==null?'':Vl[f.k])+'"></label>'}
-var v=Vl[f.k]==null?'':Vl[f.k];return '<label>'+f.l+(f.t==='area'?'<textarea data-k="'+f.k+'" rows="3">'+esc(v)+'</textarea>':f.t==='select'?'<select data-k="'+f.k+'">'+f.o.map(function(o){return '<option'+(o===v?' selected':'')+'>'+o+'</option>'}).join('')+'</select>':f.t==='range'?'<span><input data-k="'+f.k+'" type="range" min="1" max="100" value="'+(v||60)+'" style="width:85%"> <b class="rg2">'+(v||60)+'%</b></span>':'<input data-k="'+f.k+'" value="'+esc(v)+'">')+'</label>'}).join('')+'<div class="ac"><button class="bt gh" data-a="mx">Annuler</button><button class="bt" data-a="ms">Enregistrer</button></div></div>';m.className='open';MS=function(){var o={};m.querySelectorAll('[data-k]').forEach(function(i){if(i.type==='checkbox'){if(!Array.isArray(o[i.dataset.k]))o[i.dataset.k]=[];if(i.checked)o[i.dataset.k].push(i.value)}else{o[i.dataset.k]=i.value}});if(ok(o)!==false)closeM()}}
-function pform(id){var p=D.projects.find(function(x){return x.id===id})||{cat:'Web',st:'Publié'};var cache=window.EA_TAX_CACHE||{categories:[],tags:[]};var catOpts=(cache.categories||[]).map(function(c){return {v:c.slug,l:(c.parent_id?'↳ ':'')+c.name}});var tagOpts=(cache.tags||[]).map(function(t){return {v:t.slug,l:t.name}});formM(id?'Modifier le projet':'Nouveau projet',[{k:'n',l:'Nom du projet'},{k:'d',l:'Description',t:'area'},{k:'cat',l:'Catégorie',t:'select',o:['Web','Mobile','IA','Design']},{k:'cats',l:'Catégories',t:catOpts.length?'checks':'text',o:catOpts},{k:'tags',l:'Tags',t:tagOpts.length?'checks':'text',o:tagOpts},{k:'featured',l:'Mise en avant',t:'select',o:['Non','Oui']},{k:'sort',l:'Ordre d’affichage',t:'number'},{k:'published_at',l:'Date de publication',t:'date'},{k:'t',l:'Technologies (séparées par des virgules)'},{k:'u',l:'Lien du projet'},{k:'preview',l:'Lien de preview'},{t:'img',k:'cover',l:'Image de couverture'},{k:'st',l:'Statut',t:'select',o:['Publié','Brouillon','Archivé']},{k:'don',l:'Activer les dons sur ce projet',t:'select',o:['Non','Oui']},{k:'dl',l:'Lien de don propre à ce projet (optionnel)'},{k:'en_d',l:'Description en anglais',t:'area'},{t:'tr',l:'Traduire en anglais',map:{d:'en_d'}}],Object.assign({},p,{en_d:(p.en||{}).d,featured:p.featured?'Oui':'Non',published_at:String(p.published_at||'').slice(0,10)}),function(o){['cats','tags'].forEach(function(k){o[k]=String(o[k]||'').split(',').map(function(s){return s.trim()}).filter(function(s){return !!s}).filter(function(s,i,a){return a.indexOf(s)===i})});o.featured=o.featured==='Oui'||o.featured===true;o.sort=parseInt(o.sort,10)||0;o=packEn(o);if(!o.n.trim()){toast('Le nom est obligatoire');return false}var preview=String(o.preview||'').trim();if(preview&&!window.safePreviewUrl(preview)){toast('Le lien de preview doit être une URL HTTP(S) valide');return false}o.preview=preview?window.safePreviewUrl(preview):'';if(id){Object.assign(p,o);log('Projet '+o.n+' mis à jour',o.cat+' · '+o.st,'folder','var(--ok)')}else{o.id=nid(D.projects);D.projects.push(o);log('Nouveau projet ajouté',o.n,'folder','var(--ok)')}save();render();toast('Projet enregistré');if(o.st!=='Publié'){var pslug=(o.slug||(window.eaSlug?window.eaSlug(o.n):''))||'';window.open('project.html?project='+encodeURIComponent(pslug)+'&preview=1','_blank')}})}
+function closeM(restoreFocus){document.getElementById('md').className='';if(restoreFocus!==false&&MODAL_RETURN_FOCUS&&MODAL_RETURN_FOCUS.isConnected)MODAL_RETURN_FOCUS.focus();MODAL_RETURN_FOCUS=null}
+function formM(title,F,Vl,ok){
+var m=document.getElementById('md');
+function field(f){
+if(f.t==='img')return '<label>'+f.l+'<input type="file" accept="image/*" data-imgfor="'+f.k+'"><input type="hidden" data-k="'+f.k+'" value="'+esc(Vl[f.k]||'')+'">'+(Vl[f.k]&&String(Vl[f.k]).indexOf('data:image')===0?'<img class="imgp" src="'+esc(Vl[f.k])+'" alt="" style="max-height:48px;margin-top:6px;background:#fff;padding:3px">':(Vl[f.k]==='ea'?'<small style="color:var(--mu)">Logo EA par défaut. Choisis une image pour le remplacer.</small>':''))+'</label>';
+if(f.t==='tr')return '<div><button class="bt gh" data-a="tren" type="button" data-map=\''+JSON.stringify(f.map)+'\'>✨ '+f.l+'</button><small style="color:var(--mu);display:block;margin-top:4px">Brouillon à relire avant d’enregistrer.</small></div>';
+if(f.t==='checks'){var arr=Array.isArray(Vl[f.k])?Vl[f.k]:String(Vl[f.k]==null?'':Vl[f.k]).split(',').map(function(x){return x.trim()});return '<div style="margin:8px 0"><b style="display:block;margin-bottom:4px">'+f.l+'</b>'+(f.o||[]).map(function(opt){var val=opt.v||opt;var lab=opt.l||opt;return '<label style="display:flex;gap:6px;align-items:center;font-weight:400;margin:3px 0"><input type="checkbox" data-k="'+f.k+'" value="'+esc(val)+'"'+(arr.indexOf(val)>=0?' checked':'')+'> '+esc(lab)+'</label>'}).join('')+'</div>'}
+if(f.t==='date')return '<label>'+f.l+'<input type="date" data-k="'+f.k+'" value="'+esc(String(Vl[f.k]||'').slice(0,10))+'"></label>';
+if(f.t==='number')return '<label>'+f.l+'<input type="number" min="0" step="1" data-k="'+f.k+'" value="'+esc(Vl[f.k]==null?'':Vl[f.k])+'"></label>';
+var v=Vl[f.k]==null?'':Vl[f.k];
+return '<label>'+f.l+(f.t==='area'?'<textarea data-k="'+f.k+'" rows="3">'+esc(v)+'</textarea>':f.t==='select'?'<select data-k="'+f.k+'">'+f.o.map(function(o){return '<option'+(o===v?' selected':'')+'>'+o+'</option>'}).join('')+'</select>':f.t==='range'?'<span><input data-k="'+f.k+'" type="range" min="1" max="100" value="'+(v||60)+'" style="width:85%"> <b class="rg2">'+(v||60)+'%</b></span>':'<input data-k="'+f.k+'" value="'+esc(v)+'">')+'</label>'
+}
+var core=F.filter(function(f){return !f.advanced}).map(field).join('');
+var advanced=F.filter(function(f){return f.advanced}).map(field).join('');
+MODAL_RETURN_FOCUS=document.activeElement;
+m.innerHTML='<div class="mb2" role="dialog" aria-modal="true" aria-labelledby="admin-modal-title"><h3 id="admin-modal-title">'+title+'</h3>'+core+(advanced?'<details class="md-advanced"><summary>Options avancées</summary><div class="md-advanced-fields">'+advanced+'</div></details>':'')+'<div class="ac"><button class="bt gh" data-a="mx">Annuler</button><button class="bt" data-a="ms">Enregistrer</button></div></div>';
+m.className='open';
+var firstField=m.querySelector('input:not([type="hidden"]):not([type="file"]),textarea,select,button');
+if(firstField)firstField.focus();
+MS=function(){var o={};m.querySelectorAll('[data-k]').forEach(function(i){if(i.type==='checkbox'){if(!Array.isArray(o[i.dataset.k]))o[i.dataset.k]=[];if(i.checked)o[i.dataset.k].push(i.value)}else{o[i.dataset.k]=i.value}});if(ok(o)!==false){closeM(false);var focusTarget=document.querySelector('#ct [data-a="addp"]')||document.querySelector('#ct [data-a]');if(focusTarget)focusTarget.focus()}}
+}
+document.addEventListener('keydown',function(e){
+var m=document.getElementById('md');
+if(!m.classList.contains('open'))return;
+if(e.key==='Escape'){e.preventDefault();closeM();return}
+if(e.key!=='Tab')return;
+var focusable=Array.prototype.slice.call(m.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex="-1"])')).filter(function(el){var details=el.closest('details');return !el.hidden&&(!details||details.open||el.tagName==='SUMMARY')});
+if(!focusable.length)return;
+var first=focusable[0],last=focusable[focusable.length-1];
+if(e.shiftKey&&(document.activeElement===first||!m.contains(document.activeElement))){e.preventDefault();last.focus()}
+else if(!e.shiftKey&&(document.activeElement===last||!m.contains(document.activeElement))){e.preventDefault();first.focus()}
+});
+function pform(id){
+var p=D.projects.find(function(x){return x.id===id})||{cat:'Web',st:'Publié'};
+var cache=window.EA_TAX_CACHE||{categories:[],tags:[]};
+var cachedCats=(cache.categories||[]).map(function(c){return {v:c.slug,l:(c.parent_id?'↳ ':'')+c.name}});
+var cachedTags=(cache.tags||[]).map(function(t){return {v:t.slug,l:t.name}});
+var hasCachedCats=cachedCats.length>0,hasCachedTags=cachedTags.length>0;
+function includeStored(options,values){
+var stored=Array.isArray(values)?values:String(values==null?'':values).split(',');
+stored.forEach(function(value){var slug=String(value).trim();if(slug&&!options.some(function(option){return option.v===slug}))options.push({v:slug,l:slug})});
+return options
+}
+var catOpts=includeStored(cachedCats,p.cats),tagOpts=includeStored(cachedTags,p.tags);
+formM(id?'Modifier le projet':'Nouveau projet',[
+{k:'n',l:'Nom du projet'},
+{k:'d',l:'Description',t:'area'},
+{k:'cat',l:'Catégorie',t:'select',o:['Web','Mobile','IA','Design']},
+{k:'t',l:'Technologies (séparées par des virgules)'},
+{k:'u',l:'Lien du projet'},
+{k:'preview',l:'Lien de preview'},
+{t:'img',k:'cover',l:'Image de couverture'},
+{k:'st',l:'Statut',t:'select',o:['Publié','Brouillon','Archivé']},
+{k:'cats',l:'Catégories',t:hasCachedCats?'checks':'text',o:catOpts,advanced:true},
+{k:'tags',l:'Tags',t:hasCachedTags?'checks':'text',o:tagOpts,advanced:true},
+{k:'featured',l:'Mise en avant',t:'select',o:['Non','Oui'],advanced:true},
+{k:'sort',l:'Ordre d’affichage',t:'number',advanced:true},
+{k:'published_at',l:'Date de publication',t:'date',advanced:true},
+{k:'don',l:'Activer les dons sur ce projet',t:'select',o:['Non','Oui'],advanced:true},
+{k:'dl',l:'Lien de don propre à ce projet (optionnel)',advanced:true},
+{k:'en_d',l:'Description en anglais',t:'area',advanced:true},
+{t:'tr',l:'Traduire en anglais',map:{d:'en_d'},advanced:true}
+],Object.assign({},p,{en_d:(p.en||{}).d,featured:p.featured?'Oui':'Non',published_at:String(p.published_at||'').slice(0,10)}),function(o){
+['cats','tags'].forEach(function(k){o[k]=String(o[k]||'').split(',').map(function(s){return s.trim()}).filter(function(s){return !!s}).filter(function(s,i,a){return a.indexOf(s)===i})});
+o.featured=o.featured==='Oui'||o.featured===true;
+o.sort=parseInt(o.sort,10)||0;
+o=packEn(o);
+if(!o.n.trim()){toast('Le nom est obligatoire');return false}
+var preview=String(o.preview||'').trim();
+if(preview&&!window.safePreviewUrl(preview)){toast('Le lien de preview doit être une URL HTTP(S) valide');return false}
+o.preview=preview?window.safePreviewUrl(preview):'';
+if(id){Object.assign(p,o);log('Projet '+o.n+' mis à jour',o.cat+' · '+o.st,'folder','var(--ok)')}
+else{o.id=nid(D.projects);D.projects.push(o);log('Nouveau projet ajouté',o.n,'folder','var(--ok)')}
+save();render();toast('Projet enregistré');
+if(o.st!=='Publié'){var pslug=(o.slug||(window.eaSlug?window.eaSlug(o.n):''))||'';window.open('project.html?project='+encodeURIComponent(pslug)+'&preview=1','_blank')}
+})
+}
 function sform(id){var s=D.skills.find(function(x){return x.id===id})||{cat:'Frontend & Mobile',lv:80};formM(id?'Modifier la compétence':'Nouvelle compétence',[{k:'n',l:'Nom'},{k:'cat',l:'Catégorie',t:'select',o:['Frontend & Mobile','Backend & API','Bases de données','Sécurité & IAM','DevOps & Outils','Design']}],s,function(o){if(!o.n.trim()){toast('Le nom est obligatoire');return false}o.lv=+o.lv||80;if(id)Object.assign(s,o);else{o.id=nid(D.skills);D.skills.push(o)}log('Compétence '+(id?'modifiée':'ajoutée'),o.n,'code','var(--pu)');save();render();toast('Compétence enregistrée')})}
 function gen(){var P=D.projects.filter(function(p){return p.st==='Publié'}),j=JSON.stringify({generatedAt:new Date().toISOString(),profile:D.profile,projects:P,skills:D.skills,settings:D.set},null,2);
 (window.claude?claude.use('downloads'):Promise.resolve({save:function(o){var a=document.createElement('a');a.href=URL.createObjectURL(o.data);a.download=o.filename;document.body.appendChild(a);a.click();a.remove();return Promise.resolve()}})).then(function(dl){if(!dl){toast('Téléchargement indisponible ici');return}return dl.save({filename:'portfolio-data.json',data:new Blob([j],{type:'application/json'})}).then(function(){log('Portfolio généré',P.length+' projets · '+D.skills.length+' compétences','bolt');save();render();toast('Données du portfolio générées')})}).catch(function(e){if(!e||e.code!=='declined')toast('Export impossible')})}
