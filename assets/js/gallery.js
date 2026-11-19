@@ -18,6 +18,8 @@
   var els = {};
   var debounceTimer = null;
   var allCategories = [];
+  var mobileQuery = null;
+  var advancedExpanded = false;
 
   function byId(id) { return document.getElementById(id); }
 
@@ -102,9 +104,40 @@
   function fillSubSelect() {
     if (!els.sub) return;
     var children = childrenOf(els.category.value);
-    var current = els.sub.value;
+    var current = state.filters.sub || els.sub.value;
     fillSelect(els.sub, children, 'Toutes');
-    if (children.some(function (category) { return category.slug === current; })) els.sub.value = current;
+    if (children.some(function (category) { return category.slug === current; })) {
+      els.sub.value = current;
+      state.filters.sub = current;
+    } else {
+      els.sub.value = '';
+      state.filters.sub = '';
+    }
+    if (els.subField) els.subField.hidden = children.length === 0;
+  }
+
+  function syncAdvancedDisclosure() {
+    var isMobile = !!(mobileQuery && mobileQuery.matches);
+    if (!els.advancedToggle || !els.advancedFields) return;
+    els.advancedToggle.hidden = !isMobile;
+    els.advancedFields.hidden = isMobile && !advancedExpanded;
+    els.advancedToggle.setAttribute('aria-expanded', isMobile ? String(advancedExpanded) : 'true');
+    if (els.advancedLabel) els.advancedLabel.textContent = advancedExpanded ? 'Moins de filtres' : 'Plus de filtres';
+    if (els.advancedIndicator) els.advancedIndicator.textContent = advancedExpanded ? '−' : '+';
+  }
+
+  function initAdvancedDisclosure() {
+    advancedExpanded = !!(state.filters.sub || state.filters.tech || state.filters.tag);
+    if (typeof window.matchMedia === 'function') {
+      mobileQuery = window.matchMedia('(max-width: 560px)');
+    }
+    syncAdvancedDisclosure();
+    if (!mobileQuery) return;
+    if (typeof mobileQuery.addEventListener === 'function') {
+      mobileQuery.addEventListener('change', syncAdvancedDisclosure);
+    } else if (typeof mobileQuery.addListener === 'function') {
+      mobileQuery.addListener(syncAdvancedDisclosure);
+    }
   }
 
   function categoryQueryValues() {
@@ -132,8 +165,8 @@
       fillSelect(els.category, allCategories, 'Toutes');
       fillSelect(els.tech, Object.keys(technologies).map(function (name) { return { slug: slugify(name), name: name }; }), 'Toutes');
       fillSelect(els.tag, [], 'Tous');
-      fillSubSelect();
       syncControls();
+      fillSubSelect();
     };
     if (!api || typeof api.listTaxonomies !== 'function' || !api.isEnabled()) {
       fallback();
@@ -142,11 +175,18 @@
     api.listTaxonomies().then(function (taxonomies) {
       if (!taxonomies) { fallback(); return; }
       allCategories = taxonomies.categories || [];
-      fillSelect(els.category, allCategories.filter(function (category) { return category.featured && !category.parent_slug; }), 'Toutes');
+      var featuredRoots = allCategories.filter(function (category) { return category.featured && !category.parent_slug; });
+      var selectedRoot = allCategories.filter(function (category) {
+        return category.slug === state.filters.cat && !category.parent_slug;
+      })[0];
+      if (selectedRoot && !featuredRoots.some(function (category) { return category.slug === selectedRoot.slug; })) {
+        featuredRoots.push(selectedRoot);
+      }
+      fillSelect(els.category, featuredRoots, 'Toutes');
       fillSelect(els.tech, taxonomies.technologies, 'Toutes');
       fillSelect(els.tag, taxonomies.tags, 'Tous');
-      fillSubSelect();
       syncControls();
+      fillSubSelect();
     }, fallback);
   }
 
@@ -307,11 +347,17 @@
     els.error = byId('galleryError');
     els.degraded = byId('galleryDegraded');
     els.reset = byId('galleryReset');
+    els.subField = byId('gallerySubField');
+    els.advancedToggle = byId('galleryAdvancedToggle');
+    els.advancedFields = byId('galleryAdvancedFields');
+    els.advancedLabel = byId('galleryAdvancedLabel');
+    els.advancedIndicator = byId('galleryAdvancedIndicator');
     els.form = byId('galleryFilters');
     if (!els.grid) return;
 
     readUrl();
     syncControls();
+    initAdvancedDisclosure();
     loadTaxonomies();
 
     if (els.form) els.form.addEventListener('submit', function (event) { event.preventDefault(); applyFilters(); });
@@ -321,6 +367,12 @@
       updateUrl();
     });
     if (els.category) els.category.addEventListener('change', function () { fillSubSelect(); applyFilters(); });
+    if (els.advancedToggle) {
+      els.advancedToggle.addEventListener('click', function () {
+        advancedExpanded = !advancedExpanded;
+        syncAdvancedDisclosure();
+      });
+    }
     [els.sub, els.tech, els.tag, els.sort].forEach(function (select) {
       if (select) select.addEventListener('change', applyFilters);
     });
