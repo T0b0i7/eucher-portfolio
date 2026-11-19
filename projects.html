@@ -41,23 +41,11 @@
         <span>Rechercher</span>
         <input id="gallerySearch" type="search" placeholder="Nom, technologie, mot-clé…" autocomplete="off">
       </label>
-      <label class="gl-field">
+      <label class="gl-field gl-category">
         <span>Catégorie</span>
         <select id="galleryCategory"><option value="">Toutes</option></select>
       </label>
-      <label class="gl-field">
-        <span>Sous-catégorie</span>
-        <select id="gallerySub"><option value="">Toutes</option></select>
-      </label>
-      <label class="gl-field">
-        <span>Technologie</span>
-        <select id="galleryTech"><option value="">Toutes</option></select>
-      </label>
-      <label class="gl-field">
-        <span>Tag</span>
-        <select id="galleryTag"><option value="">Tous</option></select>
-      </label>
-      <label class="gl-field">
+      <label class="gl-field gl-sort">
         <span>Trier par</span>
         <select id="gallerySort">
           <option value="recent">Plus récents</option>
@@ -67,7 +55,27 @@
           <option value="featured">Mis en avant</option>
         </select>
       </label>
-      <button class="gl-reset" id="galleryReset" type="button">Réinitialiser</button>
+      <div class="gl-advanced">
+        <button class="gl-advanced-toggle" id="galleryAdvancedToggle" type="button" aria-expanded="false" aria-controls="galleryAdvancedFields">
+          <span id="galleryAdvancedLabel">Plus de filtres</span>
+          <span id="galleryAdvancedIndicator" aria-hidden="true">+</span>
+        </button>
+        <div class="gl-advanced-fields" id="galleryAdvancedFields">
+          <label class="gl-field gl-sub" id="gallerySubField" hidden>
+            <span>Sous-catégorie</span>
+            <select id="gallerySub"><option value="">Toutes</option></select>
+          </label>
+          <label class="gl-field gl-tech">
+            <span>Technologie</span>
+            <select id="galleryTech"><option value="">Toutes</option></select>
+          </label>
+          <label class="gl-field gl-tag">
+            <span>Tag</span>
+            <select id="galleryTag"><option value="">Tous</option></select>
+          </label>
+          <button class="gl-reset" id="galleryReset" type="button">Réinitialiser</button>
+        </div>
+      </div>
     </form>
 
     <div class="gl-meta">

@@ -44,7 +44,8 @@ function galleryFetch(cfg = {}) {
       return ok([
         { id: 'c1', slug: 'web-development', name: 'Web Development', name_en: 'Web Development', featured: true, parent_id: null },
         { id: 'c2', slug: 'mobile-development', name: 'Mobile Development', name_en: 'Mobile Development', featured: true, parent_id: null },
-        { id: 'c3', slug: 'frontend-development', name: 'Frontend Development', name_en: 'Frontend Development', featured: false, parent_id: 'c1' }
+        { id: 'c3', slug: 'frontend-development', name: 'Frontend Development', name_en: 'Frontend Development', featured: false, parent_id: 'c1' },
+        { id: 'c4', slug: 'business-enterprise-solutions', name: 'Business Solutions', name_en: 'Business Solutions', featured: false, parent_id: null }
       ]);
     }
     if (target.indexOf('/portfolio_tags') >= 0) return ok([{ slug: 'public', name: 'Public' }]);
@@ -155,6 +156,7 @@ test('galerie : repli catalogue quand l’API est indisponible', async (t) => {
   assert.equal(page.document.querySelectorAll('#galleryGrid .gl-card').length, 8);
   assert.equal(page.document.getElementById('galleryDegraded').hidden, false);
   assert.equal(page.document.getElementById('galleryError').hidden, true);
+  assert.equal(page.document.getElementById('gallerySubField').hidden, true);
 });
 
 test('galerie : URL filtrée restaurée au chargement', async (t) => {
@@ -167,4 +169,102 @@ test('galerie : URL filtrée restaurée au chargement', async (t) => {
   const last = mock.calls[mock.calls.length - 1];
   assert.ok(last.p_categories.indexOf('web-development') >= 0);
   assert.equal(last.p_sort, 'alpha');
+});
+
+test('galerie mobile : filtres secondaires repliés et annoncés', async (t) => {
+  const mock = galleryFetch();
+  const page = loadPage('projects.html', GALLERY_SCRIPTS, 'http://localhost/projects.html', {
+    fetch: mock.fetchImpl,
+    mobile: true
+  });
+  t.after(() => page.close());
+  await flush();
+  const toggle = page.document.getElementById('galleryAdvancedToggle');
+  const advanced = page.document.getElementById('galleryAdvancedFields');
+  assert.ok(toggle);
+  assert.equal(toggle.hidden, false);
+  assert.equal(toggle.getAttribute('aria-controls'), 'galleryAdvancedFields');
+  assert.equal(toggle.getAttribute('aria-expanded'), 'false');
+  assert.equal(advanced.hidden, true);
+  toggle.click();
+  assert.equal(toggle.getAttribute('aria-expanded'), 'true');
+  assert.equal(advanced.hidden, false);
+  toggle.click();
+  assert.equal(toggle.getAttribute('aria-expanded'), 'false');
+  assert.equal(advanced.hidden, true);
+});
+
+test('galerie bureau : filtres secondaires visibles sans bouton de repli', async (t) => {
+  const mock = galleryFetch();
+  const page = loadPage('projects.html', GALLERY_SCRIPTS, 'http://localhost/projects.html', { fetch: mock.fetchImpl });
+  t.after(() => page.close());
+  await flush();
+  assert.equal(page.document.getElementById('galleryAdvancedToggle').hidden, true);
+  assert.equal(page.document.getElementById('galleryAdvancedFields').hidden, false);
+});
+
+test('galerie : sous-catégorie visible uniquement pour une catégorie avec enfants', async (t) => {
+  const mock = galleryFetch({ rpc: () => ok({ total: 1, items: [row()] }) });
+  const page = loadPage('projects.html', GALLERY_SCRIPTS, 'http://localhost/projects.html', {
+    fetch: mock.fetchImpl,
+    mobile: true
+  });
+  t.after(() => page.close());
+  await flush();
+  const category = page.document.getElementById('galleryCategory');
+  const subField = page.document.getElementById('gallerySubField');
+  const sub = page.document.getElementById('gallerySub');
+  assert.equal(subField.hidden, true);
+  category.value = 'web-development';
+  category.dispatchEvent(new page.window.Event('change', { bubbles: true }));
+  await flush();
+  assert.equal(subField.hidden, false);
+  sub.value = 'frontend-development';
+  sub.dispatchEvent(new page.window.Event('change', { bubbles: true }));
+  await flush();
+  assert.deepEqual(mock.calls[mock.calls.length - 1].p_categories, ['frontend-development']);
+  category.value = 'mobile-development';
+  category.dispatchEvent(new page.window.Event('change', { bubbles: true }));
+  await flush();
+  assert.equal(subField.hidden, true);
+  assert.equal(sub.value, '');
+  assert.deepEqual(mock.calls[mock.calls.length - 1].p_categories, ['mobile-development']);
+});
+
+test('galerie : une catégorie non mise en avant reste sélectionnée depuis l’URL', async (t) => {
+  const mock = galleryFetch({ rpc: () => ok({ total: 0, items: [] }) });
+  const page = loadPage(
+    'projects.html',
+    GALLERY_SCRIPTS,
+    'http://localhost/projects.html?cat=business-enterprise-solutions',
+    { fetch: mock.fetchImpl }
+  );
+  t.after(() => page.close());
+  await flush();
+  const category = page.document.getElementById('galleryCategory');
+  assert.equal(category.value, 'business-enterprise-solutions');
+  assert.equal(category.selectedOptions[0].textContent, 'Business Solutions');
+  assert.deepEqual(mock.calls[mock.calls.length - 1].p_categories, ['business-enterprise-solutions']);
+});
+
+test('galerie : réinitialisation efface tous les filtres et paramètres URL', async (t) => {
+  const mock = galleryFetch({ rpc: () => ok({ total: 0, items: [] }) });
+  const page = loadPage(
+    'projects.html',
+    GALLERY_SCRIPTS,
+    'http://localhost/projects.html?q=clavis&cat=web-development&sub=frontend-development&tech=react&tag=public&sort=alpha',
+    { fetch: mock.fetchImpl, mobile: true }
+  );
+  t.after(() => page.close());
+  await flush();
+  page.document.getElementById('galleryReset').click();
+  await flush();
+  assert.equal(page.window.location.search, '');
+  assert.equal(page.document.getElementById('gallerySearch').value, '');
+  assert.equal(page.document.getElementById('galleryCategory').value, '');
+  assert.equal(page.document.getElementById('gallerySub').value, '');
+  assert.equal(page.document.getElementById('galleryTech').value, '');
+  assert.equal(page.document.getElementById('galleryTag').value, '');
+  assert.equal(page.document.getElementById('gallerySort').value, 'recent');
+  assert.equal(page.document.getElementById('gallerySubField').hidden, true);
 });

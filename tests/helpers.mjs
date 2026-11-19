@@ -43,9 +43,11 @@ function jsonResponse(body, status = 200) {
 
 function installStubs(window, opts) {
   const reduced = !!opts.reducedMotion;
+  const mobile = !!opts.mobile;
   window.matchMedia = function (query) {
     return {
-      matches: reduced && /prefers-reduced-motion/.test(query),
+      matches: (reduced && /prefers-reduced-motion/.test(query)) ||
+        (mobile && /max-width:\s*560px/.test(query)),
       media: query,
       addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}
     };
