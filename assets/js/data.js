@@ -8,7 +8,7 @@ var SEED_EXP=[
 {id:4,t:'Freelance Full-Stack & Design',o:'Indépendant',l:'Porto-Novo',p:'2017 – présent',d:'Développement web et mobile sur mesure pour un portefeuille de plus de 10 clients actifs (TPE, startups).\nPlateforme institutionnelle pour l’Institut Polytechnique Paul Hazoumè, avec système IAM à 5 rôles hiérarchiques.'}];
 SEED_EXP[0].s='Web3, Fintech, CMS, API';SEED_EXP[1].s='React, Next.js, Figma, Agile';SEED_EXP[2].s='RBAC, Indexation, Délégation de droits';SEED_EXP[2].k='87 %|de temps de recherche en moins, 500+|documents indexés, 7|modules métiers';SEED_EXP[3].s='Web, Mobile, IAM';SEED_EXP[3].k='10+|clients actifs, 5|rôles hiérarchiques (IAM)';SEED_EXP[3].logo='ea';
 var SEED_EDU=[
-{id:1,t:'Candidature — Master 1 Génie Logiciel',o:'IFRI, Université d’Abomey-Calavi',l:'',p:'Dossier soumis en juillet 2026',d:'Admission en cours.'},
+{id:1,t:'Master 1 Génie Logiciel',o:'IFRI, Université d’Abomey-Calavi',l:'Abomey-Calavi',p:'En cours',d:'En cours de réalisation.'},
 {id:2,t:'Licence professionnelle en Systèmes Informatiques et Logiciels',o:'HECM',l:'Porto-Novo',p:'2022 – 2025',d:'Soutenue avec mention très bien.\nMajor de promotion sur plusieurs semestres.'}];
 var S3=SEED_SKILLS;
 var SKILL_DETAILS={
@@ -134,7 +134,7 @@ document.addEventListener('mouseover',function(e){if(e.target.closest&&e.target.
 document.addEventListener('click',function(e){if(e.target.closest('a,button'))sfx.click();[0,1].forEach(function(k){var s=document.createElement('i');s.className='star'+(k?' w':'');s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';document.body.appendChild(s);setTimeout(function(){s.remove()},700)})});
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var t=e.target;io.unobserve(t);if(t.classList.contains('pre')){t.classList.add('slam');sfx.slam();document.body.classList.add('shake');setTimeout(function(){document.body.classList.remove('shake')},300)}else{t.classList.add('in');setTimeout(function(){t.classList.remove('rv','in')},1100)}})},{threshold:.25});
 function reveal(l){[].forEach.call(l,function(t,i){if(t.classList.contains('title')||t.classList.contains('note')||t.classList.contains('quote'))t.classList.add('pre');else{t.classList.add('rv');t.style.setProperty('--i',(i%6)*80+'ms')}io.observe(t)})}
-reveal(document.querySelectorAll('.title,.note,.quote,.sk,.links a'));
+reveal(document.querySelectorAll('.title,.note,.quote,.links a'));
 var px=document.querySelectorAll('#home .shard1,#home .shard2,.hero-art,#home .tag');
 addEventListener('mousemove',function(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;px.forEach(function(el,i){el.style.translate=(x*-(14+i*8))+'px '+(y*-(10+i*5))+'px'})});
 var M=document.createElement('div');M.id='modal';M.innerHTML='<div class="mbox" role="dialog" aria-modal="true"><button class="mx" aria-label="Fermer">✕</button><div class="mbody"></div></div>';document.body.appendChild(M);

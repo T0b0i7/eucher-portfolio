@@ -133,8 +133,15 @@ document.getElementById('jLang').innerHTML=ch(pr.langues);document.getElementByI
 seq(a);seq(b);reveal(document.querySelectorAll('#jLang span,#jInt span'))}
 var AUD='cli';
 function drawAbout(){var d;try{d=JSON.parse(localStorage.getItem('ea_admin_v1'))}catch(e){d=null}var p=(d&&d.profile)||SEED_PROFILE,r=AUD==='rec',S=SEED_PROFILE;
-var h=document.getElementById('aboutHook');if(!h)return;h.textContent=p[r?'hook_r':'hook_c']||S[r?'hook_r':'hook_c'];
-document.getElementById('aboutTxt').innerHTML=String(p[r?'about_r':'about_c']||S[r?'about_r':'about_c']).split(/\n{2,}/).map(function(x){return '<p>'+E(x.trim())+'</p>'}).join('');
+var en=window.LANG==='en';
+var hookKey=r?'hook_r':'hook_c';
+var aboutKey=r?'about_r':'about_c';
+var hook=p[hookKey]||S[hookKey];
+var about=p[aboutKey]||S[aboutKey];
+if(en){var ehook=p['en_'+hookKey];if(ehook&&String(ehook).trim())hook=ehook;else if(window.xl)hook=window.xl(hook);
+var eabout=p['en_'+aboutKey];if(eabout&&String(eabout).trim())about=eabout;else if(window.xl)about=window.xl(about);}
+var h=document.getElementById('aboutHook');if(!h)return;h.textContent=hook;
+document.getElementById('aboutTxt').innerHTML=String(about).split(/\n{2,}/).map(function(x){return '<p>'+E(x.trim())+'</p>'}).join('');
 var pf=document.getElementById('aboutProof');if(pf&&!pf.children.length)pf.innerHTML=kfs(p.proof||S.proof);
 [].forEach.call(document.querySelectorAll('.aud button'),function(b){b.classList.toggle('on',b.dataset.aud===AUD)})}
 (function(){var au=document.querySelector('.aud');if(au)au.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.dataset.aud===AUD)return;AUD=b.dataset.aud;var t=document.getElementById('aboutTxt'),h=document.getElementById('aboutHook');[t,h].forEach(function(el){el.classList.remove('fd');void el.offsetWidth;el.classList.add('fd')});drawAbout()});
@@ -166,4 +173,5 @@ mt.innerHTML='<div>'+(se.online===false?'Portfolio hors ligne':'Bientôt de reto
 mt.className=(se.maint||se.online===false)?'on':'';
 if(window.regTr)regTr();draw('all');if(typeof renderProjectCarousel==='function')renderProjectCarousel();drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();cuWatch()}
 document.body.classList.add('sh-bot');
-applyData();if(typeof renderProjectCarousel==='function')renderProjectCarousel();drawSk();reveal(document.querySelectorAll('#sk .sk'));drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();
+applyData();if(typeof renderProjectCarousel==='function')renderProjectCarousel();drawSk();if(typeof window.buildOrbit==='function')window.buildOrbit();drawB();drawS();drawSv();drawTicker();drawJ();drawAbout();
+window.drawB=drawB;window.drawS=drawS;window.drawSv=drawSv;window.drawTicker=drawTicker;window.drawJ=drawJ;window.drawAbout=drawAbout;

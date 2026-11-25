@@ -282,7 +282,7 @@ function sp(s){return String(s||'').split(',').map(function(x){return x.trim()})
 (d.services||[]).concat(d.steps||[]).forEach(function(x){var e=x.en||{};if(e.t)D18[x.t]=e.t;if(e.d)D18[x.d]=e.d});
 (d.exp||[]).concat(d.edu||[]).forEach(function(x){var e=x.en||{};if(e.t)D18[x.t]=e.t;if(e.p)D18[x.p]=e.p;if(e.d)pair(String(x.d||'').split('\n').map(function(l){return l.trim()}).filter(Boolean),String(e.d).split('\n').map(function(l){return l.trim()}).filter(Boolean))});
 (d.exp||[]).forEach(function(x){var e=x.en||{};if(e.k&&x.k){var lb=function(s){return String(s).split(',').map(function(t){return(t.split('|')[1]||'').trim()})};pair(lb(x.k),lb(e.k))}});
-var pp=d.profile||{};[['hook_c','en_hook_c'],['bio','en_bio']].forEach(function(k){if(pp[k[0]]&&pp[k[1]])D18[pp[k[0]]]=pp[k[1]]});[['about_c','en_about_c']].forEach(function(k){if(pp[k[0]]&&pp[k[1]])pair(String(pp[k[0]]).split(/\n{2,}/).map(function(s){return s.trim()}),String(pp[k[1]]).split(/\n{2,}/).map(function(s){return s.trim()}))});
+var pp=d.profile||{};[['hook_c','en_hook_c'],['bio','en_bio'],['titre','en_titre'],['langues','en_langues'],['interets','en_interets'],['ville','en_ville'],['slogan','en_slogan']].forEach(function(k){if(pp[k[0]]&&pp[k[1]])D18[pp[k[0]]]=pp[k[1]]});[['about_c','en_about_c']].forEach(function(k){if(pp[k[0]]&&pp[k[1]])pair(String(pp[k[0]]).split(/\n{2,}/).map(function(s){return s.trim()}),String(pp[k[1]]).split(/\n{2,}/).map(function(s){return s.trim()}))});
 KEYS=null}
 window.regTr=regTr;
 function mtInit(){if(MT!==null)return;MT=false;try{if(window.Translator&&Translator.create)Translator.create({sourceLanguage:'fr',targetLanguage:'en'}).then(function(t){MT=t;if(window.LANG==='en')walk(document.body)}).catch(function(){})}catch(e){}}
@@ -295,8 +295,9 @@ var t=on?(en?'Restore effects':'Réactiver les effets'):(en?'Reduce effects':'R�
 b.setAttribute('title',t);b.setAttribute('aria-label',t)}
 window.syncCalmBtn=syncCalmBtn;
 function setLang(l){window.LANG=LANG=l==='en'?'en':'fr';try{localStorage.setItem('ea_lang',LANG)}catch(e){}document.documentElement.lang=LANG;regTr();
-document.title=LANG==='en'?xl(document.title===T0?T0:document.title):T0;walk(document.body);
-try{drawB();drawS();drawTicker();draw('all')}catch(e){}
+document.title=LANG==='en'?xl(document.title===T0?T0:document.title):T0;
+try{if(window.renderProjectCarousel)window.renderProjectCarousel();if(window.drawB)window.drawB();if(window.drawS)window.drawS();if(window.drawSv)window.drawSv();if(window.drawTicker)window.drawTicker();if(window.drawJ)window.drawJ();if(window.drawAbout)window.drawAbout();}catch(e){}
+walk(document.body);
 [].forEach.call(document.querySelectorAll('#hud .lg2 button[data-l]'),function(b){b.classList.toggle('on',b.dataset.l===LANG)});
 syncCalmBtn()}
 window.setLang=setLang;
@@ -319,14 +320,19 @@ window.eaSend({name:n,email:em,subject:q('bT').value,body:body}).then(function()
 var cv=document.createElement('div');cv.id='cv';document.body.appendChild(cv);
 function cvOpen(){var d;try{d=JSON.parse(localStorage.getItem('ea_admin_v1'))}catch(e){d=null}
 var p=(d&&d.profile)||SEED_PROFILE,ex=(d&&d.exp)||SEED_EXP,ed=(d&&d.edu)||SEED_EDU,sk=(d&&d.skills)||SEED_SKILLS,cats=[],by={};
-sk.forEach(function(s){if(!by[s.cat]){by[s.cat]=[];cats.push(s.cat)}by[s.cat].push(s.n)});
-function it(x){var b=String(x.d||'').split('\n').filter(function(l){return l.trim()}),sp=[x.o,x.l].filter(Boolean).map(function(v){return '<span>'+E(v)+'</span>'}).join('');return '<div class="cvj"><b>'+E(x.t)+'</b>'+(sp?'<em>'+sp+'</em>':'')+'<i class="cvq">'+E(x.p||'')+'</i>'+(b.length?'<ul>'+b.map(function(l){return '<li>'+E(l.trim())+'</li>'}).join('')+'</ul>':'')+'</div>'}
-function ch(s){return String(s||'').split(',').map(function(x){return x.trim()}).filter(Boolean).map(function(x){return '<span>'+E(x)+'</span>'}).join('')}
-var ct=[p.ville,p.email,p.tel,p.linkedin,p.github].filter(Boolean).map(function(v){return '<span>'+E(v)+'</span>'}).join('');
-cv.innerHTML='<div class="cvbar"><button id="cvp">Imprimer / PDF</button><button class="cx" id="cvx">Fermer le CV</button><small>Astuce : Ctrl + P puis « Enregistrer au format PDF ».</small></div><article class="cvp"><h1>'+E(p.nom)+'</h1><h2>'+E(p.titre)+'</h2><p class="cvc cvl">'+ct+'</p><h3>Profil</h3><p>'+E(p.bio)+'</p><h3>Formation</h3>'+ed.map(it).join('')+'<h3>Expérience professionnelle</h3>'+ex.map(it).join('')+'<h3>Compétences</h3>'+cats.map(function(c){return '<p class="cvk"><b>'+E(c)+'</b>'+by[c].map(function(n){return '<span>'+E(n)+'</span>'}).join('')+'</p>'}).join('')+'<h3>Langues</h3><p class="cvl">'+ch(p.langues)+'</p><h3>Centres d’intérêt</h3><p class="cvl">'+ch(p.interets)+'</p></article>';
+var en=window.LANG==='en';
+function gv(o,k){if(!en)return o[k];var e=o.en&&o.en[k];if(e&&String(e).trim())return e;return xl(o[k])}
+function gp(k){if(!en)return p[k];var e=p['en_'+k];if(e&&String(e).trim())return e;return xl(p[k])}
+sk.forEach(function(s){var c=en?xl(s.cat):s.cat;if(!by[c]){by[c]=[];cats.push(c)}by[c].push(en?xl(s.n):s.n)});
+function it(x){var b=String(gv(x,'d')||'').split('\n').filter(function(l){return l.trim()}),sp=[gv(x,'o'),gv(x,'l')].filter(Boolean).map(function(v){return '<span>'+E(v)+'</span>'}).join('');return '<div class="cvj"><b>'+E(gv(x,'t'))+'</b>'+(sp?'<em>'+sp+'</em>':'')+'<i class="cvq">'+E(gv(x,'p')||'')+'</i>'+(b.length?'<ul>'+b.map(function(l){return '<li>'+E(l.trim())+'</li>'}).join('')+'</ul>':'')+'</div>'}
+function ch(s){return String(s||'').split(',').map(function(x){return x.trim()}).filter(Boolean).map(function(x){return '<span>'+E(en?xl(x):x)+'</span>'}).join('')}
+var ct=[gp('ville'),p.email,p.tel,p.linkedin,p.github].filter(Boolean).map(function(v){return '<span>'+E(v)+'</span>'}).join('');
+var L=en?{print:'Print / PDF',close:'Close CV',tip:'Tip: Ctrl + P then "Save as PDF".',profile:'Profile',edu:'Education',exp:'Professional experience',skills:'Skills',langs:'Languages',interests:'Interests'}:{print:'Imprimer / PDF',close:'Fermer le CV',tip:'Astuce : Ctrl + P puis « Enregistrer au format PDF ».',profile:'Profil',edu:'Formation',exp:'Expérience professionnelle',skills:'Compétences',langs:'Langues',interests:'Centres d’intérêt'};
+cv.innerHTML='<div class="cvbar"><button id="cvp">'+L.print+'</button><button class="cx" id="cvx">'+L.close+'</button><small>'+L.tip+'</small></div><article class="cvp"><h1>'+E(p.nom)+'</h1><h2>'+E(gp('titre'))+'</h2><p class="cvc cvl">'+ct+'</p><h3>'+L.profile+'</h3><p>'+E(gp('bio'))+'</p><h3>'+L.edu+'</h3>'+ed.map(it).join('')+'<h3>'+L.exp+'</h3>'+ex.map(it).join('')+'<h3>'+L.skills+'</h3>'+cats.map(function(c){return '<p class="cvk"><b>'+E(c)+'</b>'+by[c].map(function(n){return '<span>'+E(n)+'</span>'}).join('')+'</p>'}).join('')+'<h3>'+L.langs+'</h3><p class="cvl">'+ch(gp('langues'))+'</p><h3>'+L.interests+'</h3><p class="cvl">'+ch(gp('interets'))+'</p></article>';
 cv.classList.add('open');document.body.style.overflow='hidden';
 document.getElementById('cvx').onclick=function(){cv.classList.remove('open');document.body.style.overflow=''};
-document.getElementById('cvp').onclick=function(){try{window.print()}catch(e){}}}
+document.getElementById('cvp').onclick=function(){try{window.print()}catch(e){}};
+if(en)try{walk(cv)}catch(e){}}
 window.cvOpen=cvOpen;
 ['cvBtn','cvBtn2','cvBtn3'].forEach(function(id){var b=q(id);if(b)b.addEventListener('click',function(e){e.preventDefault();cvOpen()})});
 })();
@@ -359,20 +365,80 @@ var hn=document.querySelector('#home .name'),hp=document.querySelector('.hero-ph
 addEventListener('mousemove',function(e){if(calm()||innerWidth<701)return;var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
 if(hn)hn.style.transform='rotate(-4deg) perspective(900px) rotateY('+(x*14).toFixed(2)+'deg) rotateX('+(-y*10).toFixed(2)+'deg)';
 if(hp)hp.style.transform='perspective(1000px) rotateY('+(-x*10).toFixed(2)+'deg) rotateX('+(y*7).toFixed(2)+'deg)'});
-/* 3. Orbite 3D des technologies */
-var orbit=document.getElementById('orbit'),o=document.getElementById('orb3'),ang=0,vel=.25,drag=false,lx=0,vis=true,n=1;
-function buildOrbit(){var SL=(S2||[]).slice(0,14);n=Math.max(1,SL.length);var R=Math.max(150,Math.round(52/Math.tan(Math.PI/Math.max(n,3)))+24);
-o.innerHTML=SL.map(function(s,i){var ic=skI(s,1)||('<i>'+E(String(s).slice(0,2))+'</i>');return '<div class="orc" style="transform:rotateY('+(i*360/n).toFixed(2)+'deg) translateZ('+R+'px)">'+ic+E(s)+'</div>'}).join('')}
-if(orbit&&o){buildOrbit();
-orbit.addEventListener('pointerdown',function(e){drag=true;lx=e.clientX;try{orbit.setPointerCapture(e.pointerId)}catch(x){}});
-addEventListener('pointerup',function(){drag=false});
-orbit.addEventListener('pointermove',function(e){if(!drag)return;var dx=e.clientX-lx;lx=e.clientX;ang+=dx*.45;vel=dx*.06});
-try{new IntersectionObserver(function(es){vis=es[0].isIntersecting}).observe(orbit)}catch(x){}
-var mo=0;new MutationObserver(function(){clearTimeout(mo);mo=setTimeout(buildOrbit,60)}).observe(document.getElementById('sk'),{childList:true});
-(function loop(){if(vis){if(!calm()&&!drag){ang+=vel;vel+=(.25-vel)*.03}
-o.style.transform='rotateX(-9deg) rotateY('+ang.toFixed(2)+'deg)';
-for(var i=0;i<o.children.length;i++){var a=((ang+i*360/n)%360+360)%360,k=(Math.cos(a*Math.PI/180)+1)/2;o.children[i].style.opacity=(.3+.7*k).toFixed(2)}}
-requestAnimationFrame(loop)})()}
+/* 3. Globe 3D interactif des technologies (Sphère de Fibonacci) */
+var orbit=document.getElementById('orbit'),o=document.getElementById('orb3'),nodes=[],rx=0.22,ry=0,vx=0.0012,vy=0.0055,drag=false,moved=false,lx=0,ly=0,vis=true;
+function buildOrbit(){
+  if(!o)return;
+  var SL=(S2||[]).slice(0,26),n=Math.max(1,SL.length);
+  var R=window.innerWidth<701?138:225;
+  var golden=Math.PI*(3-Math.sqrt(5));
+  nodes=[];
+  o.innerHTML=SL.map(function(s,i){
+    var y=n===1?0:1-(i/(n-1))*2;
+    var r=Math.sqrt(Math.max(0,1-y*y));
+    var theta=golden*i;
+    nodes.push({x:Math.cos(theta)*r*R,y:y*R,z:Math.sin(theta)*r*R,name:s});
+    var ic=skI(s,1)||('<i>'+E(String(s).slice(0,2))+'</i>');
+    return '<button type="button" class="orc" data-globe-skill="'+E(s)+'">'+ic+'<span>'+E(s)+'</span></button>';
+  }).join('');
+}
+if(orbit&&o){
+  buildOrbit();
+  orbit.addEventListener('pointerdown',function(e){drag=true;moved=false;lx=e.clientX;ly=e.clientY;try{orbit.setPointerCapture(e.pointerId)}catch(x){}});
+  addEventListener('pointerup',function(){drag=false});
+  orbit.addEventListener('pointermove',function(e){
+    if(drag){
+      var dx=e.clientX-lx,dy=e.clientY-ly;
+      if(Math.abs(dx)>3||Math.abs(dy)>3)moved=true;
+      lx=e.clientX;ly=e.clientY;
+      vy=dx*0.0022;vx=-dy*0.0022;
+      ry+=dx*0.009;rx-=dy*0.009;
+    }
+  });
+  orbit.addEventListener('click',function(e){
+    if(moved)return;
+    var btn=e.target.closest('[data-globe-skill]');
+    if(!btn)return;
+    var name=btn.getAttribute('data-globe-skill');
+    var dlg=document.getElementById('skillDialog');
+    if(!dlg)return;
+    var details=(typeof SKILL_DETAILS!=='undefined'&&SKILL_DETAILS[name])||null;
+    var skillObj=(typeof S3!=='undefined'&&Array.isArray(S3))?S3.find(function(x){return x.n===name}):null;
+    var cat=skillObj?skillObj.cat:'Compétence';
+    var catEl=document.getElementById('skillDialogCategory');
+    var titleEl=document.getElementById('skillDialogTitle');
+    var descEl=document.getElementById('skillDialogDescription');
+    if(catEl)catEl.textContent=cat;
+    if(titleEl)titleEl.textContent=name;
+    if(descEl)descEl.textContent=details?(window.LANG==='en'?details.en:details.fr):('Maîtrise pratique et mise en production avec '+name+'.');
+    if(typeof dlg.showModal==='function')dlg.showModal();
+  });
+  try{new IntersectionObserver(function(es){vis=es[0].isIntersecting}).observe(orbit)}catch(x){}
+  var skNode=document.getElementById('sk');
+  if(skNode){var mo=0;new MutationObserver(function(){clearTimeout(mo);mo=setTimeout(buildOrbit,60)}).observe(skNode,{childList:true});}
+  (function loop(){
+    if(vis&&o.children.length){
+      if(!calm()&&!drag){
+        ry+=vy;rx+=vx;
+        vy+=(0.0055-vy)*0.025;
+        vx+=(0.0012-vx)*0.025;
+      }
+      var cx=Math.cos(rx),sx=Math.sin(rx),cy=Math.cos(ry),sy=Math.sin(ry),persp=680;
+      for(var i=0;i<nodes.length&&i<o.children.length;i++){
+        var p=nodes[i];
+        var x1=p.x*cy-p.z*sy,z1=p.z*cy+p.x*sy;
+        var y2=p.y*cx-z1*sx,z2=z1*cx+p.y*sx;
+        var scale=persp/(persp-z2);
+        var px2=x1*scale,py2=y2*scale;
+        var el=o.children[i];
+        el.style.transform='translate3d('+px2.toFixed(1)+'px,'+py2.toFixed(1)+'px,0) scale('+scale.toFixed(3)+')';
+        el.style.opacity=Math.max(0.22,Math.min(1,0.22+0.78*((z2+230)/460))).toFixed(2);
+        el.style.zIndex=Math.round(z2+300);
+      }
+    }
+    requestAnimationFrame(loop);
+  })();
+}
 window.buildOrbit=buildOrbit;
 })();
 /* compétences : rendu par sections.js (applyData) */
