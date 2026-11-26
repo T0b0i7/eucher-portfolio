@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eucherabattiportfolio.vercel.app/sitemap.xml

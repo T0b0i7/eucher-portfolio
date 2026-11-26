@@ -161,7 +161,7 @@ var L=document.querySelectorAll('.links a');
 function lk(a,h,x){if(a&&x){a.href=h;a.querySelector('small').textContent=x}}
 lk(L[0],'mailto:'+pr.email,pr.email);lk(L[1],'https://'+String(pr.linkedin||'').replace(/^https?:\/\//,''),pr.linkedin);lk(L[2],'https://'+String(pr.github||'').replace(/^https?:\/\//,''),pr.github);
 var cb=document.querySelector('#contact .btn');if(cb&&pr.email)cb.href='mailto:'+pr.email;
-['blog','shop','svc','bot','orbit','pal'].forEach(function(k){document.body.classList.toggle('sh-'+k,!!se['sh_'+k])});document.body.classList.toggle('no-journey',!!se.no_journey);
+['blog','shop','svc','bot','orbit','pal'].forEach(function(k){document.body.classList.toggle('sh-'+k,!!se['sh_'+k])});document.body.classList.toggle('no-journey',!!se.no_journey);document.body.classList.toggle('hide-cv',!!se.hide_cv);window.HIDE_CV=!!se.hide_cv;if(window.HIDE_CV){var cvEl=document.getElementById('cv');if(cvEl&&cvEl.classList.contains('open')){cvEl.classList.remove('open');document.body.style.overflow=''}}
 if(se.accent){document.documentElement.style.setProperty('--red',se.accent);document.documentElement.style.setProperty('--ac',se.accent)}
 if(se.titre){document.title=se.titre;var og=document.querySelector('meta[property="og:title"]');if(og)og.content=se.titre}
 if(se.desc){['meta[name=description]','meta[property="og:description"]'].forEach(function(q){var m=document.querySelector(q);if(m)m.content=se.desc})}

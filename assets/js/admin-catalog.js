@@ -168,20 +168,33 @@
         + '</div>'
         + '</div>'
         + '</div>'
-        + '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end">'
+        + '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">'
         + '<div>' + badges + '</div>'
+        + '<button class="bt ' + ((window.EA_HAS_PROJECT && window.EA_HAS_PROJECT(row.html_url, row.name)) ? 'gh ' : '') + 'sm" type="button" data-cat="import" data-id="' + esc(row.id) + '" style="font-weight:600">' + ((window.EA_HAS_PROJECT && window.EA_HAS_PROJECT(row.html_url, row.name)) ? 'Gérer le projet' : '+ Projet') + '</button>'
         + '<button class="bt gh sm" type="button" data-cat="detail" data-id="' + esc(row.id) + '" style="font-weight:600">Détails</button>'
         + '</div>'
         + '</div>';
     }).join('') : '<div style="text-align:center;padding:36px;color:var(--mu)">Aucun dépôt ne correspond aux critères de recherche.</div>';
   }
 
+  function formatReadme(md) {
+    if (!md) return '<small style="color:var(--mu)">Aucun README synchronisé pour ce dépôt.</small>';
+    var cleaned = String(md)
+      .replace(/<a[^>]*>([\s\S]*?)<\/a>/gi, '$1')
+      .replace(/<img[^>]*alt=["']([^"']*)["'][^>]*>/gi, '[$1]')
+      .replace(/<[^>]+>/g, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim()
+      .slice(0, 4000);
+    return '<pre style="max-height:280px;overflow:auto;white-space:pre-wrap;font-size:12.5px;background:#09090d;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;color:#d8d8e4;font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.65">' + esc(cleaned) + '</pre>';
+  }
+
   function renderDetail(row) {
     var box = byId('catDetail');
     if (!box) return;
-    var readme = row.readme ? '<pre style="max-height:260px;overflow:auto;white-space:pre-wrap;font-size:12px;background:#09090d;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;color:#d0d0d8;font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.6">' + esc(row.readme.slice(0, 4000)) + '</pre>' : '<small style="color:var(--mu)">Aucun README synchronisé pour ce dépôt.</small>';
-    var branches = (row.branches || []).map(function (b) { return '<span class="tag" style="background:#16161c;border-color:rgba(255,255,255,0.1)">' + esc(b.name) + '</span>'; }).join(' ') || '—';
-    var releases = (row.releases || []).map(function (r) { return '<span class="tag" style="background:rgba(230,0,18,0.1);color:#ff6b6b;border-color:rgba(230,0,18,0.25)">' + esc(r.tag || r.name) + '</span>'; }).join(' ') || '—';
+    var readme = formatReadme(row.readme);
+    var branches = (row.branches || []).map(function (b) { return '<span class="cat-badge" style="background:#181822;color:#e4e4ec;border-color:rgba(255,255,255,0.12);font-family:monospace">' + esc(b.name) + '</span>'; }).join('') || '<span style="color:var(--mu)">—</span>';
+    var releases = (row.releases || []).map(function (r) { return '<span class="cat-badge" style="background:rgba(230,0,18,0.12);color:#ff6b6b;border-color:rgba(230,0,18,0.28)">' + esc(r.tag || r.name) + '</span>'; }).join('') || '<span style="color:var(--mu)">—</span>';
 
     box.hidden = false;
     box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:14px">'
@@ -189,7 +202,10 @@
       + '<h3 style="margin:0 0 6px;font-size:18px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>' + esc(row.full_name) + '</h3>'
       + '<p style="color:var(--mu);margin:0;font-size:13px">' + esc(row.description || 'Sans description') + '</p>'
       + '</div>'
+      + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
+      + '<button class="bt sm" type="button" data-cat="import" data-id="' + esc(row.id) + '">' + ((window.EA_HAS_PROJECT && window.EA_HAS_PROJECT(row.html_url, row.name)) ? 'Gérer le projet' : '+ Ajouter aux projets') + '</button>'
       + '<button class="bt gh sm" type="button" data-cat="close">Fermer ✕</button>'
+      + '</div>'
       + '</div>'
       + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;background:#16161c;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px;margin-bottom:16px">'
       + '<div style="font-size:12px"><span style="color:var(--mu);display:block">Visibilité</span><b style="color:#ffffff">' + (row.private ? '🔒 Privé' : '🌐 Public') + '</b></div>'
@@ -198,8 +214,8 @@
       + '<div style="font-size:12px"><span style="color:var(--mu);display:block">Dernière synchro</span><b style="color:#ffffff">' + esc(row.synced_at ? new Date(row.synced_at).toLocaleString('fr-FR') : '—') + '</b></div>'
       + '</div>'
       + '<div style="margin-bottom:14px"><span style="font-size:12px;color:var(--mu);display:block;margin-bottom:6px">Langages détectés :</span><b style="font-size:13px;color:#ffffff">' + esc(Object.keys(row.languages || {}).join(', ') || row.language || '—') + '</b></div>'
-      + '<div style="margin-bottom:14px"><span style="font-size:12px;color:var(--mu);display:block;margin-bottom:6px">Branches actives :</span><div>' + branches + '</div></div>'
-      + '<div style="margin-bottom:16px"><span style="font-size:12px;color:var(--mu);display:block;margin-bottom:6px">Releases / Tags :</span><div>' + releases + '</div></div>'
+      + '<div style="margin-bottom:14px"><span style="font-size:12px;color:var(--mu);display:block;margin-bottom:8px">Branches actives :</span><div style="display:flex;flex-wrap:wrap;gap:8px">' + branches + '</div></div>'
+      + '<div style="margin-bottom:16px"><span style="font-size:12px;color:var(--mu);display:block;margin-bottom:8px">Releases / Tags :</span><div style="display:flex;flex-wrap:wrap;gap:8px">' + releases + '</div></div>'
       + '<div style="margin-bottom:18px"><span style="font-size:12px;color:var(--mu);display:block;margin-bottom:4px">Dépôt distant :</span><a href="' + esc(row.html_url || '#') + '" target="_blank" rel="noopener" style="color:var(--ac);font-size:13px;font-weight:600">' + esc(row.html_url || '') + ' ↗</a></div>'
       + '<b style="font-size:12px;color:var(--mu);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Aperçu du README.md</b>'
       + readme;
@@ -216,6 +232,40 @@
       msg('Synchronisation réussie ! Rechargement…', true);
       load();
     }).catch(function (e) { msg('Synchronisation impossible : ' + (e && e.message || e), false); });
+  }
+
+  function buildPrefill(row) {
+    var rawName = String(row.name || '').replace(/[-_]+/g, ' ').trim();
+    var title = rawName ? rawName.replace(/\b\w/g, function (c) { return c.toUpperCase(); }) : row.full_name;
+    var langs = Object.keys(row.languages || {});
+    if (!langs.length && row.language) langs.push(row.language);
+    var topics = Array.isArray(row.topics) ? row.topics : [];
+    var techList = [];
+    langs.concat(topics).forEach(function (item) {
+      var s = String(item || '').trim();
+      if (s && techList.indexOf(s) < 0) techList.push(s);
+    });
+    var hay = (title + ' ' + (row.description || '') + ' ' + techList.join(' ')).toLowerCase();
+    var cat = 'Web';
+    if (/\b(ia|ai|llm|ml|agent|agentic|vision|pytorch|tensorflow)\b/.test(hay)) cat = 'IA';
+    else if (/\b(mobile|react native|expo|flutter|android|ios)\b/.test(hay)) cat = 'Mobile';
+    else if (/\b(design|figma|ui\/ux|ux|ui)\b/.test(hay)) cat = 'Design';
+    var desc = String(row.description || '').trim();
+    if (!desc && row.readme) {
+      var lines = String(row.readme).split(/\r?\n/).map(function (l) { return l.trim(); }).filter(function (l) { return l && l.charAt(0) !== '#' && l.charAt(0) !== '!' && l.indexOf('```') !== 0; });
+      if (lines.length) desc = lines[0].slice(0, 240);
+    }
+    var preview = '';
+    if (row.homepage && /^https?:\/\//i.test(String(row.homepage).trim())) preview = String(row.homepage).trim();
+    return {
+      n: title,
+      d: desc,
+      cat: cat,
+      t: techList.slice(0, 8).join(', '),
+      u: row.html_url || '',
+      preview: preview,
+      st: 'Brouillon'
+    };
   }
 
   function bind() {
@@ -242,7 +292,11 @@
       if (!btn) return;
       var act = btn.getAttribute('data-cat');
       if (act === 'sync') syncAll();
-      else if (act === 'detail') {
+      else if (act === 'import') {
+        var impId = btn.getAttribute('data-id');
+        var impRow = state.rows.filter(function (x) { return String(x.id) === String(impId); })[0];
+        if (impRow && typeof window.EA_IMPORT_PROJECT === 'function') window.EA_IMPORT_PROJECT(buildPrefill(impRow));
+      } else if (act === 'detail') {
         var id = btn.getAttribute('data-id');
         var found = state.rows.filter(function (x) { return String(x.id) === String(id); })[0];
         if (found) renderDetail(found);

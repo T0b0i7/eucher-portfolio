@@ -13,6 +13,11 @@ var nw=new Date(),hud=document.createElement('div');hud.id='hud';
 hud.innerHTML='<div class="cal"><b>'+String(nw.getDate()).padStart(2,'0')+'/'+String(nw.getMonth()+1).padStart(2,'0')+'</b><span>'+nw.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','').toUpperCase()+'</span></div><div class="loc"><small>'+(hr<6?'NUIT':hr<12?'MATIN':hr<17?'APRÈS-MIDI':'SOIR')+'</small><b>Accueil</b></div>';
 document.body.appendChild(hud);
 var NAMES={home:'Accueil',projects:'Projets',skills:'Compétences',about:'À propos',blog:'Blog',shop:'Boutique',services:'Services',journey:'Parcours',contact:'Contact'},cur0='home',hl=hud.querySelector('.loc b');
+window.syncHudLang=function(){var en=window.LANG==='en',d=new Date(),h2=d.getHours(),calB=hud.querySelector('.cal b'),calS=hud.querySelector('.cal span'),locS=hud.querySelector('.loc small');
+if(calB)calB.textContent=en?(String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')):(String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'));
+if(calS)calS.textContent=d.toLocaleDateString(en?'en-US':'fr-FR',{weekday:'short'}).replace('.','').toUpperCase();
+if(locS)locS.textContent=en?(h2<6?'NIGHT':h2<12?'MORNING':h2<17?'AFTERNOON':'EVENING'):(h2<6?'NUIT':h2<12?'MATIN':h2<17?'APRÈS-MIDI':'SOIR');
+if(hl&&NAMES[cur0])hl.textContent=(en&&window.trs)?window.trs(NAMES[cur0]):NAMES[cur0]};
 addEventListener('scroll',function(){var y=scrollY+innerHeight*.4,c='home';document.querySelectorAll('section').forEach(function(s){if(s.offsetParent&&s.offsetTop<=y)c=s.id});
 if(c!==cur0&&NAMES[c]){cur0=c;hl.textContent=NAMES[c];hud.classList.remove('chg');void hud.offsetWidth;hud.classList.add('chg');flash('▶ '+(window.LANG==='en'?trs(NAMES[c]):NAMES[c]).toUpperCase());sfx.hover()}},{passive:true});
 /* mode fête */

@@ -843,6 +843,11 @@ body:not(.sh-pal) #palbtn,body:not(.sh-pal) #pal{display:none!important}
 @media(max-width:700px){.skl{grid-template-columns:repeat(auto-fill,minmax(98px,1fr))}}
 #cvBtn3{display:none}body.no-journey #cvBtn3{display:inline-block}
 body.no-journey #journey,body.no-journey nav a[href="#journey"]{display:none!important}
+body.hide-cv #cvBtn,body.hide-cv #cvBtn2,body.hide-cv #cvBtn3,body.hide-cv #cv{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.cv-cert-list{list-style:none;padding:0;margin:6px 0 12px}
+.cv-cert-list li{padding:4px 0;border-bottom:1px solid #eee;font-size:14px}
+.cv-cert-list li:last-child{border-bottom:0}
 /* À propos vivant */
 .hook{max-width:min(640px,58%)}
 .aud{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}

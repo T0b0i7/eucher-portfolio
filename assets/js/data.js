@@ -10,6 +10,10 @@ SEED_EXP[0].s='Web3, Fintech, CMS, API';SEED_EXP[1].s='React, Next.js, Figma, Ag
 var SEED_EDU=[
 {id:1,t:'Master 1 Génie Logiciel',o:'IFRI, Université d’Abomey-Calavi',l:'Abomey-Calavi',p:'En cours',d:'En cours de réalisation.'},
 {id:2,t:'Licence professionnelle en Systèmes Informatiques et Logiciels',o:'HECM',l:'Porto-Novo',p:'2022 – 2025',d:'Soutenue avec mention très bien.\nMajor de promotion sur plusieurs semestres.'}];
+var SEED_CERT=[
+{id:1,t:'Building with the Claude API',o:'Anthropic',p:'2026'},
+{id:2,t:'AI Fluency : Frameworks & Foundations',o:'Anthropic',p:'2026'}];
+window.SEED_CERT=SEED_CERT;
 var S3=SEED_SKILLS;
 var SKILL_DETAILS={
  'AI Integration':{fr:'Intègre des modèles d’IA aux applications pour automatiser des tâches et enrichir leurs fonctionnalités.',en:'Integrates AI models into applications to automate tasks and add intelligent features.'},
