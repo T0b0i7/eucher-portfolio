@@ -23,7 +23,7 @@ function pick(){var m=60;tx=m+Math.random()*Math.max(10,innerWidth-2*m);ty=110+M
 function goNear(el){var r=el.getBoundingClientRect(),left=r.left>110;tx=left?r.left-55:Math.min(r.right+55,innerWidth-50);ty=Math.max(110,Math.min(innerHeight-120,r.top+r.height/2));hold=true;clearTimeout(ht);ht=setTimeout(function(){hold=false},9000)}
 addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY});
 (function loop(){var t=Date.now();
-if(st==='sleep'){tx=innerWidth-70;ty=innerHeight-110}
+if(st==='sleep'){tx=innerWidth-70;ty=innerHeight-165}
 else if(!hold&&t>nextMove){pick();nextMove=t+3500+Math.random()*4500}
 vx+=(tx-bx)*.0017;vy+=(ty-by)*.0017;vx*=.93;vy*=.93;bx+=vx;by+=vy;if(Math.abs(vx)>.25)face=vx>0?1:-1;
 box.style.translate=(bx-36)+'px '+(by-40+Math.sin(t/380)*6)+'px';
@@ -307,7 +307,7 @@ walk(document.body);
 var lv=document.getElementById('langLive');if(lv)lv.textContent=LANG==='en'?'Language switched to English.':'Langue passée en français.';
 syncCalmBtn()}
 window.setLang=setLang;
-(function(){var h=document.getElementById('hud');if(h){var g=document.createElement('div');g.className='lg2';g.setAttribute('role','group');g.setAttribute('aria-label','Sélecteur de langue');g.innerHTML='<button type="button" data-l="fr" data-notr="1" aria-pressed="true" title="Français" aria-label="Français">FR</button><button type="button" data-l="en" data-notr="1" aria-pressed="false" title="English" aria-label="English">EN</button><button type="button" id="calmb" data-notr="1" aria-pressed="false" title="Réduire les effets" aria-label="Réduire les effets">✦</button><span id="langLive" class="sr-only" aria-live="polite" data-notr="1"></span>';h.insertBefore(g,h.firstChild);g.addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.dataset.l)setLang(b.dataset.l)})}
+(function(){var h=document.getElementById('hud');if(h){var g=document.createElement('div');g.className='lg2';g.setAttribute('role','group');g.setAttribute('aria-label','Sélecteur de langue');g.innerHTML='<button type="button" data-l="fr" data-notr="1" translate="no" aria-pressed="true" title="Français" aria-label="Français">FR</button><button type="button" data-l="en" data-notr="1" translate="no" aria-pressed="false" title="English" aria-label="English">EN</button><button type="button" id="calmb" data-notr="1" translate="no" aria-pressed="false" title="Réduire les effets" aria-label="Réduire les effets">✦</button><span id="langLive" class="sr-only" aria-live="polite" data-notr="1"></span>';h.insertBefore(g,h.firstChild);g.addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.dataset.l)setLang(b.dataset.l)})}
 var sl=null;try{sl=localStorage.getItem('ea_lang')}catch(e){}
 var init=sl||((navigator.language||'fr').slice(0,2).toLowerCase()==='en'?'en':'fr');window.LANG='fr';setLang(init)})();
 

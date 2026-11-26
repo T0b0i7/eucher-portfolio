@@ -134,6 +134,7 @@
     box.setAttribute('role', 'group');
     box.setAttribute('aria-label', 'Sélecteur de langue');
     box.setAttribute('data-notr', '1');
+    box.setAttribute('translate', 'no');
     box.innerHTML = '<button type="button" data-l="fr" aria-pressed="true">FR</button><button type="button" data-l="en" aria-pressed="false">EN</button><span id="subLangLive" class="sr-only" aria-live="polite"></span>';
     box.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-l]');
