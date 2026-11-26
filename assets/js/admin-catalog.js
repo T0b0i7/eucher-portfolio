@@ -234,6 +234,68 @@
     }).catch(function (e) { msg('Synchronisation impossible : ' + (e && e.message || e), false); });
   }
 
+  function extractCover(row) {
+    var readme = String(row.readme || '');
+    if (readme) {
+      var urls = [];
+      var mdRe = /!\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/gi;
+      var htmlRe = /<img[^>]+src=["'](https?:\/\/[^"']+)["']/gi;
+      var m;
+      while ((m = mdRe.exec(readme)) !== null) urls.push(m[1]);
+      while ((m = htmlRe.exec(readme)) !== null) urls.push(m[1]);
+      for (var i = 0; i < urls.length; i++) {
+        var u = urls[i];
+        if (!/shields\.io|badgen\.net|codecov\.io|travis-ci|coveralls\.io|david-dm\.org|badge\.svg/i.test(u)) {
+          return u;
+        }
+      }
+    }
+    if (!row.private && row.full_name) {
+      return 'https://opengraph.githubassets.com/1/' + row.full_name;
+    }
+    return '';
+  }
+
+  function slugify(v) {
+    return String(v || '').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function matchTaxCats(cat, hay) {
+    var cache = (window.EA_TAX_CACHE && Array.isArray(window.EA_TAX_CACHE.categories)) ? window.EA_TAX_CACHE.categories : [];
+    var out = [];
+    var catSlug = slugify(cat);
+    cache.forEach(function (c) {
+      var s = String(c.slug || '').toLowerCase();
+      var n = String(c.name || '').toLowerCase();
+      if (!s) return;
+      if (s === catSlug || n === cat.toLowerCase() || (hay && (hay.indexOf(s) >= 0 || (n.length > 2 && hay.indexOf(n) >= 0)))) {
+        if (out.indexOf(s) < 0) out.push(s);
+      }
+    });
+    if (!out.length && catSlug) out.push(catSlug);
+    return out.slice(0, 4);
+  }
+
+  function matchTaxTags(topics, techList) {
+    var cache = (window.EA_TAX_CACHE && Array.isArray(window.EA_TAX_CACHE.tags)) ? window.EA_TAX_CACHE.tags : [];
+    var raw = topics.concat(techList).map(slugify).filter(Boolean);
+    var out = [];
+    if (cache.length) {
+      cache.forEach(function (t) {
+        var s = String(t.slug || '').toLowerCase();
+        if (s && raw.indexOf(s) >= 0 && out.indexOf(s) < 0) out.push(s);
+      });
+    }
+    if (!out.length) {
+      raw.forEach(function (s) {
+        if (out.indexOf(s) < 0) out.push(s);
+      });
+    }
+    return out.slice(0, 6);
+  }
+
   function buildPrefill(row) {
     var rawName = String(row.name || '').replace(/[-_]+/g, ' ').trim();
     var title = rawName ? rawName.replace(/\b\w/g, function (c) { return c.toUpperCase(); }) : row.full_name;
@@ -252,11 +314,19 @@
     else if (/\b(design|figma|ui\/ux|ux|ui)\b/.test(hay)) cat = 'Design';
     var desc = String(row.description || '').trim();
     if (!desc && row.readme) {
-      var lines = String(row.readme).split(/\r?\n/).map(function (l) { return l.trim(); }).filter(function (l) { return l && l.charAt(0) !== '#' && l.charAt(0) !== '!' && l.indexOf('```') !== 0; });
+      var lines = String(row.readme).split(/\r?\n/).map(function (l) { return l.trim(); }).filter(function (l) { return l && l.charAt(0) !== '#' && l.charAt(0) !== '!' && l.indexOf('```') !== 0 && l.charAt(0) !== '<'; });
       if (lines.length) desc = lines[0].slice(0, 240);
+    }
+    if (!desc) {
+      desc = title + (techList.length ? ' — ' + techList.slice(0, 4).join(', ') : '');
     }
     var preview = '';
     if (row.homepage && /^https?:\/\//i.test(String(row.homepage).trim())) preview = String(row.homepage).trim();
+    var hasFrenchAccents = /[àâäéèêëîïôöùûüç]/i.test(desc);
+    var enDesc = !hasFrenchAccents && desc
+      ? desc
+      : title + (techList.length ? ' — ' + cat + ' project built with ' + techList.slice(0, 5).join(', ') + '.' : ' — ' + cat + ' project.');
+    var pubDate = String(row.github_created_at || row.pushed_at || new Date().toISOString()).slice(0, 10);
     return {
       n: title,
       d: desc,
@@ -264,7 +334,16 @@
       t: techList.slice(0, 8).join(', '),
       u: row.html_url || '',
       preview: preview,
-      st: 'Brouillon'
+      cover: extractCover(row),
+      st: 'Brouillon',
+      cats: matchTaxCats(cat, hay),
+      tags: matchTaxTags(topics, techList),
+      featured: (row.stargazers_count || 0) >= 5,
+      sort: 0,
+      published_at: pubDate,
+      don: 'Non',
+      dl: '',
+      en: { d: enDesc }
     };
   }
 
@@ -307,5 +386,5 @@
     });
   }
 
-  window.EA_CATALOG = { render: render, load: load };
+  window.EA_CATALOG = { render: render, load: load, buildPrefill: buildPrefill };
 })();
