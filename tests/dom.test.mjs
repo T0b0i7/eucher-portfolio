@@ -191,3 +191,33 @@ test('fiche projet : aperçu local d’un brouillon', async (t) => {
   assert.equal(page.document.querySelector('.hero-title').textContent.trim(), 'Mon Brouillon');
   assert.equal(page.document.getElementById('projectNotFound').hidden, true);
 });
+
+test('fiche projet : bouton teaser vidéo présent si video_url et ouverture de la modale smartphone', async (t) => {
+  const page = loadPage('project.html', PROJECT_SCRIPTS, 'http://localhost/project.html?project=projet-video&preview=1', {
+    seedLocalStorage: {
+      projects: [{
+        id: 101,
+        n: 'Projet Vidéo',
+        d: 'Projet avec teaser vidéo TikTok',
+        st: 'Publié',
+        cat: 'Web',
+        t: 'Next.js',
+        video_url: 'https://www.tiktok.com/@eucher/video/7123456789012345678',
+        f: [],
+        impact: []
+      }]
+    }
+  });
+  t.after(() => page.close());
+  await flush();
+  const teaserBtn = page.document.querySelector('.btn-teaser');
+  assert.ok(teaserBtn, 'le bouton teaser doit être présent');
+  assert.match(teaserBtn.textContent, /Teaser vidéo/);
+
+  teaserBtn.click();
+  const backdrop = page.document.querySelector('#phoneModalBackdrop');
+  assert.ok(backdrop, 'la modale smartphone doit être créée');
+  const iframe = backdrop.querySelector('iframe');
+  assert.ok(iframe, 'l’iframe TikTok doit être présente');
+  assert.match(iframe.getAttribute('src'), /tiktok\.com\/embed\/v2\/7123456789012345678/);
+});

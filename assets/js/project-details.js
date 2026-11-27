@@ -17,6 +17,7 @@
     chart: ['M3 3v18h18', 'M7 14l4-4 4 3 5-6'],
     external: ['M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6', 'M15 3h6v6', 'M10 14 21 3'],
     code: ['M16 18l6-6-6-6', 'M8 6l-6 6 6 6'],
+    video: ['M23 7l-7 5 7 5V7z', 'M1 5h15v14H1z'],
     arrowLeft: ['M19 12H5', 'M12 19l-7-7 7-7']
   };
 
@@ -165,6 +166,7 @@
       url: url,
       demo: demo,
       repo: repo,
+      video_url: text(pick(base, override, 'video_url', base.video_url || base.video || (override && override.video))),
       impact: impact,
       category: category,
       status: status,
@@ -540,6 +542,131 @@
     return link;
   }
 
+  function parseVideoUrl(rawUrl) {
+    var url = text(rawUrl).trim();
+    if (!url) return null;
+
+    // 1. TikTok vidéo avec identifiant numérique
+    var tiktokMatch = url.match(/tiktok\.com\/(?:@[^/]+\/video\/|v\/|t\/)?([0-9]{15,25})/i);
+    if (tiktokMatch && tiktokMatch[1]) {
+      return {
+        type: 'tiktok',
+        id: tiktokMatch[1],
+        embedUrl: 'https://www.tiktok.com/embed/v2/' + tiktokMatch[1]
+      };
+    }
+    if (/tiktok\.com/i.test(url)) {
+      return {
+        type: 'tiktok-url',
+        embedUrl: url
+      };
+    }
+
+    // 2. YouTube Shorts ou vidéo YouTube
+    var ytMatch = url.match(/(?:youtube\.com\/(?:shorts\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+    if (ytMatch && ytMatch[1]) {
+      return {
+        type: 'youtube',
+        id: ytMatch[1],
+        embedUrl: 'https://www.youtube-nocookie.com/embed/' + ytMatch[1] + '?autoplay=1&playsinline=1&rel=0'
+      };
+    }
+
+    // 3. Vidéo directe (MP4, WebM, OGG, MOV)
+    if (/\.(mp4|webm|ogg|mov)(?:\?.*)?$/i.test(url)) {
+      return {
+        type: 'direct',
+        src: url
+      };
+    }
+
+    if (/^https?:\/\//i.test(url)) {
+      return {
+        type: 'generic',
+        embedUrl: url
+      };
+    }
+
+    return null;
+  }
+
+  function openVideoTeaser(videoInfo, projectName) {
+    if (!videoInfo) return;
+
+    var existing = byId('phoneModalBackdrop');
+    if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+
+    var backdrop = document.createElement('div');
+    backdrop.id = 'phoneModalBackdrop';
+    backdrop.className = 'phone-modal-backdrop';
+    backdrop.setAttribute('role', 'dialog');
+    backdrop.setAttribute('aria-modal', 'true');
+    backdrop.setAttribute('aria-label', 'Teaser vidéo : ' + projectName);
+
+    var mockup = document.createElement('div');
+    mockup.className = 'phone-mockup';
+
+    var speaker = document.createElement('div');
+    speaker.className = 'phone-speaker';
+    mockup.appendChild(speaker);
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'phone-close';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Fermer le teaser');
+    closeBtn.innerHTML = '&times;';
+
+    var screen = document.createElement('div');
+    screen.className = 'phone-screen';
+
+    if (videoInfo.type === 'direct') {
+      var video = document.createElement('video');
+      video.src = videoInfo.src;
+      video.controls = true;
+      video.autoplay = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.className = 'phone-video-player';
+      screen.appendChild(video);
+    } else {
+      var iframe = document.createElement('iframe');
+      iframe.src = videoInfo.embedUrl;
+      iframe.className = 'phone-iframe-player';
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.setAttribute('title', 'Teaser vidéo : ' + projectName);
+      screen.appendChild(iframe);
+    }
+
+    mockup.appendChild(closeBtn);
+    mockup.appendChild(screen);
+    backdrop.appendChild(mockup);
+    document.body.appendChild(backdrop);
+
+    requestAnimationFrame(function () {
+      backdrop.classList.add('open');
+      closeBtn.focus();
+    });
+
+    function close() {
+      backdrop.classList.remove('open');
+      setTimeout(function () {
+        if (backdrop.parentNode) backdrop.parentNode.removeChild(backdrop);
+      }, 250);
+      document.removeEventListener('keydown', onKey);
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape' || e.keyCode === 27) close();
+    }
+
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', function (e) {
+      if (e.target === backdrop) close();
+    });
+    document.addEventListener('keydown', onKey);
+  }
+
   function renderActions(project) {
     var host = byId('projectActions');
     if (!host) return;
@@ -548,6 +675,19 @@
       if (back && back.parentNode === host) host.insertBefore(node, back);
       else host.appendChild(node);
     };
+
+    if (project.video_url) {
+      var videoInfo = parseVideoUrl(project.video_url);
+      if (videoInfo) {
+        var teaserBtn = actionButton('javascript:void(0)', '🎬 Teaser vidéo', 'btn-secondary btn-teaser', ICON.video, false);
+        teaserBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          openVideoTeaser(videoInfo, project.name);
+        });
+        insert(teaserBtn);
+      }
+    }
+
     if (project.demo) {
       insert(actionButton(project.demo, 'Voir la démo en ligne', 'btn-primary', ICON.external, true));
     } else {
@@ -635,6 +775,7 @@
       u: remote.u,
       preview: remote.preview || (remote.u && !isGithubUrl(remote.u) ? remote.u : ''),
       repo: remote.repo,
+      video_url: remote.video_url || remote.video || '',
       cover: '',
       media: isArray(remote.media) ? remote.media : [],
       f: remote.f,

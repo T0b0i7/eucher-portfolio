@@ -35,6 +35,8 @@
     'Voir la démo en ligne': 'Live demo',
     'Voir la démo du projet': 'Live demo',
     'Voir la démo': 'Live demo',
+    '🎬 Teaser vidéo': '🎬 Video teaser',
+    'Fermer le teaser': 'Close teaser',
     'Voir le code sur GitHub': 'View code on GitHub',
     'À propos du projet': 'About the project',
     'Fonctionnalités clés': 'Key features',

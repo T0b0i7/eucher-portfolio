@@ -162,6 +162,7 @@ formM(id?'Modifier le projet':'Nouveau projet',[
 {k:'t',l:'Technologies (séparées par des virgules)'},
 {k:'u',l:'Lien du projet'},
 {k:'preview',l:'Lien de preview'},
+{k:'video_url',l:'Lien vidéo / TikTok (Teaser)'},
 {t:'img',k:'cover',l:'Image de couverture'},
 {k:'st',l:'Statut',t:'select',o:['Publié','Brouillon','Archivé']},
 {k:'cats',l:'Catégories',t:hasCachedCats?'checks':'text',o:catOpts,advanced:true},
@@ -182,6 +183,7 @@ if(!o.n.trim()){toast('Le nom est obligatoire');return false}
 var preview=String(o.preview||'').trim();
 if(preview&&!window.safePreviewUrl(preview)){toast('Le lien de preview doit être une URL HTTP(S) valide');return false}
 o.preview=preview?window.safePreviewUrl(preview):'';
+o.video_url=String(o.video_url||'').trim();
 if(id){Object.assign(p,o);log('Projet '+o.n+' mis à jour',o.cat+' · '+o.st,'folder','var(--ok)')}
 else{o.id=nid(D.projects);D.projects.push(o);log('Nouveau projet ajouté',o.n,'folder','var(--ok)')}
 save();render();toast('Projet enregistré');
