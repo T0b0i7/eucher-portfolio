@@ -24,7 +24,7 @@
   };
   var BASE_SELECT = [
     'id', 'slug', 'title', 'short_desc', 'long_desc', 'status', 'featured', 'sort_order',
-    'role', 'sector', 'demo_url', 'repo_url', 'demo_visible', 'repo_visible',
+    'role', 'sector', 'demo_url', 'repo_url', 'video_url', 'demo_visible', 'repo_visible',
     'published_at', 'updated_at', 'impact', 'features',
     'portfolio_project_categories(portfolio_categories(slug,name))',
     'portfolio_project_tags(portfolio_tags(slug,name))',
@@ -178,6 +178,7 @@
         technologies: technologies,
         u: row.demo_url || '',
         repo: row.repo_url || '',
+        video_url: row.video_url || '',
         demo_visible: row.demo_visible !== false,
         repo_visible: !!row.repo_visible,
         published_at: row.published_at || null,
