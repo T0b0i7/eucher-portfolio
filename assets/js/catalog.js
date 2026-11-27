@@ -15,13 +15,7 @@
       u:'https://akoue-app.vercel.app',
       preview:'https://akoue-app.vercel.app',
       video_url:'https://www.tiktok.com/@eucher.dev/video/7711482762934471957',
-      cover:'assets/img/projects/akoue/cover.jpg',
-      media:[
-        'assets/img/projects/akoue/cover.jpg',
-        'assets/img/projects/akoue/home.png',
-        'assets/img/projects/akoue/stats.png',
-        'assets/img/projects/akoue/profile.png'
-      ],
+      cover:'',
       role:'Conception et développement',
       sec:'Fintech personnelle',
       impact:[]
