@@ -14,6 +14,7 @@
       t:'Expo 54, React Native, TypeScript, Supabase',
       u:'https://akoue-app.vercel.app',
       preview:'https://akoue-app.vercel.app',
+      video_url:'https://www.tiktok.com/@eucher.dev/video/7711482762934471957',
       cover:'assets/img/projects/akoue/cover.jpg',
       media:[
         'assets/img/projects/akoue/cover.jpg',

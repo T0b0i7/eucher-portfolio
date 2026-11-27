@@ -838,7 +838,7 @@
       u: remote.u,
       preview: remote.preview || (remote.u && !isGithubUrl(remote.u) ? remote.u : ''),
       repo: remote.repo,
-      video_url: remote.video_url || remote.video || '',
+      video_url: remote.video_url || (catalogProj && catalogProj.video_url ? catalogProj.video_url : '') || remote.video || '',
       cover: finalCover,
       media: isArray(remote.media) && remote.media.length ? remote.media : finalMedia,
       f: remote.f,
