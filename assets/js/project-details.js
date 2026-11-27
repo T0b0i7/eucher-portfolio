@@ -121,8 +121,12 @@
     var impact = isArray(base.impact) ? base.impact.slice() : [];
     if (override && isArray(override.impact)) impact = override.impact.slice();
 
-    var demo = url;
-    if (!demo || (repo && trimSlash(demo) === trimSlash(repo))) demo = '';
+    var demo = httpUrl(pick(base, override, 'preview', base.preview)) || url;
+    if (demo && repo && trimSlash(demo) === trimSlash(repo)) {
+      var altPreview = httpUrl(pick(base, override, 'preview', base.preview));
+      if (altPreview && trimSlash(altPreview) !== trimSlash(repo)) demo = altPreview;
+      else demo = '';
+    }
 
     var art = (typeof window.eaProjectArt === 'function')
       ? text(window.eaProjectArt({ n: name, cat: category }))
