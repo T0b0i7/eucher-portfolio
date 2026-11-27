@@ -1,5 +1,5 @@
 (function(){
-var ADMIN_V='2026.11.26a';
+var ADMIN_V='2026.11.27b';
 (function(){
   var l=document.createElement('link');l.rel='stylesheet';l.href='assets/css/admin-reference.css?v='+ADMIN_V;document.head.appendChild(l);
   var p=document.createElement('link');p.rel='stylesheet';p.href='assets/css/admin-premium.css?v='+ADMIN_V;document.head.appendChild(p);
@@ -98,7 +98,7 @@ return '<div class="hd"><div><h1>Tableau de bord</h1><p class="sbt">Gérez facil
 +'<div class="cd"><h3>'+I('bolt')+'Actions rapides</h3><button class="bt blk" data-a="addp">'+I('plus')+'Ajouter un projet</button><button class="bt gh blk" data-a="addsk">'+I('plus')+'Ajouter une compétence</button><button class="bt gh blk" data-a="bnew">'+I('doc')+'Écrire un article</button><button class="bt gh blk" data-v="prof">'+I('user')+'Modifier le profil</button><button class="bt gh blk" data-v="msg">'+I('mail')+'Voir les messages</button></div>'
 +'<div class="cd"><div class="live"><i></i>Portfolio '+(D.set.online?'en ligne':'hors ligne')+'</div><small style="color:var(--mu)">Dernière mise à jour : '+new Date(D.upd).toLocaleString('fr-FR',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})+'</small><br><br><button class="bt gh sm" data-a="close">Voir le portfolio '+I('arrow',14)+'</button></div></div></div>'},
 proj:function(){var q=(VW.pq||'').toLowerCase(),f=VW.pf||'Toutes',L=D.projects.filter(function(p){return(f==='Toutes'||p.cat===f||p.st===f)&&(p.n+p.d+p.t).toLowerCase().indexOf(q)>-1});
-return '<div class="hd"><div><h1>Projets</h1><p class="sbt">Ajoutez, modifiez et publiez vos réalisations.</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="bt gh" type="button" data-v="catalog">Importer depuis GitHub</button><button class="bt" data-a="addp">'+I('plus')+'Ajouter un projet</button></div></div><div class="tb"><input id="pq" placeholder="Filtrer les projets…" value="'+esc(VW.pq||'')+'"><select id="pf">'+['Toutes','Web','Mobile','IA','Design','Publié','Brouillon'].map(function(o){return '<option'+(o===f?' selected':'')+'>'+o+'</option>'}).join('')+'</select></div>'
+return '<div class="hd"><div><h1>Projets</h1><p class="sbt">Ajoutez, modifiez et publiez vos réalisations.</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="bt gh" type="button" data-a="syncbd" title="Synchroniser avec la base de données Supabase">🔄 Synchroniser BD</button><button class="bt gh" type="button" data-v="catalog">Importer depuis GitHub</button><button class="bt" data-a="addp">'+I('plus')+'Ajouter un projet</button></div></div><div class="tb"><input id="pq" placeholder="Filtrer les projets…" value="'+esc(VW.pq||'')+'"><select id="pf">'+['Toutes','Web','Mobile','IA','Design','Publié','Brouillon'].map(function(o){return '<option'+(o===f?' selected':'')+'>'+o+'</option>'}).join('')+'</select></div>'
 +'<div class="cd" style="overflow:auto"><table><tr><th>Projet</th><th>Catégorie</th><th>Technologies</th><th>Statut</th><th></th></tr>'+(L.map(function(p){return '<tr><td><b>'+esc(p.n)+'</b><br><small style="color:var(--mu)">'+esc(p.d.slice(0,60))+'…</small></td><td>'+p.cat+'</td><td style="max-width:220px;color:var(--mu)">'+esc(p.t)+'</td><td><button class="chip '+(p.st==='Publié'?'ok':'wa')+'" style="border:0;cursor:pointer" data-a="togp" data-i="'+p.id+'" title="Changer le statut">'+p.st+'</button></td><td style="white-space:nowrap"><button class="ib" data-a="editp" data-i="'+p.id+'" aria-label="Modifier">'+I('edit',17)+'</button><button class="ib" data-a="delp" data-i="'+p.id+'" aria-label="Supprimer">'+I('trash',17)+'</button></td></tr>'}).join('')||'<tr><td colspan="5" style="color:var(--mu)">Aucun projet.</td></tr>')+'</table></div>'},
 skills:function(){var cs=['Frontend & Mobile','Backend & API','Bases de données','Sécurité & IAM','DevOps & Outils','AI Engineering','Design'];D.skills.forEach(function(s){if(s.cat&&cs.indexOf(s.cat)<0)cs.push(s.cat)});return '<div class="hd"><div><h1>Compétences</h1><p class="sbt">Organisez vos outils et réglez votre niveau.</p></div><button class="bt" data-a="addsk">'+I('plus')+'Ajouter une compétence</button></div><div class="two" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">'+cs.map(function(c){return '<div class="cd"><h3>'+c+'</h3>'+(D.skills.filter(function(s){return s.cat===c}).map(function(s){return '<div class="skr"><span class="sic">'+(window.skI?skI(s.n,1):'')+'</span><b style="width:110px">'+esc(s.n)+'</b><span style="flex:1"></span><button class="ib" data-a="editsk" data-i="'+s.id+'" aria-label="Modifier">'+I('edit',16)+'</button><button class="ib" data-a="delsk" data-i="'+s.id+'" aria-label="Supprimer">'+I('trash',16)+'</button></div>'}).join('')||'<small style="color:var(--mu)">Aucune compétence.</small>')+'</div>'}).join('')+'</div>'},
 prof:function(){var p=D.profile,F=[['nom','Nom complet'],['titre','Titre'],['slogan','Slogan de l’accueil','w'],['bio','À propos','w','a'],['email','E-mail'],['linkedin','LinkedIn'],['github','GitHub'],['ville','Ville'],['tel','Téléphone (affiché seulement sur le CV)'],['langues','Langues (séparées par des virgules)','w'],['interets','Centres d’intérêt (séparés par des virgules)','w'],['hook_c','Accroche « J’ai un projet »','w'],['about_c','Texte « J’ai un projet » (paragraphes séparés par une ligne vide)','w','a'],['proof','Chiffres clés (valeur|libellé, séparés par des virgules)','w'],['en_titre','Titre en anglais'],['en_bio','À propos en anglais','w','a'],['en_langues','Langues en anglais (séparées par des virgules)','w'],['en_interets','Centres d’intérêt en anglais (séparés par des virgules)','w'],['en_ville','Ville en anglais'],['en_slogan','Slogan en anglais','w'],['en_hook_c','Accroche « J’ai un projet » en anglais','w'],['en_about_c','Texte « J’ai un projet » en anglais','w','a']];
@@ -201,7 +201,8 @@ pform(null,prefill);
 function gen(){var P=D.projects.filter(function(p){return p.st==='Publié'}),j=JSON.stringify({generatedAt:new Date().toISOString(),profile:D.profile,projects:P,skills:D.skills,settings:D.set},null,2);
 (window.claude?claude.use('downloads'):Promise.resolve({save:function(o){var a=document.createElement('a');a.href=URL.createObjectURL(o.data);a.download=o.filename;document.body.appendChild(a);a.click();a.remove();return Promise.resolve()}})).then(function(dl){if(!dl){toast('Téléchargement indisponible ici');return}return dl.save({filename:'portfolio-data.json',data:new Blob([j],{type:'application/json'})}).then(function(){log('Portfolio généré',P.length+' projets · '+D.skills.length+' compétences','bolt');save();render();toast('Données du portfolio générées')})}).catch(function(e){if(!e||e.code!=='declined')toast('Export impossible')})}
 document.addEventListener('click',function(e){var tg=e.target.closest('[data-tg]');if(tg){var gid=tg.dataset.tg;SB_OPEN[gid]=!SB_OPEN[gid];nav();return}var t=e.target.closest('[data-v],[data-a]');if(!t)return;if(t.dataset.v){go(t.dataset.v);return}var a=t.dataset.a,i=+t.dataset.i;
-if(a==='addp')pform();else if(a==='editp')pform(i);else if(a==='delp'){ask('Supprimer ce projet ?',function(){D.projects=D.projects.filter(function(p){return p.id!==i});log('Projet supprimé','','trash','#555');save();render()})}
+if(a==='syncbd'){toast('Synchronisation Supabase en cours…');draftPull();setTimeout(function(){toast('Synchronisation terminée ('+D.projects.length+' projets)','ok')},900)}
+else if(a==='addp')pform();else if(a==='editp')pform(i);else if(a==='delp'){ask('Supprimer ce projet ?',function(){D.projects=D.projects.filter(function(p){return p.id!==i});log('Projet supprimé','','trash','#555');save();render()})}
 else if(a==='togp'){var p=D.projects.find(function(x){return x.id===i});p.st=p.st==='Publié'?'Brouillon':'Publié';log('Statut de '+p.n,p.st,'folder','var(--ok)');save();render()}
 else if(a==='addsk')sform();else if(a==='editsk')sform(i);else if(a==='delsk'){D.skills=D.skills.filter(function(s){return s.id!==i});save();render()}
 else if(a==='openm'){SEL=i;D.msgs[i].r=1;save();if(SB&&D.msgs[i].id)SB.from('messages').update({read:true}).eq('id',D.msgs[i].id).then(function(){}).catch(function(){});V='msg';render()}else if(a==='unr'){D.msgs[i].r=0;save();if(SB&&D.msgs[i].id)SB.from('messages').update({read:false}).eq('id',D.msgs[i].id).then(function(){}).catch(function(){});render()}else if(a==='delm'){if(SB&&D.msgs[i]&&D.msgs[i].id)SB.from('messages').delete().eq('id',D.msgs[i].id).then(function(){}).catch(function(){});D.msgs.splice(i,1);SEL=0;save();render()}
@@ -284,7 +285,7 @@ else if(a==='pup'||a==='pdn'){var A2=D[k],ix=A2.findIndex(function(x){return x.i
 document.addEventListener('change',function(e){var t=e.target;if(!t.dataset||!t.dataset.imgfor)return;var hid=t.parentNode.querySelector('[data-k="'+t.dataset.imgfor+'"]'),f=t.files&&t.files[0];if(!f){hid.value='';return}
 var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));var ctx=c.getContext('2d');ctx.drawImage(im,0,0,c.width,c.height);var cover=c.toDataURL('image/webp',0.82);hid.value=cover.indexOf('data:image/webp')===0?cover:c.toDataURL('image/png');var pv=t.parentNode.querySelector('.imgp');if(!pv){pv=document.createElement('img');pv.className='imgp';pv.style.cssText='max-height:48px;margin-top:6px;background:#fff;padding:3px';t.parentNode.appendChild(pv)}pv.src=hid.value};im.src=r.result};r.readAsDataURL(f)});
 function applyClose(){log('Portfolio mis à jour',D.projects.filter(function(p){return p.st==='Publié'}).length+' projets publiés','bolt','var(--ok)');save();window.closeAdmin()}
-var openAdminRaw=function(){load();V='dash';SEL=0;render();A.classList.add('open');document.body.classList.add('adm-open');document.body.style.overflow='hidden';A.scrollTo(0,0);A._s=window.on;if(window.on)setSound(false)};
+var openAdminRaw=function(){load();V='dash';SEL=0;render();A.classList.add('open');document.body.classList.add('adm-open');document.body.style.overflow='hidden';A.scrollTo(0,0);A._s=window.on;if(window.on)setSound(false);draftPull()};
 window.closeAdmin=function(){A.classList.remove('open');document.body.classList.remove('adm-open');document.body.style.overflow='';if(A._s){setSound(true);A._s=false}applyData()};
 /* Client Supabase unique : créé une seule fois, exposé sous window.SB. */
 var SB=null;
@@ -314,16 +315,46 @@ function remotePush(){if(!SB||!window.SB_ADMIN)return;clearTimeout(pushT);pushT=
   }).catch(function(e){syncFail('portfolio',e)})
 },700)}
 window.eaPush=remotePush;
-/* Récupère les brouillons privés (autre appareil) si le cache local est plus ancien. */
-function draftPull(){if(!SB)return;SB.from('portfolio_drafts').select('data').eq('id',1).maybeSingle().then(function(r){
-  if(r.error||!r.data||!r.data.data)return;
-  var remote=r.data.data;
-  if(!Array.isArray(remote.projects))return;
-  if((remote.upd||0)<=(D.upd||0))return;
-  D.projects=remote.projects;
-  try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}
-  render()
-}).catch(function(){})}
+/* Récupère les données distantes (table portfolio ou portfolio_drafts) pour synchroniser le back-office */
+function draftPull(){
+  if(!SB)return;
+  // 1. Récupérer d'abord les brouillons / document admin complet s'il existe
+  SB.from('portfolio_drafts').select('data').eq('id',1).maybeSingle().then(function(r){
+    if(!r.error&&r.data&&r.data.data&&Array.isArray(r.data.data.projects)&&r.data.data.projects.length){
+      syncRemoteDoc(r.data.data);
+      return;
+    }
+    // 2. Sinon, synchroniser avec la table maître portfolio (contenant tous les projets publiés en BD)
+    SB.from('portfolio').select('data').eq('id',1).maybeSingle().then(function(r2){
+      if(!r2.error&&r2.data&&r2.data.data&&Array.isArray(r2.data.data.projects)&&r2.data.data.projects.length){
+        syncRemoteDoc(r2.data.data);
+      }
+    }).catch(function(){});
+  }).catch(function(){});
+}
+function syncRemoteDoc(remote){
+  if(!remote||!Array.isArray(remote.projects))return;
+  var changed=false;
+  // Si la BD a des projets que le localStorage n'a pas (ou inversement), on fusionne par ID / nom
+  var map={};
+  D.projects.forEach(function(p){if(p&&p.id)map['id_'+p.id]=p;if(p&&p.n)map['n_'+p.n.toLowerCase()]=p;});
+  remote.projects.forEach(function(rp){
+    if(!rp)return;
+    var existing=(rp.id&&map['id_'+rp.id])||(rp.n&&map['n_'+rp.n.toLowerCase()]);
+    if(!existing){
+      D.projects.push(rp);
+      changed=true;
+    }else if((remote.upd||0)>(D.upd||0)){
+      Object.assign(existing,rp);
+      changed=true;
+    }
+  });
+  if(changed||(remote.upd||0)>(D.upd||0)){
+    D.upd=Math.max(D.upd||0,remote.upd||Date.now());
+    try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}
+    render();
+  }
+}
 
 /* eaLoad et le client Supabase vivent dans remote.js */
 function msgPull(){if(!SB)return;SB.from('messages').select('*').order('created_at',{ascending:false}).then(function(r){if(r.error)return;D.msgs=(r.data||[]).map(function(m){return{id:m.id,from:m.name||'Anonyme',email:m.email||'',txt:m.body||'',subject:m.subject||'',t:m.created_at?new Date(m.created_at).getTime():Date.now(),r:m.read?1:0}});try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}if(A.classList.contains('open'))render()}).catch(function(){})}

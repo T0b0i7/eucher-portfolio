@@ -111,9 +111,10 @@
     var long = text(pick(base, override, 'long', base.long || summary)) || summary;
     var category = text(pick(base, override, 'cat', base.cat));
     var status = text(pick(base, override, 'st', base.st)) || 'Publié';
-    var url = httpUrl(pick(base, override, 'u', base.u));
+    var rawUrl = httpUrl(pick(base, override, 'u', base.u));
     var repo = httpUrl(pick(base, override, 'repo', base.repo));
-    if (!repo && isGithubUrl(url)) repo = url;
+    if (!repo && isGithubUrl(rawUrl)) repo = rawUrl;
+    var url = rawUrl;
     var technologies = splitTechnologies(pick(base, override, 't', base.t));
     var cover = safeImage(pick(base, override, 'cover', base.cover));
     var features = isArray(base.f) ? base.f.slice() : [];
@@ -121,10 +122,23 @@
     var impact = isArray(base.impact) ? base.impact.slice() : [];
     if (override && isArray(override.impact)) impact = override.impact.slice();
 
-    var demo = httpUrl(pick(base, override, 'preview', base.preview)) || url;
+    var baseU = httpUrl(base && base.u);
+    var basePreview = httpUrl(base && base.preview);
+    var overridePreview = httpUrl(override && override.preview);
+    var overrideU = httpUrl(override && override.u);
+
+    var demo = '';
+    if (overridePreview && !isGithubUrl(overridePreview)) demo = overridePreview;
+    else if (basePreview && !isGithubUrl(basePreview)) demo = basePreview;
+    else if (baseU && !isGithubUrl(baseU)) demo = baseU;
+    else if (overrideU && !isGithubUrl(overrideU)) demo = overrideU;
+    else if (url && !isGithubUrl(url)) demo = url;
+    else if (basePreview) demo = basePreview;
+    else if (url) demo = url;
+
     if (demo && repo && trimSlash(demo) === trimSlash(repo)) {
-      var altPreview = httpUrl(pick(base, override, 'preview', base.preview));
-      if (altPreview && trimSlash(altPreview) !== trimSlash(repo)) demo = altPreview;
+      if (baseU && trimSlash(baseU) !== trimSlash(repo) && !isGithubUrl(baseU)) demo = baseU;
+      else if (basePreview && trimSlash(basePreview) !== trimSlash(repo)) demo = basePreview;
       else demo = '';
     }
 
@@ -536,6 +550,16 @@
     };
     if (project.demo) {
       insert(actionButton(project.demo, 'Voir la démo en ligne', 'btn-primary', ICON.external, true));
+    } else {
+      var demoAnchor = actionButton('#projectGallery', 'Voir la démo du projet', 'btn-primary', ICON.external, false);
+      demoAnchor.addEventListener('click', function (e) {
+        var gal = byId('projectGallery');
+        if (gal) {
+          e.preventDefault();
+          gal.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+      insert(demoAnchor);
     }
     if (project.repo) {
       insert(actionButton(project.repo, 'Voir le code sur GitHub', 'btn-secondary', ICON.code, true));
@@ -609,6 +633,7 @@
       st: 'Publié',
       t: Array.isArray(remote.t) ? remote.t.join(', ') : remote.t,
       u: remote.u,
+      preview: remote.preview || (remote.u && !isGithubUrl(remote.u) ? remote.u : ''),
       repo: remote.repo,
       cover: '',
       media: isArray(remote.media) ? remote.media : [],

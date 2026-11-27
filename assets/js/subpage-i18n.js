@@ -33,6 +33,7 @@
     '← Accueil': '← Home',
     'Retour aux projets': 'Back to projects',
     'Voir la démo en ligne': 'Live demo',
+    'Voir la démo du projet': 'Live demo',
     'Voir la démo': 'Live demo',
     'Voir le code sur GitHub': 'View code on GitHub',
     'À propos du projet': 'About the project',
