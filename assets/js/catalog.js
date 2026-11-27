@@ -14,7 +14,13 @@
       t:'Expo 54, React Native, TypeScript, Supabase',
       u:'https://akoue-app.vercel.app',
       preview:'https://akoue-app.vercel.app',
-      cover:'',
+      cover:'assets/img/projects/akoue/cover.jpg',
+      media:[
+        'assets/img/projects/akoue/cover.jpg',
+        'assets/img/projects/akoue/home.png',
+        'assets/img/projects/akoue/stats.png',
+        'assets/img/projects/akoue/profile.png'
+      ],
       role:'Conception et développement',
       sec:'Fintech personnelle',
       impact:[]

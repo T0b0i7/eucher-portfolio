@@ -117,11 +117,12 @@
     if (!repo && isGithubUrl(rawUrl)) repo = rawUrl;
     var url = rawUrl;
     var technologies = splitTechnologies(pick(base, override, 't', base.t));
-    var cover = safeImage(pick(base, override, 'cover', base.cover));
+    var cover = safeImage(pick(base, override, 'cover', base.cover)) || safeImage(base && base.cover);
     var features = isArray(base.f) ? base.f.slice() : [];
     if (override && isArray(override.f)) features = override.f.slice();
     var impact = isArray(base.impact) ? base.impact.slice() : [];
     if (override && isArray(override.impact)) impact = override.impact.slice();
+    var media = (isArray(base && base.media) && base.media.length) ? base.media.slice() : (isArray(override && override.media) ? override.media.slice() : []);
 
     var baseU = httpUrl(base && base.u);
     var basePreview = httpUrl(base && base.preview);
@@ -171,7 +172,7 @@
       category: category,
       status: status,
       sector: text(pick(base, override, 'sec', base.sec)),
-      media: isArray(base.media) ? base.media.slice() : []
+      media: isArray(base.media) ? base.media.slice() : (isArray(media) ? media.slice() : [])
     };
   }
 
@@ -525,8 +526,57 @@
       image.height = 500;
       image.loading = position === 0 ? 'eager' : 'lazy';
       image.decoding = 'async';
+      image.title = 'Cliquer pour agrandir';
+      image.addEventListener('click', function () {
+        openImageLightbox(source, image.alt);
+      });
       grid.appendChild(image);
     });
+  }
+
+  function openImageLightbox(src, alt) {
+    var existing = byId('imageLightboxBackdrop');
+    if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+
+    var backdrop = document.createElement('div');
+    backdrop.id = 'imageLightboxBackdrop';
+    backdrop.className = 'phone-modal-backdrop open';
+    backdrop.style.cursor = 'zoom-out';
+
+    var container = document.createElement('div');
+    container.style.cssText = 'position:relative;max-width:92vw;max-height:92vh;display:flex;align-items:center;justify-content:center;';
+
+    var img = document.createElement('img');
+    img.src = src;
+    img.alt = alt || '';
+    img.style.cssText = 'max-width:100%;max-height:90vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.85);object-fit:contain;border:1px solid rgba(255,255,255,0.15);';
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'phone-close';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Fermer');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.style.top = '-16px';
+    closeBtn.style.right = '-16px';
+
+    function close() {
+      if (backdrop.parentNode) backdrop.parentNode.removeChild(backdrop);
+      document.removeEventListener('keydown', onKey);
+    }
+    function onKey(e) {
+      if (e.key === 'Escape' || e.keyCode === 27) close();
+    }
+
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', function (e) {
+      if (e.target === backdrop || e.target === container) close();
+    });
+    document.addEventListener('keydown', onKey);
+
+    container.appendChild(img);
+    container.appendChild(closeBtn);
+    backdrop.appendChild(container);
+    document.body.appendChild(backdrop);
   }
 
   function actionButton(href, label, className, icon, external) {
@@ -765,6 +815,19 @@
         break;
       }
     }
+    var localCatalog = (isArray(window.EA_PROJECTS)) ? window.EA_PROJECTS : [];
+    var catalogProj = null;
+    for (var k = 0; k < localCatalog.length; k += 1) {
+      if (text(localCatalog[k].n).trim().toLowerCase() === text(remote.n).trim().toLowerCase() ||
+          slugOf(localCatalog[k].n).toLowerCase() === slugOf(remote.n).toLowerCase()) {
+        catalogProj = localCatalog[k];
+        break;
+      }
+    }
+    var catalogMedia = catalogProj && isArray(catalogProj.media) ? catalogProj.media : [];
+    var finalMedia = (isArray(remote.media) && remote.media.length) ? remote.media : catalogMedia;
+    var finalCover = remote.cover || (catalogProj && catalogProj.cover ? catalogProj.cover : '');
+
     var base = {
       n: remote.n,
       d: remote.d,
@@ -776,8 +839,8 @@
       preview: remote.preview || (remote.u && !isGithubUrl(remote.u) ? remote.u : ''),
       repo: remote.repo,
       video_url: remote.video_url || remote.video || '',
-      cover: '',
-      media: isArray(remote.media) ? remote.media : [],
+      cover: finalCover,
+      media: isArray(remote.media) && remote.media.length ? remote.media : finalMedia,
       f: remote.f,
       impact: remote.impact,
       role: remote.role,
